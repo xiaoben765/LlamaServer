@@ -1,0 +1,3 @@
+/home/shl203/kama-webserver/CMakeFiles/KamaWebServer.dir
+/home/shl203/kama-webserver/CMakeFiles/edit_cache.dir
+/home/shl203/kama-webserver/CMakeFiles/rebuild_cache.dir

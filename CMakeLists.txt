@@ -1,0 +1,101 @@
+# 设置最低版本和项目名称
+cmake_minimum_required(VERSION 3.0)
+project(kama-webserver)
+
+# 设置全局的 C++ 标准
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# 显式指定 CUDA 版本和路径（仅使用 12.8）
+set(CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda-12.8)
+set(CMAKE_CUDA_COMPILER /usr/local/cuda-12.8/bin/nvcc)
+find_package(CUDA 12.8 REQUIRED)
+
+if (CUDA_FOUND)
+    message(STATUS "✅ CUDA detected: ${CUDA_VERSION}")
+    set(USE_CUDA TRUE)
+else()
+    message(FATAL_ERROR "❌ CUDA not detected. Please ensure CUDA is installed.")
+endif()
+
+# 设置头文件目录，供所有子项目使用
+include_directories(
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/memory
+    ${CMAKE_SOURCE_DIR}/log
+    ${CUDA_INCLUDE_DIRS}
+)
+
+# 设置输出目录
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+
+# 设置全局链接库
+set(LIBS pthread ${CUDA_LIBRARIES})
+
+# 添加 LLaMA.cpp 可执行文件路径（绝对路径）
+set(LLAMA_CPP_PATH "/home/shl203/llama.cpp/build/bin/main")
+set(LLAMA_MODEL_PATH "/home/shl203/llama.cpp/models/qwen/Qwen-7B-Chat.Q4_K_M.gguf")
+
+# 确保 LLaMA.cpp 可执行文件和模型文件存在
+if (EXISTS ${LLAMA_CPP_PATH} AND EXISTS ${LLAMA_MODEL_PATH})
+    message(STATUS "✅ LLaMA.cpp and model found.")
+else()
+    message(FATAL_ERROR "❌ LLaMA.cpp or model file not found. Please ensure the paths are correct.")
+endif()
+
+# ==================== 构建 CurrentThread 静态库 ====================
+add_library(current_thread STATIC src/CurrentThread.cc)
+target_include_directories(current_thread PRIVATE ${CMAKE_SOURCE_DIR}/include)
+message(STATUS "✅ Compiling CurrentThread as a static library.")
+
+# ==================== 构建 LLaMA Service 可执行文件 ====================
+file(GLOB LlamaService_SRC src/llama_service.cc memory/*.cc log/*.cc src/Thread.cc)
+list(FILTER LlamaService_SRC EXCLUDE REGEX ".*main\\.cc$")
+add_executable(llama_service ${LlamaService_SRC})
+target_link_libraries(llama_service ${LIBS} current_thread)
+target_include_directories(llama_service PRIVATE 
+    ${CMAKE_SOURCE_DIR}/include 
+    ${CMAKE_SOURCE_DIR}/memory 
+    ${CMAKE_SOURCE_DIR}/log
+)
+if (USE_CUDA)
+    target_compile_definitions(llama_service PRIVATE USE_CUDA)
+    target_link_libraries(llama_service ${CUDA_LIBRARIES})
+    message(STATUS "✅ Compiling LLaMA Service with CUDA support.")
+endif()
+
+# ==================== 构建 LLaMA TCP 服务可执行文件 ====================
+file(GLOB LlamaServiceTCP_SRC src/llama_service_tcp.cc memory/*.cc log/*.cc src/Thread.cc)
+list(FILTER LlamaServiceTCP_SRC EXCLUDE REGEX ".*main\\.cc$")
+add_executable(llama_service_tcp ${LlamaServiceTCP_SRC})
+target_link_libraries(llama_service_tcp ${LIBS} current_thread)
+target_include_directories(llama_service_tcp PRIVATE 
+    ${CMAKE_SOURCE_DIR}/include 
+    ${CMAKE_SOURCE_DIR}/memory 
+    ${CMAKE_SOURCE_DIR}/log
+)
+if (USE_CUDA)
+    target_compile_definitions(llama_service_tcp PRIVATE USE_CUDA)
+    target_link_libraries(llama_service_tcp ${CUDA_LIBRARIES})
+    message(STATUS "✅ Compiling LLaMA TCP Service with CUDA support.")
+endif()
+
+# ==================== 构建 KamaWebServer 可执行文件 ====================
+file(GLOB WebServer_SRC src/main.cc src/*.cc memory/*.cc log/*.cc)
+list(FILTER WebServer_SRC EXCLUDE REGEX ".*llama_service\\.cc$")
+list(FILTER WebServer_SRC EXCLUDE REGEX ".*llama_service_tcp\\.cc$")
+list(FILTER WebServer_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$")
+add_executable(KamaWebServer ${WebServer_SRC})
+target_link_libraries(KamaWebServer ${LIBS} current_thread)
+target_include_directories(KamaWebServer PRIVATE 
+    ${CMAKE_SOURCE_DIR}/include 
+    ${CMAKE_SOURCE_DIR}/memory 
+    ${CMAKE_SOURCE_DIR}/log
+)
+if (USE_CUDA)
+    target_compile_definitions(KamaWebServer PRIVATE USE_CUDA)
+    target_link_libraries(KamaWebServer ${CUDA_LIBRARIES})
+    message(STATUS "✅ Compiling KamaWebServer with CUDA support.")
+endif()
