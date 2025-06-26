@@ -2,5 +2,6 @@
 /home/shl203/kama-webserver/build/CMakeFiles/llama_service.dir
 /home/shl203/kama-webserver/build/CMakeFiles/llama_service_tcp.dir
 /home/shl203/kama-webserver/build/CMakeFiles/KamaWebServer.dir
+/home/shl203/kama-webserver/build/CMakeFiles/kama_http_server.dir
 /home/shl203/kama-webserver/build/CMakeFiles/edit_cache.dir
 /home/shl203/kama-webserver/build/CMakeFiles/rebuild_cache.dir

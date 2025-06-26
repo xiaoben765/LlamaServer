@@ -83,19 +83,72 @@ if (USE_CUDA)
 endif()
 
 # ==================== 构建 KamaWebServer 可执行文件 ====================
-file(GLOB WebServer_SRC src/main.cc src/*.cc memory/*.cc log/*.cc)
-list(FILTER WebServer_SRC EXCLUDE REGEX ".*llama_service\\.cc$")
+# 为KamaWebServer指定源文件，排除所有包含main函数的文件和重复的CurrentThread实现
+file(GLOB WebServer_SRC src/*.cc)
+list(FILTER WebServer_SRC EXCLUDE REGEX ".*main_http\\.cc$")
+list(FILTER WebServer_SRC EXCLUDE REGEX ".*llama_service\\.cc$") 
 list(FILTER WebServer_SRC EXCLUDE REGEX ".*llama_service_tcp\\.cc$")
-list(FILTER WebServer_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$")
-add_executable(KamaWebServer ${WebServer_SRC})
-target_link_libraries(KamaWebServer ${LIBS} current_thread)
+list(FILTER WebServer_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$") # 排除src中的CurrentThread.cc
+
+file(GLOB MEMORY_SRC memory/*.cc)
+file(GLOB LOG_SRC log/*.cc)
+list(FILTER LOG_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$") # 排除log中的CurrentThread.cc
+
+# 构建KamaWebServer
+add_executable(KamaWebServer ${WebServer_SRC} ${MEMORY_SRC} ${LOG_SRC})
+target_link_libraries(KamaWebServer ${LIBS} current_thread) # 使用current_thread库
 target_include_directories(KamaWebServer PRIVATE 
-    ${CMAKE_SOURCE_DIR}/include 
-    ${CMAKE_SOURCE_DIR}/memory 
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/memory
     ${CMAKE_SOURCE_DIR}/log
 )
+
 if (USE_CUDA)
     target_compile_definitions(KamaWebServer PRIVATE USE_CUDA)
     target_link_libraries(KamaWebServer ${CUDA_LIBRARIES})
     message(STATUS "✅ Compiling KamaWebServer with CUDA support.")
 endif()
+
+# ==================== HTTP服务器构建 ====================
+file(GLOB HTTP_SOURCES "src/http/*.cc")
+file(GLOB HTTP_MEMORY_SRC "memory/*.cc")
+file(GLOB HTTP_LOG_SRC "log/*.cc")
+
+# 获取基础网络库源文件，但排除多个main函数和HTTP文件
+file(GLOB NETWORK_SRC "src/*.cc")
+list(FILTER NETWORK_SRC EXCLUDE REGEX ".*main\\.cc$")
+list(FILTER NETWORK_SRC EXCLUDE REGEX ".*main_http\\.cc$")
+list(FILTER NETWORK_SRC EXCLUDE REGEX ".*llama_service\\.cc$") 
+list(FILTER NETWORK_SRC EXCLUDE REGEX ".*llama_service_tcp\\.cc$")
+list(FILTER NETWORK_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$")
+
+# 排除可能导致重复定义的文件
+list(FILTER HTTP_LOG_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$")
+
+# 构建HTTP服务器 - 包含基础网络库源文件
+add_executable(kama_http_server 
+    src/main_http.cc 
+    ${HTTP_SOURCES}
+    ${HTTP_MEMORY_SRC}
+    ${HTTP_LOG_SRC}
+    ${NETWORK_SRC}  # 添加网络库源文件
+)
+
+target_link_libraries(kama_http_server 
+    ${LIBS} 
+    current_thread  # 直接链接已经构建的CurrentThread库
+)
+
+target_include_directories(kama_http_server PRIVATE 
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/include/http
+    ${CMAKE_SOURCE_DIR}/memory
+    ${CMAKE_SOURCE_DIR}/log
+)
+
+if (USE_CUDA)
+    target_compile_definitions(kama_http_server PRIVATE USE_CUDA)
+    target_link_libraries(kama_http_server ${CUDA_LIBRARIES})
+endif()
+
+message(STATUS "✅ Configuring HTTP Server build.")

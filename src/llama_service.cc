@@ -77,6 +77,7 @@ private:
         }
         
         // 启动LLaMA进程
+        // 
         std::string cmd = "/home/shl203/llama.cpp/build/bin/main -m " + model_path_ +
                         " --interactive --color --threads 32 --n_batch 8 --ctx_size 4096";
 
@@ -181,14 +182,14 @@ private:
         }
     }
 
-    std::string model_path_;
-    int port_;
-    int server_fd_ = -1;
-    FILE* llama_process_ = nullptr;
-    std::atomic<bool> running_;
-    std::mutex llama_mutex_;
-    bool use_gpu_;
-    int gpu_layers_;
+    std::string model_path_;  // LLaMA模型的路径
+    int port_;                // 服务器监听的端口号
+    int server_fd_ = -1;      // 服务器的套接字文件描述符。-1 表示初始无效。
+    FILE* llama_process_ = nullptr; // 指向 LLaMA 子进程的文件指针。nullptr 表示初始没有进程。
+    std::atomic<bool> running_; // 一个原子布尔值，用于控制服务器主循环是否继续运行。
+    std::mutex llama_mutex_;   // 互斥锁，用来保护对 llama_process_ 的访问。
+    bool use_gpu_;            // 是否使用GPU
+    int gpu_layers_;          // 在GPU上运行的层数
 };
 
 // 信号处理

@@ -5,8 +5,8 @@
 #include <vector>
 #include <memory>
 
-#include "noncopyable.h"
-#include "ConsistenHash.h"
+#include "noncopyable.h"   // 包含一个基类，让 EventLoopThreadPool 对象不可拷贝
+#include "ConsistenHash.h" // 包含一致性哈希算法的实现
 class EventLoop;
 class EventLoopThread;
 
@@ -15,7 +15,7 @@ class EventLoopThreadPool : noncopyable
 public:
     using ThreadInitCallback = std::function<void(EventLoop *)>;
 
-    EventLoopThreadPool(EventLoop *baseLoop, const std::string &nameArg);
+    EventLoopThreadPool(EventLoop *baseLoop, const std::string &nameArg); // 构造函数，传入用户创建的主循环baseLoop_和线程池名称
     ~EventLoopThreadPool();
 
     void setThreadNum(int numThreads) { numThreads_ = numThreads; }

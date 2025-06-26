@@ -61,6 +61,11 @@
         "codecvt": "cpp",
         "optional": "cpp",
         "iomanip": "cpp",
-        "__nullptr": "cpp"
+        "__nullptr": "cpp",
+        "cerrno": "cpp",
+        "map": "cpp",
+        "regex": "cpp",
+        "forward_list": "cpp",
+        "valarray": "cpp"
     }
 }

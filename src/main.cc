@@ -420,12 +420,12 @@ private:
 class EchoServer {
 public:
     EchoServer(EventLoop *loop, const InetAddress &addr, const std::string &name)
-        : server_(loop, addr, name)
-        , loop_(loop)
-        , threadPool_(4)
-        , requestId_(0)
-        , llama_service_("/home/shl203/llama.cpp/models/qwen/Qwen-7B-Chat.Q4_K_M.gguf") // 确保路径正确
-        , lfu_cache_(100)
+        : server_(loop, addr, name) // (1) 初始化 TcpServer 对象
+        , loop_(loop)   // (2) 初始化 EventLoop 指针
+        , threadPool_(4)    // (3) 初始化线程池，包含4个线程
+        , requestId_(0) // (4) 初始化请求ID计数器为0
+        , llama_service_("/home/shl203/llama.cpp/models/qwen/Qwen-7B-Chat.Q4_K_M.gguf") // (5) 初始化 LLaMA 服务对象，并指定模型路径
+        , lfu_cache_(100) // (6) 初始化 LFU 缓存，容量为100
     {
         // 注册回调函数
         server_.setConnectionCallback(

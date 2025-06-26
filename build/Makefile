@@ -168,6 +168,19 @@ KamaWebServer/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/build
 .PHONY : KamaWebServer/fast
 
+#=============================================================================
+# Target rules for targets named kama_http_server
+
+# Build rule for target.
+kama_http_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 kama_http_server
+.PHONY : kama_http_server
+
+# fast build rule for target.
+kama_http_server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/build
+.PHONY : kama_http_server/fast
+
 log/AsyncLogging.o: log/AsyncLogging.cc.o
 .PHONY : log/AsyncLogging.o
 
@@ -176,6 +189,7 @@ log/AsyncLogging.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/AsyncLogging.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/AsyncLogging.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/AsyncLogging.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.o
 .PHONY : log/AsyncLogging.cc.o
 
 log/AsyncLogging.i: log/AsyncLogging.cc.i
@@ -186,6 +200,7 @@ log/AsyncLogging.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/AsyncLogging.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/AsyncLogging.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/AsyncLogging.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.i
 .PHONY : log/AsyncLogging.cc.i
 
 log/AsyncLogging.s: log/AsyncLogging.cc.s
@@ -196,6 +211,7 @@ log/AsyncLogging.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/AsyncLogging.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/AsyncLogging.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/AsyncLogging.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.s
 .PHONY : log/AsyncLogging.cc.s
 
 log/CurrentThread.o: log/CurrentThread.cc.o
@@ -233,6 +249,7 @@ log/FileUtil.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/FileUtil.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/FileUtil.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/FileUtil.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/FileUtil.cc.o
 .PHONY : log/FileUtil.cc.o
 
 log/FileUtil.i: log/FileUtil.cc.i
@@ -243,6 +260,7 @@ log/FileUtil.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/FileUtil.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/FileUtil.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/FileUtil.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/FileUtil.cc.i
 .PHONY : log/FileUtil.cc.i
 
 log/FileUtil.s: log/FileUtil.cc.s
@@ -253,6 +271,7 @@ log/FileUtil.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/FileUtil.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/FileUtil.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/FileUtil.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/FileUtil.cc.s
 .PHONY : log/FileUtil.cc.s
 
 log/LogFile.o: log/LogFile.cc.o
@@ -263,6 +282,7 @@ log/LogFile.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/LogFile.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/LogFile.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/LogFile.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/LogFile.cc.o
 .PHONY : log/LogFile.cc.o
 
 log/LogFile.i: log/LogFile.cc.i
@@ -273,6 +293,7 @@ log/LogFile.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/LogFile.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/LogFile.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/LogFile.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/LogFile.cc.i
 .PHONY : log/LogFile.cc.i
 
 log/LogFile.s: log/LogFile.cc.s
@@ -283,6 +304,7 @@ log/LogFile.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/LogFile.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/LogFile.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/LogFile.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/LogFile.cc.s
 .PHONY : log/LogFile.cc.s
 
 log/LogStream.o: log/LogStream.cc.o
@@ -293,6 +315,7 @@ log/LogStream.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/LogStream.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/LogStream.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/LogStream.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/LogStream.cc.o
 .PHONY : log/LogStream.cc.o
 
 log/LogStream.i: log/LogStream.cc.i
@@ -303,6 +326,7 @@ log/LogStream.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/LogStream.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/LogStream.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/LogStream.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/LogStream.cc.i
 .PHONY : log/LogStream.cc.i
 
 log/LogStream.s: log/LogStream.cc.s
@@ -313,6 +337,7 @@ log/LogStream.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/log/LogStream.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/log/LogStream.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/log/LogStream.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/log/LogStream.cc.s
 .PHONY : log/LogStream.cc.s
 
 memory/memoryPool.o: memory/memoryPool.cc.o
@@ -323,6 +348,7 @@ memory/memoryPool.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/memory/memoryPool.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/memory/memoryPool.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/memory/memoryPool.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.o
 .PHONY : memory/memoryPool.cc.o
 
 memory/memoryPool.i: memory/memoryPool.cc.i
@@ -333,6 +359,7 @@ memory/memoryPool.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/memory/memoryPool.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/memory/memoryPool.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/memory/memoryPool.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.i
 .PHONY : memory/memoryPool.cc.i
 
 memory/memoryPool.s: memory/memoryPool.cc.s
@@ -343,6 +370,7 @@ memory/memoryPool.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/memory/memoryPool.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/memory/memoryPool.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/memory/memoryPool.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.s
 .PHONY : memory/memoryPool.cc.s
 
 src/Acceptor.o: src/Acceptor.cc.o
@@ -351,6 +379,7 @@ src/Acceptor.o: src/Acceptor.cc.o
 # target to build an object file
 src/Acceptor.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Acceptor.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Acceptor.cc.o
 .PHONY : src/Acceptor.cc.o
 
 src/Acceptor.i: src/Acceptor.cc.i
@@ -359,6 +388,7 @@ src/Acceptor.i: src/Acceptor.cc.i
 # target to preprocess a source file
 src/Acceptor.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Acceptor.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Acceptor.cc.i
 .PHONY : src/Acceptor.cc.i
 
 src/Acceptor.s: src/Acceptor.cc.s
@@ -367,6 +397,7 @@ src/Acceptor.s: src/Acceptor.cc.s
 # target to generate assembly for a file
 src/Acceptor.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Acceptor.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Acceptor.cc.s
 .PHONY : src/Acceptor.cc.s
 
 src/Buffer.o: src/Buffer.cc.o
@@ -375,6 +406,7 @@ src/Buffer.o: src/Buffer.cc.o
 # target to build an object file
 src/Buffer.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Buffer.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Buffer.cc.o
 .PHONY : src/Buffer.cc.o
 
 src/Buffer.i: src/Buffer.cc.i
@@ -383,6 +415,7 @@ src/Buffer.i: src/Buffer.cc.i
 # target to preprocess a source file
 src/Buffer.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Buffer.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Buffer.cc.i
 .PHONY : src/Buffer.cc.i
 
 src/Buffer.s: src/Buffer.cc.s
@@ -391,6 +424,7 @@ src/Buffer.s: src/Buffer.cc.s
 # target to generate assembly for a file
 src/Buffer.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Buffer.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Buffer.cc.s
 .PHONY : src/Buffer.cc.s
 
 src/Channel.o: src/Channel.cc.o
@@ -399,6 +433,7 @@ src/Channel.o: src/Channel.cc.o
 # target to build an object file
 src/Channel.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Channel.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Channel.cc.o
 .PHONY : src/Channel.cc.o
 
 src/Channel.i: src/Channel.cc.i
@@ -407,6 +442,7 @@ src/Channel.i: src/Channel.cc.i
 # target to preprocess a source file
 src/Channel.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Channel.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Channel.cc.i
 .PHONY : src/Channel.cc.i
 
 src/Channel.s: src/Channel.cc.s
@@ -415,6 +451,7 @@ src/Channel.s: src/Channel.cc.s
 # target to generate assembly for a file
 src/Channel.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Channel.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Channel.cc.s
 .PHONY : src/Channel.cc.s
 
 src/CurrentThread.o: src/CurrentThread.cc.o
@@ -447,6 +484,7 @@ src/DefaultPoller.o: src/DefaultPoller.cc.o
 # target to build an object file
 src/DefaultPoller.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/DefaultPoller.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o
 .PHONY : src/DefaultPoller.cc.o
 
 src/DefaultPoller.i: src/DefaultPoller.cc.i
@@ -455,6 +493,7 @@ src/DefaultPoller.i: src/DefaultPoller.cc.i
 # target to preprocess a source file
 src/DefaultPoller.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/DefaultPoller.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.i
 .PHONY : src/DefaultPoller.cc.i
 
 src/DefaultPoller.s: src/DefaultPoller.cc.s
@@ -463,6 +502,7 @@ src/DefaultPoller.s: src/DefaultPoller.cc.s
 # target to generate assembly for a file
 src/DefaultPoller.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/DefaultPoller.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.s
 .PHONY : src/DefaultPoller.cc.s
 
 src/EPollPoller.o: src/EPollPoller.cc.o
@@ -471,6 +511,7 @@ src/EPollPoller.o: src/EPollPoller.cc.o
 # target to build an object file
 src/EPollPoller.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EPollPoller.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.o
 .PHONY : src/EPollPoller.cc.o
 
 src/EPollPoller.i: src/EPollPoller.cc.i
@@ -479,6 +520,7 @@ src/EPollPoller.i: src/EPollPoller.cc.i
 # target to preprocess a source file
 src/EPollPoller.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EPollPoller.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.i
 .PHONY : src/EPollPoller.cc.i
 
 src/EPollPoller.s: src/EPollPoller.cc.s
@@ -487,6 +529,7 @@ src/EPollPoller.s: src/EPollPoller.cc.s
 # target to generate assembly for a file
 src/EPollPoller.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EPollPoller.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.s
 .PHONY : src/EPollPoller.cc.s
 
 src/EventLoop.o: src/EventLoop.cc.o
@@ -495,6 +538,7 @@ src/EventLoop.o: src/EventLoop.cc.o
 # target to build an object file
 src/EventLoop.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EventLoop.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EventLoop.cc.o
 .PHONY : src/EventLoop.cc.o
 
 src/EventLoop.i: src/EventLoop.cc.i
@@ -503,6 +547,7 @@ src/EventLoop.i: src/EventLoop.cc.i
 # target to preprocess a source file
 src/EventLoop.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EventLoop.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EventLoop.cc.i
 .PHONY : src/EventLoop.cc.i
 
 src/EventLoop.s: src/EventLoop.cc.s
@@ -511,6 +556,7 @@ src/EventLoop.s: src/EventLoop.cc.s
 # target to generate assembly for a file
 src/EventLoop.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EventLoop.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EventLoop.cc.s
 .PHONY : src/EventLoop.cc.s
 
 src/EventLoopThread.o: src/EventLoopThread.cc.o
@@ -519,6 +565,7 @@ src/EventLoopThread.o: src/EventLoopThread.cc.o
 # target to build an object file
 src/EventLoopThread.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EventLoopThread.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.o
 .PHONY : src/EventLoopThread.cc.o
 
 src/EventLoopThread.i: src/EventLoopThread.cc.i
@@ -527,6 +574,7 @@ src/EventLoopThread.i: src/EventLoopThread.cc.i
 # target to preprocess a source file
 src/EventLoopThread.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EventLoopThread.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.i
 .PHONY : src/EventLoopThread.cc.i
 
 src/EventLoopThread.s: src/EventLoopThread.cc.s
@@ -535,6 +583,7 @@ src/EventLoopThread.s: src/EventLoopThread.cc.s
 # target to generate assembly for a file
 src/EventLoopThread.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EventLoopThread.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.s
 .PHONY : src/EventLoopThread.cc.s
 
 src/EventLoopThreadPool.o: src/EventLoopThreadPool.cc.o
@@ -543,6 +592,7 @@ src/EventLoopThreadPool.o: src/EventLoopThreadPool.cc.o
 # target to build an object file
 src/EventLoopThreadPool.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EventLoopThreadPool.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.o
 .PHONY : src/EventLoopThreadPool.cc.o
 
 src/EventLoopThreadPool.i: src/EventLoopThreadPool.cc.i
@@ -551,6 +601,7 @@ src/EventLoopThreadPool.i: src/EventLoopThreadPool.cc.i
 # target to preprocess a source file
 src/EventLoopThreadPool.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EventLoopThreadPool.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.i
 .PHONY : src/EventLoopThreadPool.cc.i
 
 src/EventLoopThreadPool.s: src/EventLoopThreadPool.cc.s
@@ -559,6 +610,7 @@ src/EventLoopThreadPool.s: src/EventLoopThreadPool.cc.s
 # target to generate assembly for a file
 src/EventLoopThreadPool.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/EventLoopThreadPool.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.s
 .PHONY : src/EventLoopThreadPool.cc.s
 
 src/InetAddress.o: src/InetAddress.cc.o
@@ -567,6 +619,7 @@ src/InetAddress.o: src/InetAddress.cc.o
 # target to build an object file
 src/InetAddress.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/InetAddress.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/InetAddress.cc.o
 .PHONY : src/InetAddress.cc.o
 
 src/InetAddress.i: src/InetAddress.cc.i
@@ -575,6 +628,7 @@ src/InetAddress.i: src/InetAddress.cc.i
 # target to preprocess a source file
 src/InetAddress.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/InetAddress.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/InetAddress.cc.i
 .PHONY : src/InetAddress.cc.i
 
 src/InetAddress.s: src/InetAddress.cc.s
@@ -583,6 +637,7 @@ src/InetAddress.s: src/InetAddress.cc.s
 # target to generate assembly for a file
 src/InetAddress.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/InetAddress.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/InetAddress.cc.s
 .PHONY : src/InetAddress.cc.s
 
 src/Logger.o: src/Logger.cc.o
@@ -591,6 +646,7 @@ src/Logger.o: src/Logger.cc.o
 # target to build an object file
 src/Logger.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Logger.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Logger.cc.o
 .PHONY : src/Logger.cc.o
 
 src/Logger.i: src/Logger.cc.i
@@ -599,6 +655,7 @@ src/Logger.i: src/Logger.cc.i
 # target to preprocess a source file
 src/Logger.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Logger.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Logger.cc.i
 .PHONY : src/Logger.cc.i
 
 src/Logger.s: src/Logger.cc.s
@@ -607,6 +664,7 @@ src/Logger.s: src/Logger.cc.s
 # target to generate assembly for a file
 src/Logger.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Logger.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Logger.cc.s
 .PHONY : src/Logger.cc.s
 
 src/Poller.o: src/Poller.cc.o
@@ -615,6 +673,7 @@ src/Poller.o: src/Poller.cc.o
 # target to build an object file
 src/Poller.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Poller.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Poller.cc.o
 .PHONY : src/Poller.cc.o
 
 src/Poller.i: src/Poller.cc.i
@@ -623,6 +682,7 @@ src/Poller.i: src/Poller.cc.i
 # target to preprocess a source file
 src/Poller.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Poller.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Poller.cc.i
 .PHONY : src/Poller.cc.i
 
 src/Poller.s: src/Poller.cc.s
@@ -631,6 +691,7 @@ src/Poller.s: src/Poller.cc.s
 # target to generate assembly for a file
 src/Poller.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Poller.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Poller.cc.s
 .PHONY : src/Poller.cc.s
 
 src/Socket.o: src/Socket.cc.o
@@ -639,6 +700,7 @@ src/Socket.o: src/Socket.cc.o
 # target to build an object file
 src/Socket.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Socket.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Socket.cc.o
 .PHONY : src/Socket.cc.o
 
 src/Socket.i: src/Socket.cc.i
@@ -647,6 +709,7 @@ src/Socket.i: src/Socket.cc.i
 # target to preprocess a source file
 src/Socket.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Socket.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Socket.cc.i
 .PHONY : src/Socket.cc.i
 
 src/Socket.s: src/Socket.cc.s
@@ -655,6 +718,7 @@ src/Socket.s: src/Socket.cc.s
 # target to generate assembly for a file
 src/Socket.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Socket.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Socket.cc.s
 .PHONY : src/Socket.cc.s
 
 src/TcpConnection.o: src/TcpConnection.cc.o
@@ -663,6 +727,7 @@ src/TcpConnection.o: src/TcpConnection.cc.o
 # target to build an object file
 src/TcpConnection.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/TcpConnection.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.o
 .PHONY : src/TcpConnection.cc.o
 
 src/TcpConnection.i: src/TcpConnection.cc.i
@@ -671,6 +736,7 @@ src/TcpConnection.i: src/TcpConnection.cc.i
 # target to preprocess a source file
 src/TcpConnection.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/TcpConnection.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.i
 .PHONY : src/TcpConnection.cc.i
 
 src/TcpConnection.s: src/TcpConnection.cc.s
@@ -679,6 +745,7 @@ src/TcpConnection.s: src/TcpConnection.cc.s
 # target to generate assembly for a file
 src/TcpConnection.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/TcpConnection.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.s
 .PHONY : src/TcpConnection.cc.s
 
 src/TcpServer.o: src/TcpServer.cc.o
@@ -687,6 +754,7 @@ src/TcpServer.o: src/TcpServer.cc.o
 # target to build an object file
 src/TcpServer.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/TcpServer.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/TcpServer.cc.o
 .PHONY : src/TcpServer.cc.o
 
 src/TcpServer.i: src/TcpServer.cc.i
@@ -695,6 +763,7 @@ src/TcpServer.i: src/TcpServer.cc.i
 # target to preprocess a source file
 src/TcpServer.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/TcpServer.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/TcpServer.cc.i
 .PHONY : src/TcpServer.cc.i
 
 src/TcpServer.s: src/TcpServer.cc.s
@@ -703,6 +772,7 @@ src/TcpServer.s: src/TcpServer.cc.s
 # target to generate assembly for a file
 src/TcpServer.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/TcpServer.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/TcpServer.cc.s
 .PHONY : src/TcpServer.cc.s
 
 src/Thread.o: src/Thread.cc.o
@@ -713,6 +783,7 @@ src/Thread.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/src/Thread.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/src/Thread.cc.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Thread.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Thread.cc.o
 .PHONY : src/Thread.cc.o
 
 src/Thread.i: src/Thread.cc.i
@@ -723,6 +794,7 @@ src/Thread.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/src/Thread.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/src/Thread.cc.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Thread.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Thread.cc.i
 .PHONY : src/Thread.cc.i
 
 src/Thread.s: src/Thread.cc.s
@@ -733,6 +805,7 @@ src/Thread.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/src/Thread.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/src/Thread.cc.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Thread.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Thread.cc.s
 .PHONY : src/Thread.cc.s
 
 src/Timer.o: src/Timer.cc.o
@@ -741,6 +814,7 @@ src/Timer.o: src/Timer.cc.o
 # target to build an object file
 src/Timer.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Timer.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Timer.cc.o
 .PHONY : src/Timer.cc.o
 
 src/Timer.i: src/Timer.cc.i
@@ -749,6 +823,7 @@ src/Timer.i: src/Timer.cc.i
 # target to preprocess a source file
 src/Timer.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Timer.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Timer.cc.i
 .PHONY : src/Timer.cc.i
 
 src/Timer.s: src/Timer.cc.s
@@ -757,6 +832,7 @@ src/Timer.s: src/Timer.cc.s
 # target to generate assembly for a file
 src/Timer.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Timer.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Timer.cc.s
 .PHONY : src/Timer.cc.s
 
 src/TimerQueue.o: src/TimerQueue.cc.o
@@ -765,6 +841,7 @@ src/TimerQueue.o: src/TimerQueue.cc.o
 # target to build an object file
 src/TimerQueue.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/TimerQueue.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o
 .PHONY : src/TimerQueue.cc.o
 
 src/TimerQueue.i: src/TimerQueue.cc.i
@@ -773,6 +850,7 @@ src/TimerQueue.i: src/TimerQueue.cc.i
 # target to preprocess a source file
 src/TimerQueue.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/TimerQueue.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.i
 .PHONY : src/TimerQueue.cc.i
 
 src/TimerQueue.s: src/TimerQueue.cc.s
@@ -781,6 +859,7 @@ src/TimerQueue.s: src/TimerQueue.cc.s
 # target to generate assembly for a file
 src/TimerQueue.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/TimerQueue.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.s
 .PHONY : src/TimerQueue.cc.s
 
 src/Timestamp.o: src/Timestamp.cc.o
@@ -789,6 +868,7 @@ src/Timestamp.o: src/Timestamp.cc.o
 # target to build an object file
 src/Timestamp.cc.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Timestamp.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o
 .PHONY : src/Timestamp.cc.o
 
 src/Timestamp.i: src/Timestamp.cc.i
@@ -797,6 +877,7 @@ src/Timestamp.i: src/Timestamp.cc.i
 # target to preprocess a source file
 src/Timestamp.cc.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Timestamp.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Timestamp.cc.i
 .PHONY : src/Timestamp.cc.i
 
 src/Timestamp.s: src/Timestamp.cc.s
@@ -805,7 +886,128 @@ src/Timestamp.s: src/Timestamp.cc.s
 # target to generate assembly for a file
 src/Timestamp.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/Timestamp.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Timestamp.cc.s
 .PHONY : src/Timestamp.cc.s
+
+src/http/HttpContext.o: src/http/HttpContext.cc.o
+.PHONY : src/http/HttpContext.o
+
+# target to build an object file
+src/http/HttpContext.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o
+.PHONY : src/http/HttpContext.cc.o
+
+src/http/HttpContext.i: src/http/HttpContext.cc.i
+.PHONY : src/http/HttpContext.i
+
+# target to preprocess a source file
+src/http/HttpContext.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.i
+.PHONY : src/http/HttpContext.cc.i
+
+src/http/HttpContext.s: src/http/HttpContext.cc.s
+.PHONY : src/http/HttpContext.s
+
+# target to generate assembly for a file
+src/http/HttpContext.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.s
+.PHONY : src/http/HttpContext.cc.s
+
+src/http/HttpParser.o: src/http/HttpParser.cc.o
+.PHONY : src/http/HttpParser.o
+
+# target to build an object file
+src/http/HttpParser.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o
+.PHONY : src/http/HttpParser.cc.o
+
+src/http/HttpParser.i: src/http/HttpParser.cc.i
+.PHONY : src/http/HttpParser.i
+
+# target to preprocess a source file
+src/http/HttpParser.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.i
+.PHONY : src/http/HttpParser.cc.i
+
+src/http/HttpParser.s: src/http/HttpParser.cc.s
+.PHONY : src/http/HttpParser.s
+
+# target to generate assembly for a file
+src/http/HttpParser.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.s
+.PHONY : src/http/HttpParser.cc.s
+
+src/http/HttpRequest.o: src/http/HttpRequest.cc.o
+.PHONY : src/http/HttpRequest.o
+
+# target to build an object file
+src/http/HttpRequest.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o
+.PHONY : src/http/HttpRequest.cc.o
+
+src/http/HttpRequest.i: src/http/HttpRequest.cc.i
+.PHONY : src/http/HttpRequest.i
+
+# target to preprocess a source file
+src/http/HttpRequest.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.i
+.PHONY : src/http/HttpRequest.cc.i
+
+src/http/HttpRequest.s: src/http/HttpRequest.cc.s
+.PHONY : src/http/HttpRequest.s
+
+# target to generate assembly for a file
+src/http/HttpRequest.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.s
+.PHONY : src/http/HttpRequest.cc.s
+
+src/http/HttpResponse.o: src/http/HttpResponse.cc.o
+.PHONY : src/http/HttpResponse.o
+
+# target to build an object file
+src/http/HttpResponse.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.o
+.PHONY : src/http/HttpResponse.cc.o
+
+src/http/HttpResponse.i: src/http/HttpResponse.cc.i
+.PHONY : src/http/HttpResponse.i
+
+# target to preprocess a source file
+src/http/HttpResponse.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.i
+.PHONY : src/http/HttpResponse.cc.i
+
+src/http/HttpResponse.s: src/http/HttpResponse.cc.s
+.PHONY : src/http/HttpResponse.s
+
+# target to generate assembly for a file
+src/http/HttpResponse.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.s
+.PHONY : src/http/HttpResponse.cc.s
+
+src/http/HttpServer.o: src/http/HttpServer.cc.o
+.PHONY : src/http/HttpServer.o
+
+# target to build an object file
+src/http/HttpServer.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.o
+.PHONY : src/http/HttpServer.cc.o
+
+src/http/HttpServer.i: src/http/HttpServer.cc.i
+.PHONY : src/http/HttpServer.i
+
+# target to preprocess a source file
+src/http/HttpServer.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.i
+.PHONY : src/http/HttpServer.cc.i
+
+src/http/HttpServer.s: src/http/HttpServer.cc.s
+.PHONY : src/http/HttpServer.s
+
+# target to generate assembly for a file
+src/http/HttpServer.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.s
+.PHONY : src/http/HttpServer.cc.s
 
 src/llama_service.o: src/llama_service.cc.o
 .PHONY : src/llama_service.o
@@ -879,6 +1081,30 @@ src/main.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/main.cc.s
 .PHONY : src/main.cc.s
 
+src/main_http.o: src/main_http.cc.o
+.PHONY : src/main_http.o
+
+# target to build an object file
+src/main_http.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/main_http.cc.o
+.PHONY : src/main_http.cc.o
+
+src/main_http.i: src/main_http.cc.i
+.PHONY : src/main_http.i
+
+# target to preprocess a source file
+src/main_http.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/main_http.cc.i
+.PHONY : src/main_http.cc.i
+
+src/main_http.s: src/main_http.cc.s
+.PHONY : src/main_http.s
+
+# target to generate assembly for a file
+src/main_http.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/main_http.cc.s
+.PHONY : src/main_http.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -889,6 +1115,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... KamaWebServer"
 	@echo "... current_thread"
+	@echo "... kama_http_server"
 	@echo "... llama_service"
 	@echo "... llama_service_tcp"
 	@echo "... log/AsyncLogging.o"
@@ -966,6 +1193,21 @@ help:
 	@echo "... src/Timestamp.o"
 	@echo "... src/Timestamp.i"
 	@echo "... src/Timestamp.s"
+	@echo "... src/http/HttpContext.o"
+	@echo "... src/http/HttpContext.i"
+	@echo "... src/http/HttpContext.s"
+	@echo "... src/http/HttpParser.o"
+	@echo "... src/http/HttpParser.i"
+	@echo "... src/http/HttpParser.s"
+	@echo "... src/http/HttpRequest.o"
+	@echo "... src/http/HttpRequest.i"
+	@echo "... src/http/HttpRequest.s"
+	@echo "... src/http/HttpResponse.o"
+	@echo "... src/http/HttpResponse.i"
+	@echo "... src/http/HttpResponse.s"
+	@echo "... src/http/HttpServer.o"
+	@echo "... src/http/HttpServer.i"
+	@echo "... src/http/HttpServer.s"
 	@echo "... src/llama_service.o"
 	@echo "... src/llama_service.i"
 	@echo "... src/llama_service.s"
@@ -975,6 +1217,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/main_http.o"
+	@echo "... src/main_http.i"
+	@echo "... src/main_http.s"
 .PHONY : help
 
 

@@ -7,6 +7,10 @@ LOG_DIR="/home/shl203/kama-webserver/logs"
 LLAMA_LOG="$LOG_DIR/llama_service.log"
 WEB_LOG="$LOG_DIR/webserver.log"
 
+# 设置HTTP服务器路径
+HTTP_SERVER="/home/shl203/kama-webserver/bin/kama_http_server"
+HTTP_LOG="$LOG_DIR/http_server.log"
+
 # CUDA 环境变量（确保 GPU 可用）
 export CUDA_HOME=/usr/local/cuda-12.8
 export PATH=$CUDA_HOME/bin:$PATH
@@ -85,20 +89,38 @@ echo "WebServer (PID: $WEBSERVER_PID) 已启动"
 # 检查 WebServer 是否正常启动
 sleep 2
 if ! ps -p $WEBSERVER_PID > /dev/null; then
-    echo "无法启动 WebServer，检查日志：$WEB_LOG"
-    cat $WEB_LOG
+    echo "⚠️ WebServer 启动失败，检查日志：$WEB_LOG"
+    echo "继续启动其他服务..."
+    # 注意：移除了 exit 1，允许脚本继续执行
+else
+    echo "✅ WebServer 启动成功"
+fi
+
+# 启动HTTP服务器
+echo "启动 HTTP 服务器..."
+$HTTP_SERVER > $HTTP_LOG 2>&1 &
+HTTP_PID=$!
+echo "HTTP 服务器 (PID: $HTTP_PID) 已启动"
+
+# 检查HTTP服务器是否正常启动
+sleep 2
+if ! ps -p $HTTP_PID > /dev/null; then
+    echo "无法启动 HTTP 服务器，检查日志：$HTTP_LOG"
+    cat $HTTP_LOG
     exit 1
 fi
 
-# 打印成功启动信息
+# 更新成功启动信息
 echo "============================================="
-echo "✅ LLaMA TCP 服务和 WebServer 已成功启动"
+echo "✅ LLaMA TCP 服务、WebServer 和 HTTP 服务器已成功启动"
 echo "🔗 LLaMA TCP 服务日志：$LLAMA_LOG"
 echo "🌐 WebServer 日志：$WEB_LOG"
+echo "🌍 HTTP 服务器日志：$HTTP_LOG"
 echo "============================================="
 
 # 等待用户中断
-trap 'kill $LLAMA_PID $WEBSERVER_PID; echo "服务已停止"; exit 0' INT TERM
+trap 'kill $LLAMA_PID $WEBSERVER_PID $HTTP_PID; echo "服务已停止"; exit 0' INT TERM
+echo "按 Ctrl+C 停止服务"
 
 # 保持脚本运行
 wait

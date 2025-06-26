@@ -83,8 +83,8 @@ void EventLoop::loop()
 
     while (!quit_)
     {
-        activeChannels_.clear();
-        pollRetureTime_ = poller_->poll(kPollTimeMs, &activeChannels_);
+        activeChannels_.clear(); // 清空上一次poller_->poll()返回的发生事件的Channels列表
+        pollRetureTime_ = poller_->poll(kPollTimeMs, &activeChannels_); // Poller::poll()阻塞等待事件发生，返回发生事件的Channels列表
         for (Channel *channel : activeChannels_)
         {
             // Poller监听哪些channel发生了事件 然后上报给EventLoop 通知channel处理相应的事件
@@ -96,7 +96,7 @@ void EventLoop::loop()
          *
          * mainloop调用queueInLoop将回调加入subloop（该回调需要subloop执行 但subloop还在poller_->poll处阻塞） queueInLoop通过wakeup将subloop唤醒
          **/
-        doPendingFunctors();
+        doPendingFunctors(); // 执行当前EventLoop需要执行的回调操作
     }
     LOG_INFO<<"EventLoopstop looping";
     looping_ = false;
@@ -116,18 +116,19 @@ void EventLoop::quit()
 {
     quit_ = true;
 
-    if (!isInLoopThread())
+    if (!isInLoopThread()) // 为了及时响应退出，因为有可能此时loop()函数正在阻塞在poller_->poll()中
     {
-        wakeup();
+        wakeup(); // 唤醒EventLoop所在线程的poller_->poll()函数 让其退出阻塞状态
     }
 }
 
 // 在当前loop中执行cb
-void EventLoop::runInLoop(Functor cb)
+void EventLoop::runInLoop(Functor cb) // 在当前EventLoop所属的线程中执行回调操作
 {
-    if (isInLoopThread()) // 当前EventLoop中执行回调
+    if (isInLoopThread()) // 如果当前EventLoop所属的线程就是当前线程
     {
-        cb();
+        cb(); // 直接执行回调操作
+        // 注意：如果cb()中又调用了queueInLoop()就会导致死锁 因为cb()是在当前EventLoop所属的线程中执行的
     }
     else // 在非当前EventLoop线程中执行cb，就需要唤醒EventLoop所在线程执行cb
     {
@@ -136,11 +137,15 @@ void EventLoop::runInLoop(Functor cb)
 }
 
 // 把cb放入队列中 唤醒loop所在的线程执行cb
-void EventLoop::queueInLoop(Functor cb)
+void EventLoop::queueInLoop(Functor cb) // 在非当前EventLoop所属的线程中执行回调操作
 {
     {
-        std::unique_lock<std::mutex> lock(mutex_);
-        pendingFunctors_.emplace_back(cb);
+        std::unique_lock<std::mutex> lock(mutex_); // 锁住当前EventLoop的mutex_互斥锁，保护pendingFunctors_的线程安全操作
+        pendingFunctors_.emplace_back(cb); // 将回调操作放入到当前EventLoop的pendingFunctors_中
+        // 注意：如果在当前loop线程中执行回调操作 需要唤醒loop所在线程
+        //       如果在非当前loop线程中执行回调操作 需要唤醒loop所在线程
+        //       让loop()函数的poller_->poll()不再阻塞
+        //       让loop()函数的doPendingFunctors()能够执行pendingFunctors_中的回调操作
     }
 
     /**
@@ -148,27 +153,27 @@ void EventLoop::queueInLoop(Functor cb)
      * 唤醒相应的需要执行上面回调操作的loop的线程 让loop()下一次poller_->poll()不再阻塞（阻塞的话会延迟前一次新加入的回调的执行），然后
      * 继续执行pendingFunctors_中的回调函数
      **/
-    if (!isInLoopThread() || callingPendingFunctors_)
+    if (!isInLoopThread() || callingPendingFunctors_) // 如果当前EventLoop所属的线程不是当前线程 或者当前EventLoop正在执行回调操作
     {
         wakeup(); // 唤醒loop所在线程
     }
 }
 
-void EventLoop::handleRead()
+void EventLoop::handleRead() // 处理wakeupFd_的读事件
 {
-    uint64_t one = 1;
-    ssize_t n = read(wakeupFd_, &one, sizeof(one));
-    if (n != sizeof(one))
+    uint64_t one = 1; // 读取wakeupFd_中的数据
+    ssize_t n = read(wakeupFd_, &one, sizeof(one)); // handleRead 的 read 操作是重置“门铃”状态, 自动把这个计数器清零
+    if (n != sizeof(one)) // 如果读取的字节数不是8字节
     {
         LOG_ERROR<<"EventLoop::handleRead() reads"<<n<<"bytes instead of 8";
     }
 }
 
 // 用来唤醒loop所在线程 向wakeupFd_写一个数据 wakeupChannel就发生读事件 当前loop线程就会被唤醒
-void EventLoop::wakeup()
+void EventLoop::wakeup() // 向wakeupFd_写入一个数据 让poller_->poll()不再阻塞
 {
-    uint64_t one = 1;
-    ssize_t n = write(wakeupFd_, &one, sizeof(one));
+    uint64_t one = 1; // 向wakeupFd_写入一个数据
+    ssize_t n = write(wakeupFd_, &one, sizeof(one)); // 向wakeupFd_写入8字节数据
     if (n != sizeof(one))
     {
         LOG_ERROR<<"EventLoop::wakeup() writes"<<n<<"bytes instead of 8";
@@ -176,29 +181,32 @@ void EventLoop::wakeup()
 }
 
 // EventLoop的方法 => Poller的方法
+// 这体现了一个非常重要的软件设计原则：封装 (Encapsulation) 和 委托 (Delegation)。
 void EventLoop::updateChannel(Channel *channel)
 {
-    poller_->updateChannel(channel);
+    poller_->updateChannel(channel); // 更新/添加一个监控任务
 }
 
 void EventLoop::removeChannel(Channel *channel)
 {
-    poller_->removeChannel(channel);
+    poller_->removeChannel(channel); // 从Poller中删除一个监控任务
 }
 
 bool EventLoop::hasChannel(Channel *channel)
 {
-    return poller_->hasChannel(channel);
+    return poller_->hasChannel(channel); // 判断Poller中是否有该Channel
 }
 
 void EventLoop::doPendingFunctors()
 {
-    std::vector<Functor> functors;
-    callingPendingFunctors_ = true;
+    std::vector<Functor> functors; // 定义一个临时的回调操作容器 用来存储当前EventLoop需要执行的回调操作
+    callingPendingFunctors_ = true; // 标识当前EventLoop正在执行回调操作
 
     {
         std::unique_lock<std::mutex> lock(mutex_);
-        functors.swap(pendingFunctors_); // 交换的方式减少了锁的临界区范围 提升效率 同时避免了死锁 如果执行functor()在临界区内 且functor()中调用queueInLoop()就会产生死锁
+        functors.swap(pendingFunctors_); // 将当前EventLoop的pendingFunctors_中的回调操作交换到临时容器functors中
+        // swap 仅仅是交换了两个 vector 内部的几个指针（指向数据存储区、大小、容量的指针）。
+        // 交换的方式减少了锁的临界区范围 提升效率 同时避免了死锁 如果执行functor()在临界区内 且functor()中调用queueInLoop()就会产生死锁
     }
 
     for (const Functor &functor : functors)

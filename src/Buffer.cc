@@ -59,7 +59,7 @@ ssize_t Buffer::readFd(int fd, int *saveErrno)
 }
 
 // inputBuffer_.readFd表示将对端数据读到inputBuffer_中，移动writerIndex_指针
-// outputBuffer_.writeFd标示将数据写入到outputBuffer_中，从readerIndex_开始，可以写readableBytes()个字节
+// outputBuffer_.writeFd表示将数据写入到outputBuffer_中，从readerIndex_开始，可以写readableBytes()个字节
 ssize_t Buffer::writeFd(int fd, int *saveErrno)
 {
     ssize_t n = ::write(fd, peek(), readableBytes());

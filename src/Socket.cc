@@ -14,19 +14,19 @@ Socket::~Socket()
     ::close(sockfd_);
 }
 
-void Socket::bindAddress(const InetAddress &localaddr)
+void Socket::bindAddress(const InetAddress &localaddr) // 绑定 socket 到指定的地址。
 {
-    if (0 != ::bind(sockfd_, (sockaddr *)localaddr.getSockAddr(), sizeof(sockaddr_in)))
+    if (0 != ::bind(sockfd_, (sockaddr *)localaddr.getSockAddr(), sizeof(sockaddr_in))) // sockaddr_in 是一个结构体(for IPv4)，包含了 IP 地址和端口号。
     {
         LOG_FATAL<<"bind sockfd:"<<sockfd_ <<"fail";
     }
 }
 
-void Socket::listen()
+void Socket::listen() // 将 socket 设置为监听状态，以便接受传入的连接。
 {
-    if (0 != ::listen(sockfd_, 1024))
+    if (0 != ::listen(sockfd_, 1024)) // 1024: 这是 backlog 参数，它提示内核为这个 socket 维护的“已完成连接但尚未被 accept”的队列的最大长度。
     {
-        LOG_FATAL<<"bind sockfd:"<<sockfd_ <<"fail";
+        LOG_FATAL<<"listen sockfd:"<<sockfd_ <<"fail";
     }
 }
 
@@ -38,21 +38,22 @@ int Socket::accept(InetAddress *peeraddr)
      * Reactor模型 one loop per thread
      * poller + non-blocking IO
      **/
-    sockaddr_in addr;
-    socklen_t len = sizeof(addr);
-    ::memset(&addr, 0, sizeof(addr));
+    sockaddr_in addr; // sockaddr_in 是一个结构体，用于存储 IPv4 地址和端口信息。
+    socklen_t len = sizeof(addr); // socklen_t 是一个类型，用于表示套接字地址的长度。
+    ::memset(&addr, 0, sizeof(addr)); // 将 addr 结构体的内存清零，以确保没有未定义的值。
+
     // fixed : int connfd = ::accept(sockfd_, (sockaddr *)&addr, &len);
     int connfd = ::accept4(sockfd_, (sockaddr *)&addr, &len, SOCK_NONBLOCK | SOCK_CLOEXEC);
     if (connfd >= 0)
     {
-        peeraddr->setSockAddr(addr);
+        peeraddr->setSockAddr(addr); // 将接受到的对端地址信息存储到 peeraddr 中。
     }
     return connfd;
 }
 
 void Socket::shutdownWrite()
 {
-    if (::shutdown(sockfd_, SHUT_WR) < 0)
+    if (::shutdown(sockfd_, SHUT_WR) < 0) // SHUT_WR 用于关闭套接字的写端。
     {
         LOG_ERROR<<"shutdownWrite error";
     }
@@ -64,13 +65,16 @@ void Socket::setTcpNoDelay(bool on)
     // Nagle 算法用于减少网络上传输的小数据包数量。
     // 将 TCP_NODELAY 设置为 1 可以禁用该算法，允许小数据包立即发送。
     int optval = on ? 1 : 0;
-    ::setsockopt(sockfd_, IPPROTO_TCP, TCP_NODELAY, &optval, sizeof(optval));
+
+    // setsockopt 的参数分别是：socket fd, 协议层, 选项名, 选项值的指针, 选项值的长度。
+    ::setsockopt(sockfd_, IPPROTO_TCP, TCP_NODELAY, &optval, sizeof(optval)); 
 }
 
 void Socket::setReuseAddr(bool on)
 {
     // SO_REUSEADDR 允许一个套接字强制绑定到一个已被其他套接字使用的端口。
     // 这对于需要重启并绑定到相同端口的服务器应用程序非常有用。
+    // SOL_SOCKET 是套接字选项的协议层，SO_REUSEADDR 是选项名。
     int optval = on ? 1 : 0;
     ::setsockopt(sockfd_, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
 }

@@ -83,7 +83,7 @@ private:
 
     ChannelList activeChannels_; // 返回Poller检测到当前有事件发生的所有Channel列表
 
-    std::atomic_bool callingPendingFunctors_; // 标识当前loop是否有需要执行的回调操作
+    std::atomic_bool callingPendingFunctors_; // 标识当前EventLoop是否正在执行回调操作
     std::vector<Functor> pendingFunctors_;    // 存储loop需要执行的所有回调操作
     std::mutex mutex_;                        // 互斥锁 用来保护上面vector容器的线程安全操作
 };
