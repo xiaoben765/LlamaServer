@@ -1,0 +1,968 @@
+#include "db/DatabaseManager.h"
+#include "Logger.h"
+#include <cstring>
+#include <sstream>
+#include <iomanip>
+#include <random>
+#include <chrono>
+#include <openssl/sha.h>
+#include <openssl/md5.h>
+#include <openssl/evp.h>
+
+namespace kama {
+namespace db {
+
+DatabaseManager::DatabaseManager() 
+    : initialized_(false), connection_(nullptr) {
+}
+
+DatabaseManager::~DatabaseManager() {
+    cleanup();
+}
+
+DatabaseManager& DatabaseManager::instance() {
+    static DatabaseManager instance;
+    return instance;
+}
+
+bool DatabaseManager::initialize(const DbConfig& config) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (initialized_) {
+        return true;
+    }
+    
+    config_ = config;
+    
+    // 初始化MySQL
+    mysql_library_init(0, nullptr, nullptr);
+    
+    if (!connect()) {
+        LOG_ERROR << "数据库连接失败";
+        return false;
+    }
+    
+    if (!initializeTables()) {
+        LOG_ERROR << "数据库表初始化失败";
+        disconnect();
+        return false;
+    }
+    
+    initialized_ = true;
+    LOG_INFO << "MySQL数据库初始化成功";
+    return true;
+}
+
+void DatabaseManager::cleanup() {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (initialized_) {
+        disconnect();
+        mysql_library_end();
+        initialized_ = false;
+        LOG_INFO << "数据库连接已清理";
+    }
+}
+
+bool DatabaseManager::connect() {
+    connection_ = mysql_init(nullptr);
+    if (!connection_) {
+        LOG_ERROR << "MySQL初始化失败";
+        return false;
+    }
+    
+    // 设置连接选项
+    // 将 my_bool 替换为 int (适用于所有 MySQL 版本)
+    int reconnect = 1;
+    mysql_options(connection_, MYSQL_OPT_RECONNECT, &reconnect);
+    
+    // 设置字符集
+    mysql_options(connection_, MYSQL_SET_CHARSET_NAME, config_.charset.c_str());
+    
+    // 设置连接超时
+    unsigned int timeout = 10; // 10秒超时
+    mysql_options(connection_, MYSQL_OPT_CONNECT_TIMEOUT, &timeout);
+    
+    LOG_INFO << "尝试连接MySQL - Host: " << config_.host 
+             << ", Port: " << config_.port 
+             << ", DB: " << config_.dbname 
+             << ", User: " << config_.user;
+    
+    // 连接到数据库
+    if (!mysql_real_connect(connection_, 
+                           config_.host.c_str(),
+                           config_.user.c_str(),
+                           config_.password.c_str(),
+                           config_.dbname.c_str(),
+                           config_.port,
+                           nullptr, 
+                           CLIENT_MULTI_STATEMENTS)) {
+        const char* error = mysql_error(connection_);
+        unsigned int error_code = mysql_errno(connection_);
+        LOG_ERROR << "MySQL连接失败 [错误码: " << error_code << "]: " << error;
+        
+        // 提供更具体的错误提示
+        if (error_code == 1045) {
+            LOG_ERROR << "认证失败：请检查用户名和密码是否正确";
+        } else if (error_code == 1049) {
+            LOG_ERROR << "数据库不存在：请确保数据库 '" << config_.dbname << "' 已创建";
+        } else if (error_code == 2003) {
+            LOG_ERROR << "无法连接到MySQL服务器：请确保MySQL服务正在运行";
+        } else if (error_code == 2005) {
+            LOG_ERROR << "未知的MySQL主机：请检查主机名 '" << config_.host << "'";
+        }
+        
+        mysql_close(connection_);
+        connection_ = nullptr;
+        return false;
+    }
+    
+    LOG_INFO << "MySQL连接成功: " << config_.host << ":" << config_.port << "/" << config_.dbname;
+    return true;
+}
+
+void DatabaseManager::disconnect() {
+    if (connection_) {
+        mysql_close(connection_);
+        connection_ = nullptr;
+    }
+}
+
+bool DatabaseManager::reconnect() {
+    disconnect();
+    return connect();
+}
+
+bool DatabaseManager::initializeTables() {
+    // 创建用户表
+    std::string createUsersTable = R"(
+        CREATE TABLE IF NOT EXISTS users (
+            user_id VARCHAR(36) PRIMARY KEY,
+            username VARCHAR(50) UNIQUE NOT NULL,
+            password_hash VARCHAR(128) NOT NULL,
+            email VARCHAR(100),
+            created_at BIGINT NOT NULL,
+            last_login BIGINT DEFAULT 0,
+            INDEX idx_username (username),
+            INDEX idx_email (email)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    )";
+    
+    if (!executeQuery(createUsersTable)) {
+        LOG_ERROR << "创建用户表失败";
+        return false;
+    }
+    
+    // 创建会话表
+    std::string createSessionsTable = R"(
+        CREATE TABLE IF NOT EXISTS sessions (
+            session_id VARCHAR(36) PRIMARY KEY,
+            user_id VARCHAR(36) NOT NULL,
+            created_at BIGINT NOT NULL,
+            last_active BIGINT NOT NULL,
+            session_name VARCHAR(100) DEFAULT '',
+            INDEX idx_user_id (user_id),
+            INDEX idx_last_active (last_active),
+            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    )";
+    
+    if (!executeQuery(createSessionsTable)) {
+        LOG_ERROR << "创建会话表失败";
+        return false;
+    }
+    
+    // 创建对话记录表
+    std::string createConversationsTable = R"(
+        CREATE TABLE IF NOT EXISTS conversations (
+            message_id INT AUTO_INCREMENT PRIMARY KEY,
+            session_id VARCHAR(36) NOT NULL,
+            message_type ENUM('user', 'ai') NOT NULL,
+            content TEXT NOT NULL,
+            timestamp BIGINT NOT NULL,
+            model_used VARCHAR(50) DEFAULT '',
+            prompt_tokens INT DEFAULT 0,
+            completion_tokens INT DEFAULT 0,
+            INDEX idx_session_id (session_id),
+            INDEX idx_timestamp (timestamp),
+            FOREIGN KEY (session_id) REFERENCES sessions(session_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    )";
+    
+    if (!executeQuery(createConversationsTable)) {
+        LOG_ERROR << "创建对话记录表失败";
+        return false;
+    }
+    
+    // 创建缓存表
+    std::string createCacheTable = R"(
+        CREATE TABLE IF NOT EXISTS cache (
+            query_hash VARCHAR(64) PRIMARY KEY,
+            query_text TEXT NOT NULL,
+            response_text TEXT NOT NULL,
+            created_at BIGINT NOT NULL,
+            hit_count INT DEFAULT 1,
+            last_accessed BIGINT NOT NULL,
+            INDEX idx_last_accessed (last_accessed),
+            INDEX idx_hit_count (hit_count)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    )";
+    
+    if (!executeQuery(createCacheTable)) {
+        LOG_ERROR << "创建缓存表失败";
+        return false;
+    }
+    
+    // 创建配置表
+    std::string createConfigTable = R"(
+        CREATE TABLE IF NOT EXISTS config (
+            config_key VARCHAR(100) PRIMARY KEY,
+            config_value TEXT,
+            updated_at BIGINT NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    )";
+    
+    if (!executeQuery(createConfigTable)) {
+        LOG_ERROR << "创建配置表失败";
+        return false;
+    }
+    
+    LOG_INFO << "数据库表初始化完成";
+    return true;
+}
+
+bool DatabaseManager::executeQuery(const std::string& query) {
+    if (!connection_) {
+        LOG_ERROR << "数据库连接无效";
+        return false;
+    }
+    
+    if (mysql_query(connection_, query.c_str()) != 0) {
+        LOG_ERROR << "SQL执行失败: " << mysql_error(connection_) << ", SQL: " << query;
+        return false;
+    }
+    
+    return true;
+}
+
+MYSQL_RES* DatabaseManager::executeSelectQuery(const std::string& query) {
+    if (!executeQuery(query)) {
+        return nullptr;
+    }
+    
+    MYSQL_RES* result = mysql_store_result(connection_);
+    if (!result) {
+        if (mysql_field_count(connection_) > 0) {
+            LOG_ERROR << "获取查询结果失败: " << mysql_error(connection_);
+        }
+    }
+    
+    return result;
+}
+
+std::string DatabaseManager::escapeString(const std::string& str) {
+    if (!connection_) {
+        return str;
+    }
+    
+    char* escaped = new char[str.length() * 2 + 1];
+    mysql_real_escape_string(connection_, escaped, str.c_str(), str.length());
+    std::string result(escaped);
+    delete[] escaped;
+    return result;
+}
+
+std::string DatabaseManager::generateUUID() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 15);
+    
+    const char* hex_chars = "0123456789abcdef";
+    std::string uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
+    
+    for (auto& c : uuid) {
+        if (c == 'x') {
+            c = hex_chars[dis(gen)];
+        } else if (c == 'y') {
+            c = hex_chars[(dis(gen) & 0x3) | 0x8];
+        }
+    }
+    
+    return uuid;
+}
+
+// 现代替代方案示例 - 现在可以暂时忽略这些警告
+std::string DatabaseManager::hashString(const std::string& str) {
+    EVP_MD_CTX* mdctx = EVP_MD_CTX_new();
+    const EVP_MD* md = EVP_sha256();
+    unsigned char hash[EVP_MAX_MD_SIZE];
+    unsigned int hash_len = 0;
+    
+    EVP_DigestInit_ex(mdctx, md, NULL);
+    EVP_DigestUpdate(mdctx, str.c_str(), str.length());
+    EVP_DigestFinal_ex(mdctx, hash, &hash_len);
+    EVP_MD_CTX_free(mdctx);
+    
+    std::stringstream ss;
+    for (unsigned int i = 0; i < hash_len; i++) {
+        ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(hash[i]);
+    }
+    
+    return ss.str();
+}
+
+// 获取当前时间戳
+long DatabaseManager::getCurrentTimestamp() const {
+    return std::chrono::duration_cast<std::chrono::seconds>(
+        std::chrono::system_clock::now().time_since_epoch()
+    ).count();
+}
+
+// 用户管理实现
+bool DatabaseManager::createUser(const std::string& username, const std::string& password, const std::string& email) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_) {
+        return false;
+    }
+    
+    std::string userId = generateUUID();
+    std::string passwordHash = hashString(password);
+    long timestamp = getCurrentTimestamp();
+    
+    std::stringstream ss;
+    ss << "INSERT INTO users (user_id, username, password_hash, email, created_at) VALUES ('"
+       << escapeString(userId) << "', '"
+       << escapeString(username) << "', '"
+       << escapeString(passwordHash) << "', '"
+       << escapeString(email) << "', "
+       << timestamp << ")";
+    
+    return executeQuery(ss.str());
+}
+
+bool DatabaseManager::authenticateUser(const std::string& username, const std::string& password) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_) {
+        return false;
+    }
+    
+    std::string passwordHash = hashString(password);
+    
+    std::stringstream ss;
+    ss << "SELECT user_id FROM users WHERE username = '"
+       << escapeString(username) << "' AND password_hash = '"
+       << escapeString(passwordHash) << "'";
+    
+    MYSQL_RES* result = executeSelectQuery(ss.str());
+    if (!result) {
+        return false;
+    }
+    
+    bool authenticated = mysql_num_rows(result) > 0;
+    mysql_free_result(result);
+    
+    if (authenticated) {
+        updateUserLastLogin(username);
+    }
+    
+    return authenticated;
+}
+
+UserInfo DatabaseManager::getUserInfo(const std::string& username) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    UserInfo userInfo;
+    if (!initialized_) {
+        return userInfo;
+    }
+    
+    std::stringstream ss;
+    ss << "SELECT user_id, username, email, created_at, last_login FROM users WHERE username = '"
+       << escapeString(username) << "'";
+    
+    MYSQL_RES* result = executeSelectQuery(ss.str());
+    if (!result) {
+        return userInfo;
+    }
+    
+    MYSQL_ROW row = mysql_fetch_row(result);
+    if (row) {
+        userInfo.user_id = row[0] ? row[0] : "";
+        userInfo.username = row[1] ? row[1] : "";
+        userInfo.email = row[2] ? row[2] : "";
+        userInfo.created_at = row[3] ? std::stoll(row[3]) : 0;
+        userInfo.last_login = row[4] ? std::stoll(row[4]) : 0;
+    }
+    
+    mysql_free_result(result);
+    return userInfo;
+}
+
+bool DatabaseManager::updateUserLastLogin(const std::string& username) {
+    long timestamp = getCurrentTimestamp();
+    
+    std::stringstream ss;
+    ss << "UPDATE users SET last_login = " << timestamp 
+       << " WHERE username = '" << escapeString(username) << "'";
+    
+    return executeQuery(ss.str());
+}
+
+std::vector<UserInfo> DatabaseManager::getAllUsers() {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    std::vector<UserInfo> users;
+    if (!initialized_) {
+        return users;
+    }
+    
+    std::string query = "SELECT user_id, username, email, created_at, last_login FROM users ORDER BY created_at DESC";
+    
+    MYSQL_RES* result = executeSelectQuery(query);
+    if (!result) {
+        return users;
+    }
+    
+    MYSQL_ROW row;
+    while ((row = mysql_fetch_row(result))) {
+        UserInfo userInfo;
+        userInfo.user_id = row[0] ? row[0] : "";
+        userInfo.username = row[1] ? row[1] : "";
+        userInfo.email = row[2] ? row[2] : "";
+        userInfo.created_at = row[3] ? std::stoll(row[3]) : 0;
+        userInfo.last_login = row[4] ? std::stoll(row[4]) : 0;
+        users.push_back(userInfo);
+    }
+    
+    mysql_free_result(result);
+    return users;
+}
+
+// 会话管理实现
+std::string DatabaseManager::createSession(const std::string& userId, const std::string& sessionName) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_) {
+        return "";
+    }
+    
+    std::string sessionId = generateUUID();
+    long timestamp = getCurrentTimestamp();
+    
+    std::stringstream ss;
+    ss << "INSERT INTO sessions (session_id, user_id, created_at, last_active, session_name) VALUES ('"
+       << escapeString(sessionId) << "', '"
+       << escapeString(userId) << "', "
+       << timestamp << ", "
+       << timestamp << ", '"
+       << escapeString(sessionName) << "')";
+    
+    if (executeQuery(ss.str())) {
+        return sessionId;
+    }
+    
+    return "";
+}
+
+bool DatabaseManager::updateSessionActivity(const std::string& sessionId) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_) {
+        return false;
+    }
+    
+    long timestamp = getCurrentTimestamp();
+    
+    std::stringstream ss;
+    ss << "UPDATE sessions SET last_active = " << timestamp 
+       << " WHERE session_id = '" << escapeString(sessionId) << "'";
+    
+    return executeQuery(ss.str());
+}
+
+std::vector<SessionInfo> DatabaseManager::getUserSessions(const std::string& userId) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    std::vector<SessionInfo> sessions;
+    if (!initialized_) {
+        return sessions;
+    }
+    
+    std::stringstream ss;
+    ss << "SELECT session_id, user_id, created_at, last_active, session_name FROM sessions "
+       << "WHERE user_id = '" << escapeString(userId) << "' ORDER BY last_active DESC";
+    
+    MYSQL_RES* result = executeSelectQuery(ss.str());
+    if (!result) {
+        return sessions;
+    }
+    
+    MYSQL_ROW row;
+    while ((row = mysql_fetch_row(result))) {
+        SessionInfo sessionInfo;
+        sessionInfo.session_id = row[0] ? row[0] : "";
+        sessionInfo.user_id = row[1] ? row[1] : "";
+        sessionInfo.created_at = row[2] ? std::stoll(row[2]) : 0;
+        sessionInfo.last_active = row[3] ? std::stoll(row[3]) : 0;
+        sessionInfo.session_name = row[4] ? row[4] : "";
+        sessions.push_back(sessionInfo);
+    }
+    
+    mysql_free_result(result);
+    return sessions;
+}
+
+SessionInfo DatabaseManager::getSessionInfo(const std::string& sessionId) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    SessionInfo sessionInfo;
+    if (!initialized_) {
+        return sessionInfo;
+    }
+    
+    std::stringstream ss;
+    ss << "SELECT session_id, user_id, created_at, last_active, session_name FROM sessions "
+       << "WHERE session_id = '" << escapeString(sessionId) << "'";
+    
+    MYSQL_RES* result = executeSelectQuery(ss.str());
+    if (!result) {
+        return sessionInfo;
+    }
+    
+    MYSQL_ROW row = mysql_fetch_row(result);
+    if (row) {
+        sessionInfo.session_id = row[0] ? row[0] : "";
+        sessionInfo.user_id = row[1] ? row[1] : "";
+        sessionInfo.created_at = row[2] ? std::stoll(row[2]) : 0;
+        sessionInfo.last_active = row[3] ? std::stoll(row[3]) : 0;
+        sessionInfo.session_name = row[4] ? row[4] : "";
+    }
+    
+    mysql_free_result(result);
+    return sessionInfo;
+}
+
+bool DatabaseManager::deleteSession(const std::string& sessionId) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_) {
+        return false;
+    }
+    
+    std::stringstream ss;
+    ss << "DELETE FROM sessions WHERE session_id = '" << escapeString(sessionId) << "'";
+    
+    return executeQuery(ss.str());
+}
+
+// 对话记录实现
+bool DatabaseManager::saveConversation(const std::string& sessionId, const std::string& messageType, 
+                                      const std::string& content, const std::string& model, 
+                                      int promptTokens, int completionTokens) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_) {
+        return false;
+    }
+    
+    long timestamp = getCurrentTimestamp();
+    
+    std::stringstream ss;
+    ss << "INSERT INTO conversations (session_id, message_type, content, timestamp, model_used, prompt_tokens, completion_tokens) VALUES ('"
+       << escapeString(sessionId) << "', '"
+       << escapeString(messageType) << "', '"
+       << escapeString(content) << "', "
+       << timestamp << ", '"
+       << escapeString(model) << "', "
+       << promptTokens << ", "
+       << completionTokens << ")";
+    
+    return executeQuery(ss.str());
+}
+
+std::vector<ConversationRecord> DatabaseManager::getConversationHistory(const std::string& sessionId, int limit, int offset) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    std::vector<ConversationRecord> conversations;
+    if (!initialized_) {
+        return conversations;
+    }
+    
+    std::stringstream ss;
+    ss << "SELECT message_id, session_id, message_type, content, timestamp, model_used, prompt_tokens, completion_tokens "
+       << "FROM conversations WHERE session_id = '" << escapeString(sessionId) << "' "
+       << "ORDER BY timestamp ASC LIMIT " << limit << " OFFSET " << offset;
+    
+    MYSQL_RES* result = executeSelectQuery(ss.str());
+    if (!result) {
+        return conversations;
+    }
+    
+    MYSQL_ROW row;
+    while ((row = mysql_fetch_row(result))) {
+        ConversationRecord record;
+        record.message_id = row[0] ? std::stoi(row[0]) : 0;
+        record.session_id = row[1] ? row[1] : "";
+        record.message_type = row[2] ? row[2] : "";
+        record.content = row[3] ? row[3] : "";
+        record.timestamp = row[4] ? std::stoll(row[4]) : 0;
+        record.model_used = row[5] ? row[5] : "";
+        record.prompt_tokens = row[6] ? std::stoi(row[6]) : 0;
+        record.completion_tokens = row[7] ? std::stoi(row[7]) : 0;
+        conversations.push_back(record);
+    }
+    
+    mysql_free_result(result);
+    return conversations;
+}
+
+int DatabaseManager::getConversationCount(const std::string& sessionId) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_) {
+        return 0;
+    }
+    
+    std::stringstream ss;
+    ss << "SELECT COUNT(*) FROM conversations WHERE session_id = '" << escapeString(sessionId) << "'";
+    
+    MYSQL_RES* result = executeSelectQuery(ss.str());
+    if (!result) {
+        return 0;
+    }
+    
+    MYSQL_ROW row = mysql_fetch_row(result);
+    int count = (row && row[0]) ? std::stoi(row[0]) : 0;
+    
+    mysql_free_result(result);
+    return count;
+}
+
+bool DatabaseManager::deleteConversationHistory(const std::string& sessionId) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_) {
+        return false;
+    }
+    
+    std::stringstream ss;
+    ss << "DELETE FROM conversations WHERE session_id = '" << escapeString(sessionId) << "'";
+    
+    return executeQuery(ss.str());
+}
+
+// 缓存管理实现
+// 获取从缓存的响应
+std::string DatabaseManager::getResponseFromCache(const std::string& query) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!connection_) return "";
+    
+    // 计算查询哈希
+    std::string queryHash = hashString(query);
+    
+    std::string sql = "SELECT response_text FROM cache WHERE query_hash = ? LIMIT 1";
+    MYSQL_STMT* stmt = mysql_stmt_init(connection_);
+    if (!stmt) {
+        LOG_ERROR << "mysql_stmt_init() 失败";
+        return "";
+    }
+    
+    if (mysql_stmt_prepare(stmt, sql.c_str(), sql.length())) {
+        LOG_ERROR << "mysql_stmt_prepare() 失败: " << mysql_stmt_error(stmt);
+        mysql_stmt_close(stmt);
+        return "";
+    }
+    
+    MYSQL_BIND bind_param[1];
+    memset(bind_param, 0, sizeof(bind_param));
+    
+    // 创建临时变量存储字符串
+    std::string queryHashCopy = queryHash;
+    bind_param[0].buffer_type = MYSQL_TYPE_STRING;
+    bind_param[0].buffer = (void*)queryHashCopy.c_str();
+    bind_param[0].buffer_length = queryHashCopy.length();
+    
+    if (mysql_stmt_bind_param(stmt, bind_param)) {
+        LOG_ERROR << "mysql_stmt_bind_param() 失败: " << mysql_stmt_error(stmt);
+        mysql_stmt_close(stmt);
+        return "";
+    }
+    
+    if (mysql_stmt_execute(stmt)) {
+        LOG_ERROR << "mysql_stmt_execute() 失败: " << mysql_stmt_error(stmt);
+        mysql_stmt_close(stmt);
+        return "";
+    }
+    
+    // 绑定结果
+    MYSQL_BIND bind_result[1];
+    memset(bind_result, 0, sizeof(bind_result));
+    
+    char response_buffer[65536]; // 足够大的缓冲区
+    unsigned long response_length;
+    bool is_null;  // 注意：使用bool替代my_bool
+    
+    bind_result[0].buffer_type = MYSQL_TYPE_STRING;
+    bind_result[0].buffer = response_buffer;
+    bind_result[0].buffer_length = sizeof(response_buffer);
+    bind_result[0].length = &response_length;
+    bind_result[0].is_null = &is_null;
+    
+    if (mysql_stmt_bind_result(stmt, bind_result)) {
+        LOG_ERROR << "mysql_stmt_bind_result() 失败: " << mysql_stmt_error(stmt);
+        mysql_stmt_close(stmt);
+        return "";
+    }
+    
+    mysql_stmt_store_result(stmt);
+    
+    std::string result;
+    if (mysql_stmt_fetch(stmt) == 0 && !is_null) {
+        result.assign(response_buffer, response_length);
+    }
+    
+    mysql_stmt_close(stmt);
+    return result;
+}
+
+// 保存响应到缓存
+bool DatabaseManager::saveToCache(const std::string& query, const std::string& response) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!connection_) return false;
+    
+    // 计算查询哈希
+    std::string queryHash = hashString(query);
+    long now = getCurrentTimestamp();
+    
+    std::string sql = "INSERT INTO cache (query_hash, query_text, response_text, created_at, hit_count, last_accessed) "
+                      "VALUES (?, ?, ?, ?, 1, ?) "
+                      "ON DUPLICATE KEY UPDATE hit_count = hit_count + 1, last_accessed = ?";
+    
+    MYSQL_STMT* stmt = mysql_stmt_init(connection_);
+    if (!stmt) {
+        LOG_ERROR << "mysql_stmt_init() 失败";
+        return false;
+    }
+    
+    if (mysql_stmt_prepare(stmt, sql.c_str(), sql.length())) {
+        LOG_ERROR << "mysql_stmt_prepare() 失败: " << mysql_stmt_error(stmt);
+        mysql_stmt_close(stmt);
+        return false;
+    }
+    
+    MYSQL_BIND bind_param[6];
+    memset(bind_param, 0, sizeof(bind_param));
+    
+    // 使用临时变量存储字符串
+    std::string queryHashCopy = queryHash;
+    std::string queryCopy = query;
+    std::string responseCopy = response;
+    
+    bind_param[0].buffer_type = MYSQL_TYPE_STRING;
+    bind_param[0].buffer = (void*)queryHashCopy.c_str();
+    bind_param[0].buffer_length = queryHashCopy.length();
+    
+    bind_param[1].buffer_type = MYSQL_TYPE_STRING;
+    bind_param[1].buffer = (void*)queryCopy.c_str();
+    bind_param[1].buffer_length = queryCopy.length();
+    
+    bind_param[2].buffer_type = MYSQL_TYPE_STRING;
+    bind_param[2].buffer = (void*)responseCopy.c_str();
+    bind_param[2].buffer_length = responseCopy.length();
+    
+    bind_param[3].buffer_type = MYSQL_TYPE_LONG;
+    bind_param[3].buffer = (void*)&now;
+    
+    bind_param[4].buffer_type = MYSQL_TYPE_LONG;
+    bind_param[4].buffer = (void*)&now;
+    
+    bind_param[5].buffer_type = MYSQL_TYPE_LONG;
+    bind_param[5].buffer = (void*)&now;
+    
+    if (mysql_stmt_bind_param(stmt, bind_param)) {
+        LOG_ERROR << "mysql_stmt_bind_param() 失败: " << mysql_stmt_error(stmt);
+        mysql_stmt_close(stmt);
+        return false;
+    }
+    
+    bool result = (mysql_stmt_execute(stmt) == 0);
+    
+    if (!result) {
+        LOG_ERROR << "保存到缓存失败: " << mysql_stmt_error(stmt);
+    }
+    
+    mysql_stmt_close(stmt);
+    return result;
+}
+
+// 更新缓存统计
+void DatabaseManager::updateCacheStats(const std::string& query) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!connection_) return;
+    
+    // 计算查询哈希
+    std::string queryHash = hashString(query);
+    long now = getCurrentTimestamp();
+    
+    std::string sql = "UPDATE cache SET hit_count = hit_count + 1, last_accessed = ? WHERE query_hash = ?";
+    
+    MYSQL_STMT* stmt = mysql_stmt_init(connection_);
+    if (!stmt) {
+        LOG_ERROR << "mysql_stmt_init() 失败";
+        return;
+    }
+    
+    if (mysql_stmt_prepare(stmt, sql.c_str(), sql.length())) {
+        LOG_ERROR << "mysql_stmt_prepare() 失败: " << mysql_stmt_error(stmt);
+        mysql_stmt_close(stmt);
+        return;
+    }
+    
+    MYSQL_BIND bind_param[2];
+    memset(bind_param, 0, sizeof(bind_param));
+    
+    std::string queryHashCopy = queryHash;
+    
+    bind_param[0].buffer_type = MYSQL_TYPE_LONG;
+    bind_param[0].buffer = (void*)&now;
+    
+    bind_param[1].buffer_type = MYSQL_TYPE_STRING;
+    bind_param[1].buffer = (void*)queryHashCopy.c_str();
+    bind_param[1].buffer_length = queryHashCopy.length();
+    
+    if (mysql_stmt_bind_param(stmt, bind_param)) {
+        LOG_ERROR << "mysql_stmt_bind_param() 失败: " << mysql_stmt_error(stmt);
+    } else if (mysql_stmt_execute(stmt)) {
+        LOG_ERROR << "更新缓存统计失败: " << mysql_stmt_error(stmt);
+    }
+    
+    mysql_stmt_close(stmt);
+}
+
+// 获取缓存命中次数
+int DatabaseManager::getCacheHits() const {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!connection_) return 0;
+    
+    std::string sql = "SELECT SUM(hit_count) FROM cache";
+    
+    if (mysql_real_query(connection_, sql.c_str(), sql.length())) {
+        LOG_ERROR << "获取缓存命中次数失败: " << mysql_error(connection_);
+        return 0;
+    }
+    
+    MYSQL_RES* result = mysql_store_result(connection_);
+    if (!result) {
+        LOG_ERROR << "mysql_store_result() 失败: " << mysql_error(connection_);
+        return 0;
+    }
+    
+    MYSQL_ROW row = mysql_fetch_row(result);
+    int hits = 0;
+    
+    if (row && row[0]) {
+        hits = atoi(row[0]);
+    }
+    
+    mysql_free_result(result);
+    return hits;
+}
+
+// 获取会话数量
+int DatabaseManager::getSessionsCount() const {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!connection_) return 0;
+    
+    std::string sql = "SELECT COUNT(*) FROM sessions";
+    
+    if (mysql_real_query(connection_, sql.c_str(), sql.length())) {
+        LOG_ERROR << "获取会话数量失败: " << mysql_error(connection_);
+        return 0;
+    }
+    
+    MYSQL_RES* result = mysql_store_result(connection_);
+    if (!result) {
+        LOG_ERROR << "mysql_store_result() 失败: " << mysql_error(connection_);
+        return 0;
+    }
+    
+    MYSQL_ROW row = mysql_fetch_row(result);
+    int count = 0;
+    
+    if (row && row[0]) {
+        count = atoi(row[0]);
+    }
+    
+    mysql_free_result(result);
+    return count;
+}
+
+// 获取用户数量
+int DatabaseManager::getUsersCount() const {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!connection_) return 0;
+    
+    std::string sql = "SELECT COUNT(*) FROM users";
+    
+    if (mysql_real_query(connection_, sql.c_str(), sql.length())) {
+        LOG_ERROR << "获取用户数量失败: " << mysql_error(connection_);
+        return 0;
+    }
+    
+    MYSQL_RES* result = mysql_store_result(connection_);
+    if (!result) {
+        LOG_ERROR << "mysql_store_result() 失败: " << mysql_error(connection_);
+        return 0;
+    }
+    
+    MYSQL_ROW row = mysql_fetch_row(result);
+    int count = 0;
+    
+    if (row && row[0]) {
+        count = atoi(row[0]);
+    }
+    
+    mysql_free_result(result);
+    return count;
+}
+
+// 获取对话记录数量
+int DatabaseManager::getConversationsCount() const {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!connection_) return 0;
+    
+    std::string sql = "SELECT COUNT(*) FROM conversations";
+    
+    if (mysql_real_query(connection_, sql.c_str(), sql.length())) {
+        LOG_ERROR << "获取对话记录数量失败: " << mysql_error(connection_);
+        return 0;
+    }
+    
+    MYSQL_RES* result = mysql_store_result(connection_);
+    if (!result) {
+        LOG_ERROR << "mysql_store_result() 失败: " << mysql_error(connection_);
+        return 0;
+    }
+    
+    MYSQL_ROW row = mysql_fetch_row(result);
+    int count = 0;
+    
+    if (row && row[0]) {
+        count = atoi(row[0]);
+    }
+    
+    mysql_free_result(result);
+    return count;
+}
+
+} // namespace db
+} // namespace kama

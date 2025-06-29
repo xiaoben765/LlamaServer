@@ -1,0 +1,147 @@
+2025/06/27 18:32:621786 DEBUG EventLoop createdtruein thread231045 - EventLoop.cc:53
+2025/06/27 18:32:621802 INFO  func =>fd5events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:32:621903 INFO  LLaMA 服务连接成功：127.0.0.1:8899 - main_http.cc:79
+2025/06/27 18:32:621910 INFO  尝试连接数据库: localhost:3306/kama_llm - main_http.cc:333
+2025/06/27 18:32:621914 INFO  使用用户: root - main_http.cc:334
+2025/06/27 18:32:621949 INFO  尝试连接MySQL - Host: localhost, Port: 3306, DB: kama_llm, User: root - DatabaseManager.cpp:86
+2025/06/27 18:32:623441 INFO  MySQL连接成功: localhost:3306/kama_llm - DatabaseManager.cpp:120
+2025/06/27 18:32:630318 INFO  数据库表初始化完成 - DatabaseManager.cpp:230
+2025/06/27 18:32:630324 INFO  MySQL数据库初始化成功 - DatabaseManager.cpp:52
+2025/06/27 18:32:630327 INFO  数据库初始化成功，连接到 localhost:3306 - main_http.cc:340
+2025/06/27 18:32:630338 INFO  Added route: GET / - HttpServer.cc:55
+2025/06/27 18:32:630343 INFO  Added route: POST /api/chat - HttpServer.cc:55
+2025/06/27 18:32:630347 INFO  Added route: GET /api/status - HttpServer.cc:55
+2025/06/27 18:32:630352 INFO  Added route: GET /api/history - HttpServer.cc:55
+2025/06/27 18:32:630356 INFO  Added route: POST /api/login - HttpServer.cc:55
+2025/06/27 18:32:630361 INFO  Added route: POST /api/register - HttpServer.cc:55
+2025/06/27 18:32:630365 INFO  Added route: GET /api/sessions - HttpServer.cc:55
+2025/06/27 18:32:630370 INFO  HTTP Server [LlamaHttpServer] started on 0.0.0.0:8081 - HttpServer.cc:36
+2025/06/27 18:32:630591 DEBUG EventLoop createdtruein thread231048 - EventLoop.cc:53
+2025/06/27 18:32:630635 INFO  func =>fd9events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:32:630689 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/27 18:32:630699 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:630799 DEBUG EventLoop createdtruein thread231049 - EventLoop.cc:53
+2025/06/27 18:32:630817 INFO  func =>fd11events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:32:630835 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/27 18:32:630839 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:630946 DEBUG EventLoop createdtruein thread231050 - EventLoop.cc:53
+2025/06/27 18:32:630963 INFO  func =>fd13events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:32:630980 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/27 18:32:630984 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:631174 DEBUG EventLoop createdtruein thread231051 - EventLoop.cc:53
+2025/06/27 18:32:631216 INFO  func =>fd15events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:32:631262 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/27 18:32:631272 INFO  func =>fd6events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:32:631273 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:631316 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/27 18:32:631320 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:32:640755 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:640791 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:640963 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:641020 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:641038 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:641058 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:641369 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:641379 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:641393 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:641410 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:32:650890 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:650948 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:651143 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:651157 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:651221 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:651283 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:651457 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:651477 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:32:651492 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:651542 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:661014 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:661057 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:661369 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:661380 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:661448 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:661454 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:661524 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:661543 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:32:661617 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:661638 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:671128 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:671165 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:671514 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:671545 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:671528 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:671573 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:32:671605 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:671625 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:32:671724 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:32:671775 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:681288 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:681353 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:681603 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:681638 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:681639 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:681678 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:681682 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:681703 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:33:681932 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:681982 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:691408 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:691440 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:691822 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:691743 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:691889 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:691872 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:691770 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:691924 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:33:692049 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:692072 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:701511 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:701575 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:701961 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:702007 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:701994 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:701969 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:702022 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:33:702045 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:702139 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:702160 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:711619 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:711646 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:712110 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:712126 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:712194 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:712161 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:712208 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:712228 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:33:712135 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:712236 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:721723 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:721782 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:722254 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:722288 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:722320 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:722347 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:722322 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:722385 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:722364 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:722472 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:33:731837 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:731877 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:732334 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:732362 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:732429 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:732450 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:732453 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:732472 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:33:732552 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:33:732574 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/27 18:34:741933 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:34:741992 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:34:742467 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:34:742527 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:34:742541 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:34:742549 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:34:742609 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:34:742529 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:34:742636 DEBUG timeout! - EPollPoller.cc:62
+2025/06/27 18:34:742656 INFO  fd total count:2 - EPollPoller.cc:34

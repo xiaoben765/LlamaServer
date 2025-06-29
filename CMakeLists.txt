@@ -128,6 +128,7 @@ list(FILTER HTTP_LOG_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$")
 # 构建HTTP服务器 - 包含基础网络库源文件
 add_executable(kama_http_server 
     src/main_http.cc 
+    src/db/DatabaseManager.cpp  # 确保这行存在
     ${HTTP_SOURCES}
     ${HTTP_MEMORY_SRC}
     ${HTTP_LOG_SRC}
@@ -151,4 +152,36 @@ if (USE_CUDA)
     target_link_libraries(kama_http_server ${CUDA_LIBRARIES})
 endif()
 
-message(STATUS "✅ Configuring HTTP Server build.")
+# 修改 MySQL 查找部分
+
+# 直接使用 find_library 和 find_path 查找 MySQL
+find_library(MYSQL_LIBRARY NAMES mysqlclient)
+find_path(MYSQL_INCLUDE_DIR NAMES mysql.h PATH_SUFFIXES mysql)
+
+if(NOT MYSQL_LIBRARY)
+    message(FATAL_ERROR "❌ MySQL client library not found. Please install it with: sudo apt-get install libmysqlclient-dev")
+endif()
+
+if(NOT MYSQL_INCLUDE_DIR)
+    message(FATAL_ERROR "❌ MySQL header files not found. Please install them with: sudo apt-get install libmysqlclient-dev")
+endif()
+
+message(STATUS "✅ MySQL library found at: ${MYSQL_LIBRARY}")
+message(STATUS "✅ MySQL headers found at: ${MYSQL_INCLUDE_DIR}")
+
+# 添加include目录
+include_directories(
+    ${MYSQL_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/include
+)
+
+# 链接MySQL库以及其他需要的库
+target_link_libraries(kama_http_server
+    ${LIBS} 
+    current_thread
+    ${MYSQL_LIBRARY}
+    ssl
+    crypto
+)
+
+message(STATUS "✅ Configuring HTTP Server build with MySQL support.")

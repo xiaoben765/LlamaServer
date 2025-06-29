@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DUSE_CUDA
 
-CXX_INCLUDES = -I/home/shl203/kama-webserver/include -I/home/shl203/kama-webserver/src -I/home/shl203/kama-webserver/memory -I/home/shl203/kama-webserver/log -I/usr/local/cuda-12.8/include
+CXX_INCLUDES = -I/home/shl203/kama-webserver/include -I/home/shl203/kama-webserver/src -I/home/shl203/kama-webserver/memory -I/home/shl203/kama-webserver/log -I/usr/local/cuda-12.8/include -I/usr/include/mysql
 
 CXX_FLAGS = -std=gnu++17
 

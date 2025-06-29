@@ -47,6 +47,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o.d"
   "CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o"
   "CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o.d"
+  "CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.o"
+  "CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.o.d"
   "CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o"
   "CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o.d"
   "CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o"

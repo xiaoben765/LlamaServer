@@ -889,6 +889,30 @@ src/Timestamp.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Timestamp.cc.s
 .PHONY : src/Timestamp.cc.s
 
+src/db/DatabaseManager.o: src/db/DatabaseManager.cpp.o
+.PHONY : src/db/DatabaseManager.o
+
+# target to build an object file
+src/db/DatabaseManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.o
+.PHONY : src/db/DatabaseManager.cpp.o
+
+src/db/DatabaseManager.i: src/db/DatabaseManager.cpp.i
+.PHONY : src/db/DatabaseManager.i
+
+# target to preprocess a source file
+src/db/DatabaseManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.i
+.PHONY : src/db/DatabaseManager.cpp.i
+
+src/db/DatabaseManager.s: src/db/DatabaseManager.cpp.s
+.PHONY : src/db/DatabaseManager.s
+
+# target to generate assembly for a file
+src/db/DatabaseManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.s
+.PHONY : src/db/DatabaseManager.cpp.s
+
 src/http/HttpContext.o: src/http/HttpContext.cc.o
 .PHONY : src/http/HttpContext.o
 
@@ -1193,6 +1217,9 @@ help:
 	@echo "... src/Timestamp.o"
 	@echo "... src/Timestamp.i"
 	@echo "... src/Timestamp.s"
+	@echo "... src/db/DatabaseManager.o"
+	@echo "... src/db/DatabaseManager.i"
+	@echo "... src/db/DatabaseManager.s"
 	@echo "... src/http/HttpContext.o"
 	@echo "... src/http/HttpContext.i"
 	@echo "... src/http/HttpContext.s"

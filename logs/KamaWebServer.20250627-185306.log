@@ -1,0 +1,18 @@
+2025/06/27 18:53:239529 DEBUG EventLoop createdtruein thread233266 - EventLoop.cc:53
+2025/06/27 18:53:239584 INFO  func =>fd5events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:53:239823 INFO  LlamaService 初始化，连接到 127.0.0.1:8899 (使用CPU) - main.cc:103
+2025/06/27 18:53:239972 DEBUG EventLoop createdtruein thread233273 - EventLoop.cc:53
+2025/06/27 18:53:239990 INFO  func =>fd8events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:53:240008 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/27 18:53:240011 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:53:240242 DEBUG EventLoop createdtruein thread233274 - EventLoop.cc:53
+2025/06/27 18:53:240284 INFO  func =>fd10events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:53:240325 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/27 18:53:240335 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:53:240480 DEBUG EventLoop createdtruein thread233275 - EventLoop.cc:53
+2025/06/27 18:53:240495 INFO  func =>fd12events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:53:240510 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/27 18:53:240513 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/27 18:53:240524 INFO  func =>fd6events=3index=-1 - EPollPoller.cc:91
+2025/06/27 18:53:240576 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/27 18:53:240580 INFO  fd total count:2 - EPollPoller.cc:34

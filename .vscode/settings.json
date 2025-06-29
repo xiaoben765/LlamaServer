@@ -66,6 +66,7 @@
         "map": "cpp",
         "regex": "cpp",
         "forward_list": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "cinttypes": "cpp"
     }
 }

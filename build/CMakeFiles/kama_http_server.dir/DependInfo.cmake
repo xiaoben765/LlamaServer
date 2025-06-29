@@ -31,6 +31,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/shl203/kama-webserver/src/Timer.cc" "CMakeFiles/kama_http_server.dir/src/Timer.cc.o" "gcc" "CMakeFiles/kama_http_server.dir/src/Timer.cc.o.d"
   "/home/shl203/kama-webserver/src/TimerQueue.cc" "CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o" "gcc" "CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o.d"
   "/home/shl203/kama-webserver/src/Timestamp.cc" "CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o" "gcc" "CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o.d"
+  "/home/shl203/kama-webserver/src/db/DatabaseManager.cpp" "CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.o" "gcc" "CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.o.d"
   "/home/shl203/kama-webserver/src/http/HttpContext.cc" "CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o" "gcc" "CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o.d"
   "/home/shl203/kama-webserver/src/http/HttpParser.cc" "CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o" "gcc" "CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o.d"
   "/home/shl203/kama-webserver/src/http/HttpRequest.cc" "CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o" "gcc" "CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o.d"

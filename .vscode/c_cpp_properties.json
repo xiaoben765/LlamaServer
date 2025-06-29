@@ -4,11 +4,17 @@
       "name": "Remote-Linux",
       "includePath": [
         "${workspaceFolder}/**",
-        "/usr/local/cuda/targets/x86_64-linux/include"
+        "/usr/local/cuda/targets/x86_64-linux/include",
+        "/usr/include",         // 添加这行
+        "/usr/include/mysql",   // 添加这行
+        "/usr/local/include"    // 添加这行
       ],
       "browse": {
         "path": [
-          "/usr/local/cuda/targets/x86_64-linux/include"
+          "/usr/local/cuda/targets/x86_64-linux/include",
+          "/usr/include",         // 添加这行
+          "/usr/include/mysql",   // 添加这行
+          "/usr/local/include"    // 添加这行
         ],
         "limitSymbolsToIncludedHeaders": true
       },
