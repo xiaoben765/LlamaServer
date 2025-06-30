@@ -350,10 +350,8 @@ public:
 
 private:
     void setupRoutes() {
-        // 主页面
-        httpServer_.get("/", [this](const HttpRequest& req, HttpResponse& resp) {
-            resp.setHtmlResponse(getWebInterface());
-        });
+        // 移除根路径的专门处理 - 让静态文件处理器处理它
+        // 静态文件处理器会自动将 "/" 映射到 "/index.html"
         
         // API 路由
         httpServer_.post("/api/chat", [this](const HttpRequest& req, HttpResponse& resp) {
@@ -382,8 +380,15 @@ private:
         });
         
         // 静态文件支持
-        httpServer_.setStaticFileRoot("./static");
+        // 使用绝对路径设置静态文件根目录
+        std::string projectRoot = "/home/shl203/kama-webserver";
+        std::string staticRoot = projectRoot + "/static";
+        httpServer_.setStaticFileRoot(staticRoot);
         httpServer_.enableStaticFiles(true);
+        LOG_INFO << "静态文件服务已启用，根目录: " << staticRoot;
+        
+        // 注意: HttpServer类目前没有setDefaultDocuments方法
+        // 默认情况下，大多数Web服务器会自动查找index.html作为默认文档
     }
     
     void handleChatRequest(const HttpRequest& req, HttpResponse& resp) {
@@ -447,6 +452,7 @@ private:
             
             // 确保会话存在（仅在数据库可用时）
             if (kama::db::DatabaseManager::instance().isInitialized()) {
+                // 检查会话ID是否为特殊值，需要创建新会话
                 if (sessionId == "default" || sessionId.empty()) {
                     sessionId = kama::db::DatabaseManager::instance().createSession(userId, "默认会话");
                     if (!sessionId.empty()) {
@@ -456,8 +462,21 @@ private:
                         LOG_WARN << "数据库创建会话失败，使用临时会话ID: " << sessionId;
                     }
                 } else {
-                    // 更新会话活动时间
-                    kama::db::DatabaseManager::instance().updateSessionActivity(sessionId);
+                    // 检查会话是否真的存在
+                    bool sessionExists = kama::db::DatabaseManager::instance().sessionExists(sessionId);
+                    
+                    // 如果会话不存在，创建新会话
+                    if (!sessionExists) {
+                        LOG_WARN << "会话ID '" << sessionId << "' 不存在，创建新会话";
+                        std::string newSessionId = kama::db::DatabaseManager::instance().createSession(userId, "自动创建会话");
+                        if (!newSessionId.empty()) {
+                            sessionId = newSessionId;
+                            LOG_INFO << "已自动创建新会话: " << sessionId << " 用户: " << userId;
+                        }
+                    } else {
+                        // 更新会话活动时间
+                        kama::db::DatabaseManager::instance().updateSessionActivity(sessionId);
+                    }
                 }
                 
                 // 将用户消息保存到数据库
@@ -614,6 +633,9 @@ private:
     }
     
     void handleStatusRequest(const HttpRequest& req, HttpResponse& resp) {
+        // 添加CORS头，允许跨域访问
+        resp.enableCORS();
+        
         // 扩展状态信息，包含数据库状态
         json statusJson;
         statusJson["cache_size"] = static_cast<int>(lfu_cache_.size());
@@ -839,518 +861,11 @@ private:
         }
     }
     
-    std::string getWebInterface() {
-        std::string html;
-        
-        // HTML 头部
-        html += "<!DOCTYPE html>\n";
-        html += "<html lang=\"zh-CN\">\n";
-        html += "<head>\n";
-        html += "    <meta charset=\"UTF-8\">\n";
-        html += "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
-        html += "    <title>CSUshl203 Chat</title>\n";
-        html += "    <style>\n";
-        html += "        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5; }\n";
-        html += "        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }\n";
-        html += "        .chat-box { border: 1px solid #ddd; height: 400px; overflow-y: auto; padding: 10px; margin-bottom: 20px; background-color: #fafafa; }\n";
-        html += "        .message { margin-bottom: 10px; padding: 8px; border-radius: 5px; }\n";
-        html += "        .user-message { background-color: #007bff; color: white; text-align: right; }\n";
-        html += "        .bot-message { background-color: #e9ecef; color: #333; }\n";
-        html += "        .input-area { display: flex; gap: 10px; margin-bottom: 10px; }\n";
-        html += "        #messageInput { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }\n";
-        html += "        #sendButton { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }\n";
-        html += "        #sendButton:hover { background-color: #0056b3; }\n";
-        html += "        #sendButton:disabled { background-color: #ccc; cursor: not-allowed; }\n";
-        html += "        .status { margin-top: 10px; font-size: 12px; color: #666; }\n";
-        html += "        .user-info { display: flex; justify-content: space-between; margin-bottom: 10px; }\n";
-        html += "        .session-info { font-size: 13px; color: #666; }\n";
-        html += "        .user-menu { display: flex; gap: 10px; }\n";
-        html += "        .btn { padding: 5px 10px; background-color: #6c757d; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px; }\n";
-        html += "        .login-form { display: none; padding: 20px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }\n";
-        html += "        .form-group { margin-bottom: 15px; }\n";
-        html += "        .form-group label { display: block; margin-bottom: 5px; }\n";
-        html += "        .form-group input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px; }\n";
-        html += "    </style>\n";
-        html += "</head>\n";
-        html += "<body>\n";
-        html += "    <div class=\"container\">\n";
-        html += "        <h1>CSUshl203 Chat Interface</h1>\n";
-        
-        // 用户信息和登录表单
-        html += "        <div class=\"user-info\">\n";
-        html += "            <div class=\"session-info\" id=\"sessionInfo\">未登录</div>\n";
-        html += "            <div class=\"user-menu\">\n";
-        html += "                <button id=\"loginBtn\" class=\"btn\" onclick=\"toggleLoginForm()\">登录</button>\n";
-        html += "                <button id=\"registerBtn\" class=\"btn\" onclick=\"toggleRegisterForm()\">注册</button>\n";
-        html += "                <button id=\"logoutBtn\" class=\"btn\" onclick=\"logout()\" style=\"display:none;\">退出</button>\n";
-        html += "            </div>\n";
-        html += "        </div>\n";
-        
-        // 登录表单
-        html += "        <div id=\"loginForm\" class=\"login-form\">\n";
-        html += "            <div class=\"form-group\">\n";
-        html += "                <label for=\"loginUsername\">用户名</label>\n";
-        html += "                <input type=\"text\" id=\"loginUsername\" required>\n";
-        html += "            </div>\n";
-        html += "            <div class=\"form-group\">\n";
-        html += "                <label for=\"loginPassword\">密码</label>\n";
-        html += "                <input type=\"password\" id=\"loginPassword\" required>\n";
-        html += "            </div>\n";
-        html += "            <button onclick=\"login()\" class=\"btn\" style=\"background-color:#28a745;\">登录</button>\n";
-        html += "            <button onclick=\"toggleLoginForm()\" class=\"btn\">取消</button>\n";
-        html += "        </div>\n";
-        
-        // 注册表单
-        html += "        <div id=\"registerForm\" class=\"login-form\">\n";
-        html += "            <div class=\"form-group\">\n";
-        html += "                <label for=\"regUsername\">用户名</label>\n";
-        html += "                <input type=\"text\" id=\"regUsername\" required>\n";
-        html += "            </div>\n";
-        html += "            <div class=\"form-group\">\n";
-        html += "                <label for=\"regPassword\">密码</label>\n";
-        html += "                <input type=\"password\" id=\"regPassword\" required>\n";
-        html += "            </div>\n";
-        html += "            <div class=\"form-group\">\n";
-        html += "                <label for=\"regEmail\">邮箱</label>\n";
-        html += "                <input type=\"email\" id=\"regEmail\">\n";
-        html += "            </div>\n";
-        html += "            <button onclick=\"register()\" class=\"btn\" style=\"background-color:#28a745;\">注册</button>\n";
-        html += "            <button onclick=\"toggleRegisterForm()\" class=\"btn\">取消</button>\n";
-        html += "        </div>\n";
-        
-        // 会话选择器
-        html += "        <div id=\"sessionSelector\" style=\"display:none; margin-bottom:10px;\">\n";
-        html += "            <label for=\"sessionSelect\">选择会话: </label>\n";
-        html += "            <select id=\"sessionSelect\" onchange=\"changeSession(this.value)\">\n";
-        html += "                <option value=\"\">加载中...</option>\n";
-        html += "            </select>\n";
-        html += "            <button onclick=\"createNewSession()\" class=\"btn\">新建会话</button>\n";
-        html += "        </div>\n";
-        
-        // 聊天框和输入区
-        html += "        <div id=\"chatBox\" class=\"chat-box\"></div>\n";
-        html += "        <div class=\"input-area\">\n";
-        html += "            <input type=\"text\" id=\"messageInput\" placeholder=\"输入您的问题...\" />\n";
-        html += "            <button id=\"sendButton\" onclick=\"sendMessage()\">发送</button>\n";
-        html += "        </div>\n";
-        html += "        <div class=\"status\" id=\"status\">准备就绪</div>\n";
-        html += "    </div>\n";
-        
-        // JavaScript 部分
-        html += "    <script>\n";
-        html += "        // 用户和会话数据\n";
-        html += "        let currentUser = {\n";
-        html += "            userId: null,\n";
-        html += "            username: null,\n";
-        html += "            sessionId: null\n";
-        html += "        };\n";
-        html += "\n";
-        html += "        // 初始化：检查本地存储中的会话信息\n";
-        html += "        function initializeApp() {\n";
-        html += "            const storedUser = localStorage.getItem('currentUser');\n";
-        html += "            if (storedUser) {\n";
-        html += "                try {\n";
-        html += "                    currentUser = JSON.parse(storedUser);\n";
-        html += "                    updateUIForLoggedInUser();\n";
-        html += "                    loadUserSessions();\n";
-        html += "                    if (currentUser.sessionId) {\n";
-        html += "                        loadSessionHistory(currentUser.sessionId);\n";
-        html += "                    }\n";
-        html += "                } catch (e) {\n";
-        html += "                    console.error('无法解析存储的用户数据');\n";
-        html += "                    localStorage.removeItem('currentUser');\n";
-        html += "                }\n";
-        html += "            }\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 更新UI以反映已登录状态\n";
-        html += "        function updateUIForLoggedInUser() {\n";
-        html += "            document.getElementById('loginBtn').style.display = 'none';\n";
-        html += "            document.getElementById('registerBtn').style.display = 'none';\n";
-        html += "            document.getElementById('logoutBtn').style.display = 'inline-block';\n";
-        html += "            document.getElementById('sessionInfo').textContent = `用户: ${currentUser.username} | 会话ID: ${currentUser.sessionId || '未选择'}`;\n";
-        html += "            document.getElementById('sessionSelector').style.display = 'block';\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 加载用户的会话列表\n";
-        html += "        function loadUserSessions() {\n";
-        html += "            if (!currentUser.userId) return;\n";
-        html += "            \n";
-        html += "            fetch(`/api/sessions?user_id=${currentUser.userId}`)\n";
-        html += "                .then(response => response.json())\n";
-        html += "                .then(data => {\n";
-        html += "                    const sessionSelect = document.getElementById('sessionSelect');\n";
-        html += "                    sessionSelect.innerHTML = '';\n";
-        html += "                    \n";
-        html += "                    if (data.sessions && Array.isArray(data.sessions)) {\n";
-        html += "                        data.sessions.forEach(session => {\n";
-        html += "                            const option = document.createElement('option');\n";
-        html += "                            option.value = session.id;\n";
-        html += "                            option.textContent = session.name || `会话 ${session.id.substr(0, 8)}`;\n";
-        html += "                            sessionSelect.appendChild(option);\n";
-        html += "                            \n";
-        html += "                            if (session.id === currentUser.sessionId) {\n";
-        html += "                                option.selected = true;\n";
-        html += "                            }\n";
-        html += "                        });\n";
-        html += "                    } else {\n";
-        html += "                        const option = document.createElement('option');\n";
-        html += "                        option.value = '';\n";
-        html += "                        option.textContent = '无可用会话';\n";
-        html += "                        sessionSelect.appendChild(option);\n";
-        html += "                    }\n";
-        html += "                })\n";
-        html += "                .catch(error => {\n";
-        html += "                    console.error('加载会话失败:', error);\n";
-        html += "                });\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 加载会话历史\n";
-        html += "        function loadSessionHistory(sessionId) {\n";
-        html += "            if (!sessionId) return;\n";
-        html += "            \n";
-        html += "            document.getElementById('chatBox').innerHTML = '';\n";
-        html += "            document.getElementById('status').textContent = '加载历史记录...';\n";
-        html += "            \n";
-        html += "            fetch(`/api/history?session_id=${sessionId}&limit=30`)\n";
-        html += "                .then(response => response.json())\n";
-        html += "                .then(data => {\n";
-        html += "                    if (data.messages && Array.isArray(data.messages)) {\n";
-        html += "                        data.messages.forEach(msg => {\n";
-        html += "                            addMessage(msg.content, msg.type === 'user');\n";
-        html += "                        });\n";
-        html += "                        document.getElementById('status').textContent = `已加载 ${data.messages.length} 条历史消息`;\n";
-        html += "                    } else {\n";
-        html += "                        document.getElementById('status').textContent = '没有历史记录';\n";
-        html += "                    }\n";
-        html += "                })\n";
-        html += "                .catch(error => {\n";
-        html += "                    console.error('加载历史记录失败:', error);\n";
-        html += "                    document.getElementById('status').textContent = '加载历史记录失败';\n";
-        html += "                });\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 切换登录表单显示\n";
-        html += "        function toggleLoginForm() {\n";
-        html += "            const loginForm = document.getElementById('loginForm');\n";
-        html += "            const registerForm = document.getElementById('registerForm');\n";
-        html += "            registerForm.style.display = 'none';\n";
-        html += "            loginForm.style.display = loginForm.style.display === 'block' ? 'none' : 'block';\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 切换注册表单显示\n";
-        html += "        function toggleRegisterForm() {\n";
-        html += "            const loginForm = document.getElementById('loginForm');\n";
-        html += "            const registerForm = document.getElementById('registerForm');\n";
-        html += "            loginForm.style.display = 'none';\n";
-        html += "            registerForm.style.display = registerForm.style.display === 'block' ? 'none' : 'block';\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 用户登录\n";
-        html += "        function login() {\n";
-        html += "            const username = document.getElementById('loginUsername').value.trim();\n";
-        html += "            const password = document.getElementById('loginPassword').value;\n";
-        html += "            \n";
-        html += "            if (!username || !password) {\n";
-        html += "                alert('请输入用户名和密码');\n";
-        html += "                return;\n";
-        html += "            }\n";
-        html += "            \n";
-        html += "            document.getElementById('status').textContent = '登录中...';\n";
-        html += "            \n";
-        html += "            fetch('/api/login', {\n";
-        html += "                method: 'POST',\n";
-        html += "                headers: { 'Content-Type': 'application/json' },\n";
-        html += "                body: JSON.stringify({ username, password })\n";
-        html += "            })\n";
-        html += "            .then(response => response.json())\n";
-        html += "            .then(data => {\n";
-        html += "                if (data.success) {\n";
-        html += "                    currentUser = {\n";
-        html += "                        userId: data.user_id,\n";
-        html += "                        username: data.username,\n";
-        html += "                        sessionId: data.session_id\n";
-        html += "                    };\n";
-        html += "                    \n";
-        html += "                    // 保存用户信息到本地存储\n";
-        html += "                    localStorage.setItem('currentUser', JSON.stringify(currentUser));\n";
-        html += "                    \n";
-        html += "                    // 更新UI\n";
-        html += "                    updateUIForLoggedInUser();\n";
-        html += "                    toggleLoginForm();\n";
-        html += "                    loadUserSessions();\n";
-        html += "                    loadSessionHistory(currentUser.sessionId);\n";
-        html += "                    document.getElementById('status').textContent = '登录成功';\n";
-        html += "                } else {\n";
-        html += "                    document.getElementById('status').textContent = data.error || '登录失败';\n";
-        html += "                }\n";
-        html += "            })\n";
-        html += "            .catch(error => {\n";
-        html += "                console.error('登录失败:', error);\n";
-        html += "                document.getElementById('status').textContent = '登录失败';\n";
-        html += "            });\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 用户注册\n";
-        html += "        function register() {\n";
-        html += "            const username = document.getElementById('regUsername').value.trim();\n";
-        html += "            const password = document.getElementById('regPassword').value;\n";
-        html += "            const email = document.getElementById('regEmail').value.trim();\n";
-        html += "            \n";
-        html += "            if (!username || !password) {\n";
-        html += "                alert('请输入用户名和密码');\n";
-        html += "                return;\n";
-        html += "            }\n";
-        html += "            \n";
-        html += "            document.getElementById('status').textContent = '注册中...';\n";
-        html += "            \n";
-        html += "            fetch('/api/register', {\n";
-        html += "                method: 'POST',\n";
-        html += "                headers: { 'Content-Type': 'application/json' },\n";
-        html += "                body: JSON.stringify({ username, password, email })\n";
-        html += "            })\n";
-        html += "            .then(response => response.json())\n";
-        html += "            .then(data => {\n";
-        html += "                if (data.success) {\n";
-        html += "                    currentUser = {\n";
-        html += "                        userId: data.user_id,\n";
-        html += "                        username: data.username,\n";
-        html += "                        sessionId: data.session_id\n";
-        html += "                    };\n";
-        html += "                    \n";
-        html += "                    // 保存用户信息到本地存储\n";
-        html += "                    localStorage.setItem('currentUser', JSON.stringify(currentUser));\n";
-        html += "                    \n";
-        html += "                    // 更新UI\n";
-        html += "                    updateUIForLoggedInUser();\n";
-        html += "                    toggleRegisterForm();\n";
-        html += "                    loadUserSessions();\n";
-        html += "                    document.getElementById('chatBox').innerHTML = '';\n";
-        html += "                    document.getElementById('status').textContent = '注册成功';\n";
-        html += "                } else {\n";
-        html += "                    document.getElementById('status').textContent = data.error || '注册失败';\n";
-        html += "                }\n";
-        html += "            })\n";
-        html += "            .catch(error => {\n";
-        html += "                console.error('注册失败:', error);\n";
-        html += "                document.getElementById('status').textContent = '注册失败';\n";
-        html += "            });\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 退出登录\n";
-        html += "        function logout() {\n";
-        html += "            currentUser = {\n";
-        html += "                userId: null,\n";
-        html += "                username: null,\n";
-        html += "                sessionId: null\n";
-        html += "            };\n";
-        html += "            \n";
-        html += "            // 清除本地存储\n";
-        html += "            localStorage.removeItem('currentUser');\n";
-        html += "            \n";
-        html += "            // 更新UI\n";
-        html += "            document.getElementById('loginBtn').style.display = 'inline-block';\n";
-        html += "            document.getElementById('registerBtn').style.display = 'inline-block';\n";
-        html += "            document.getElementById('logoutBtn').style.display = 'none';\n";
-        html += "            document.getElementById('sessionSelector').style.display = 'none';\n";
-        html += "            document.getElementById('sessionInfo').textContent = '未登录';\n";
-        html += "            document.getElementById('chatBox').innerHTML = '';\n";
-        html += "            document.getElementById('status').textContent = '已退出登录';\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 创建新会话\n";
-        html += "        function createNewSession() {\n";
-        html += "            if (!currentUser.userId) {\n";
-        html += "                alert('请先登录');\n";
-        html += "                return;\n";
-        html += "            }\n";
-        html += "            \n";
-        html += "            const sessionName = prompt('请输入会话名称:', '新会话');\n";
-        html += "            if (!sessionName) return;\n";
-        html += "            \n";
-        html += "            document.getElementById('status').textContent = '创建会话中...';\n";
-        html += "            \n";
-        html += "            fetch('/api/chat', {\n";
-        html += "                method: 'POST',\n";
-        html += "                headers: { 'Content-Type': 'application/json' },\n";
-        html += "                body: JSON.stringify({ \n";
-        html += "                    message: '创建新会话', \n";
-        html += "                    user_id: currentUser.userId,\n";
-        html += "                    session_name: sessionName\n";
-        html += "                })\n";
-        html += "            })\n";
-        html += "            .then(response => response.json())\n";
-        html += "            .then(data => {\n";
-        html += "                if (data.session_id) {\n";
-        html += "                    // 更新当前会话\n";
-        html += "                    currentUser.sessionId = data.session_id;\n";
-        html += "                    localStorage.setItem('currentUser', JSON.stringify(currentUser));\n";
-        html += "                    \n";
-        html += "                    // 刷新会话列表\n";
-        html += "                    loadUserSessions();\n";
-        html += "                    document.getElementById('chatBox').innerHTML = '';\n";
-        html += "                    document.getElementById('sessionInfo').textContent = `用户: ${currentUser.username} | 会话ID: ${currentUser.sessionId}`;\n";
-        html += "                    document.getElementById('status').textContent = '已创建新会话';\n";
-        html += "                } else {\n";
-        html += "                    document.getElementById('status').textContent = '创建会话失败';\n";
-        html += "                }\n";
-        html += "            })\n";
-        html += "            .catch(error => {\n";
-        html += "                console.error('创建会话失败:', error);\n";
-        html += "                document.getElementById('status').textContent = '创建会话失败';\n";
-        html += "            });\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 切换会话\n";
-        html += "        function changeSession(sessionId) {\n";
-        html += "            if (!sessionId) return;\n";
-        html += "            \n";
-        html += "            currentUser.sessionId = sessionId;\n";
-        html += "            localStorage.setItem('currentUser', JSON.stringify(currentUser));\n";
-        html += "            \n";
-        html += "            document.getElementById('sessionInfo').textContent = `用户: ${currentUser.username} | 会话ID: ${sessionId}`;\n";
-        html += "            loadSessionHistory(sessionId);\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 添加消息到聊天框\n";
-        html += "        function addMessage(content, isUser) {\n";
-        html += "            const chatBox = document.getElementById('chatBox');\n";
-        html += "            const messageDiv = document.createElement('div');\n";
-        html += "            messageDiv.className = 'message ' + (isUser ? 'user-message' : 'bot-message');\n";
-        html += "            \n";
-        html += "            // 处理段落和换行\n";
-        html += "            const paragraphs = content.split('\\n').filter(p => p.trim());\n";
-        html += "            if (paragraphs.length > 1) {\n";
-        html += "                paragraphs.forEach(p => {\n";
-        html += "                    const para = document.createElement('p');\n";
-        html += "                    para.textContent = p;\n";
-        html += "                    para.style.margin = '5px 0';\n";
-        html += "                    messageDiv.appendChild(para);\n";
-        html += "                });\n";
-        html += "            } else {\n";
-        html += "                messageDiv.textContent = content;\n";
-        html += "            }\n";
-        html += "            \n";
-        html += "            chatBox.appendChild(messageDiv);\n";
-        html += "            chatBox.scrollTop = chatBox.scrollHeight;\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 发送消息\n";
-        html += "        function sendMessage() {\n";
-        html += "            const input = document.getElementById('messageInput');\n";
-        html += "            const message = input.value.trim(); // 移除前后空白\n";
-        html += "            \n";
-        html += "            if (!message) {\n";
-        html += "                alert('请输入消息内容');\n";
-        html += "                return;\n";
-        html += "            }\n";
-        html += "            \n";
-        html += "            addMessage(message, true);\n";
-        html += "            input.value = '';\n";
-        html += "            \n";
-        html += "            const button = document.getElementById('sendButton');\n";
-        html += "            button.disabled = true;\n";
-        html += "            button.textContent = '发送中...';\n";
-        html += "            \n";
-        html += "            document.getElementById('status').textContent = '正在处理...';\n";
-        html += "            \n";
-        html += "            // 准备请求数据\n";
-        html += "            const requestData = { message: message };\n";
-        html += "            \n";
-        html += "            // 如果已登录，添加用户ID和会话ID\n";
-        html += "            if (currentUser.userId) {\n";
-        html += "                requestData.user_id = currentUser.userId;\n";
-        html += "            }\n";
-        html += "            \n";
-        html += "            if (currentUser.sessionId) {\n";
-        html += "                requestData.session_id = currentUser.sessionId;\n";
-        html += "            }\n";
-        html += "            \n";
-        html += "            fetch('/api/chat', {\n";
-        html += "                method: 'POST',\n";
-        html += "                headers: { 'Content-Type': 'application/json' },\n";
-        html += "                body: JSON.stringify(requestData)\n";
-        html += "            })\n";
-        html += "            .then(response => response.json())\n";
-        html += "            .then(data => {\n";
-        html += "                if (data.response) {\n";
-        html += "                    addMessage(data.response, false);\n";
-        html += "                    \n";
-        html += "                    // 如果收到新的会话ID，更新当前会话\n";
-        html += "                    if (data.session_id && (!currentUser.sessionId || currentUser.sessionId !== data.session_id)) {\n";
-        html += "                        currentUser.sessionId = data.session_id;\n";
-        html += "                        localStorage.setItem('currentUser', JSON.stringify(currentUser));\n";
-        html += "                        document.getElementById('sessionInfo').textContent = `用户: ${currentUser.username || '匿名'} | 会话ID: ${currentUser.sessionId}`;\n";
-        html += "                    }\n";
-        html += "                    \n";
-        html += "                    if (data.cached) {\n";
-        html += "                        document.getElementById('status').textContent = '已返回缓存结果';\n";
-        html += "                    } else {\n";
-        html += "                        document.getElementById('status').textContent = '响应完成';\n";
-        html += "                    }\n";
-        html += "                } else if (data.error) {\n";
-        html += "                    addMessage(`错误: ${data.error}`, false);\n";
-        html += "                    document.getElementById('status').textContent = '响应错误';\n";
-        html += "                } else {\n";
-        html += "                    addMessage('服务器返回了无效响应', false);\n";
-        html += "                    document.getElementById('status').textContent = '响应错误';\n";
-        html += "                }\n";
-        html += "            })\n";
-        html += "            .catch(error => {\n";
-        html += "                console.error('Error:', error);\n";
-        html += "                addMessage('请求失败: ' + error.message, false);\n";
-        html += "                document.getElementById('status').textContent = '请求失败';\n";
-        html += "            })\n";
-        html += "            .finally(() => {\n";
-        html += "                button.disabled = false;\n";
-        html += "                button.textContent = '发送';\n";
-        html += "            });\n";
-        html += "        }\n";
-        html += "\n";
-        html += "        // 回车发送\n";
-        html += "        document.getElementById('messageInput').addEventListener('keypress', function(e) {\n";
-        html += "            if (e.key === 'Enter') {\n";
-        html += "                sendMessage();\n";
-        html += "            }\n";
-        html += "        });\n";
-        html += "\n";
-        html += "        // 页面加载完成后初始化\n";
-        html += "        document.addEventListener('DOMContentLoaded', function() {\n";
-        html += "            initializeApp();\n";
-        html += "            \n";
-        html += "            // 加载状态\n";
-        html += "            fetch('/api/status')\n";
-        html += "                .then(response => response.json())\n";
-        html += "                .then(data => {\n";
-        html += "                    let statusText = `缓存: ${data.cache_size} | LLaMA: ${data.llama_available ? '可用' : '不可用'}`;\n";
-        html += "                    if (data.database_available) {\n";
-        html += "                        statusText += ` | DB: 可用`;\n";
-        html += "                    } else {\n";
-        html += "                        statusText += ` | DB: 不可用`;\n";
-        html += "                    }\n";
-        html += "                    document.getElementById('status').textContent = statusText;\n";
-        html += "                })\n";
-        html += "                .catch(() => document.getElementById('status').textContent = '状态获取失败');\n";
-        html += "        });\n";
-        html += "    </script>\n";
-        html += "</body>\n";
-        html += "</html>\n";
-        
-        return html;
-    }
-
+    // 类的成员变量
     HttpServer httpServer_;
     LlamaService llama_service_;
     KamaCache::KLfuCache<std::string, std::string> lfu_cache_;
 };
-
-// // 如果这个方法在HttpResponse类中不存在，需要添加
-// void HttpResponse::setJsonResponse(const std::string& jsonStr) {
-//     setStatusCode(HttpStatusCode::OK);
-//     setStatusMessage("OK");
-//     setHeader("Content-Type", "application/json; charset=utf-8");
-//     setBody(jsonStr);
-// }
 
 // 生成简单的UUID作为会话标识符
 std::string generateUUID() {

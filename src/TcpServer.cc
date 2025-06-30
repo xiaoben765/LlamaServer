@@ -61,10 +61,8 @@ TcpServer::~TcpServer()
 // 设置底层subloop的个数
 void TcpServer::setThreadNum(int numThreads)
 {
-    // 为什么要再赋值一次？因为numThreads_是TcpServer的成员变量，numThreads是传入的参数。
-    int numThreads_=numThreads;  // 这么做是为了在后续代码中使用成员变量。
-
-    threadPool_->setThreadNum(numThreads_); // 设置线程池的线程数, EventLoopThreadPool表示事件循环线程池，负责管理多个 EventLoop 对象
+    // 直接使用传入的参数设置线程池的线程数
+    threadPool_->setThreadNum(numThreads); // 设置线程池的线程数, EventLoopThreadPool表示事件循环线程池，负责管理多个 EventLoop 对象
 }
 
 // 开启服务器监听

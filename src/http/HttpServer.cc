@@ -162,10 +162,17 @@ void HttpServer::handleError(const HttpRequest& req, HttpResponse& resp, const s
 
 void HttpServer::handleStaticFile(const HttpRequest& req, HttpResponse& resp) {
     // 实现静态文件处理逻辑
-    std::string filePath = staticFileRoot_ + req.path();
+    std::string path = req.path();
+    
+    // 处理根路径，加载index.html
+    if (path == "/" || path.empty()) {
+        path = "/index.html";
+    }
+    
+    std::string filePath = staticFileRoot_ + path;
     
     // 安全检查: 防止目录遍历攻击
-    if (req.path().find("..") != std::string::npos) {
+    if (path.find("..") != std::string::npos) {
         resp.setErrorResponse(HttpStatusCode::FORBIDDEN, "Access denied");
         return;
     }
@@ -213,6 +220,7 @@ void HttpServer::handleStaticFile(const HttpRequest& req, HttpResponse& resp) {
     }
     
     resp.setContentType(contentType);
+    resp.enableCORS(); // 添加CORS头，允许跨域访问
     resp.setBody(content);
 }
 

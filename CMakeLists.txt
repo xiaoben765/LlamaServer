@@ -31,6 +31,9 @@ include_directories(
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 
+# 创建配置目录
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/config)
+
 # 设置全局链接库
 set(LIBS pthread ${CUDA_LIBRARIES})
 
@@ -94,8 +97,11 @@ file(GLOB MEMORY_SRC memory/*.cc)
 file(GLOB LOG_SRC log/*.cc)
 list(FILTER LOG_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$") # 排除log中的CurrentThread.cc
 
+# 添加配置管理源文件
+set(CONFIG_SRC ${CMAKE_SOURCE_DIR}/src/ConfigManager.cc)
+
 # 构建KamaWebServer
-add_executable(KamaWebServer ${WebServer_SRC} ${MEMORY_SRC} ${LOG_SRC})
+add_executable(KamaWebServer ${WebServer_SRC} ${MEMORY_SRC} ${LOG_SRC} ${CONFIG_SRC})
 target_link_libraries(KamaWebServer ${LIBS} current_thread) # 使用current_thread库
 target_include_directories(KamaWebServer PRIVATE 
     ${CMAKE_SOURCE_DIR}/include
@@ -129,6 +135,7 @@ list(FILTER HTTP_LOG_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$")
 add_executable(kama_http_server 
     src/main_http.cc 
     src/db/DatabaseManager.cpp  # 确保这行存在
+    src/ConfigManager.cc       # 添加配置管理器
     ${HTTP_SOURCES}
     ${HTTP_MEMORY_SRC}
     ${HTTP_LOG_SRC}

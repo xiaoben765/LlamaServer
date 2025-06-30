@@ -557,6 +557,30 @@ bool DatabaseManager::deleteSession(const std::string& sessionId) {
     return executeQuery(ss.str());
 }
 
+bool DatabaseManager::sessionExists(const std::string& sessionId) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_ || !connection_) {
+        return false;
+    }
+    
+    std::stringstream ss;
+    ss << "SELECT COUNT(*) FROM sessions WHERE session_id = '" << escapeString(sessionId) << "'";
+    
+    MYSQL_RES* result = executeSelectQuery(ss.str());
+    if (!result) {
+        return false;
+    }
+    
+    bool exists = false;
+    MYSQL_ROW row = mysql_fetch_row(result);
+    if (row && row[0]) {
+        exists = (atoi(row[0]) > 0);
+    }
+    mysql_free_result(result);
+    return exists;
+}
+
 // 对话记录实现
 bool DatabaseManager::saveConversation(const std::string& sessionId, const std::string& messageType, 
                                       const std::string& content, const std::string& model, 

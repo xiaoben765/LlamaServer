@@ -97,10 +97,24 @@ CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shl203/kama-webserver/src/db/DatabaseManager.cpp -o CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.s
 
+CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o: CMakeFiles/kama_http_server.dir/flags.make
+CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o: ../src/ConfigManager.cc
+CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o -MF CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o.d -o CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o -c /home/shl203/kama-webserver/src/ConfigManager.cc
+
+CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shl203/kama-webserver/src/ConfigManager.cc > CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.i
+
+CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shl203/kama-webserver/src/ConfigManager.cc -o CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.s
+
 CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o: ../src/http/HttpContext.cc
 CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o -MF CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o.d -o CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o -c /home/shl203/kama-webserver/src/http/HttpContext.cc
 
 CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o: ../src/http/HttpParser.cc
 CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o -MF CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o.d -o CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o -c /home/shl203/kama-webserver/src/http/HttpParser.cc
 
 CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.i: cmake_force
@@ -128,7 +142,7 @@ CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o: ../src/http/HttpRequest.cc
 CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o -MF CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o.d -o CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o -c /home/shl203/kama-webserver/src/http/HttpRequest.cc
 
 CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.o: ../src/http/HttpResponse.cc
 CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.o -MF CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.o.d -o CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.o -c /home/shl203/kama-webserver/src/http/HttpResponse.cc
 
 CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.i: cmake_force
@@ -156,7 +170,7 @@ CMakeFiles/kama_http_server.dir/src/http/HttpResponse.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.o: ../src/http/HttpServer.cc
 CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.o -MF CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.o.d -o CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.o -c /home/shl203/kama-webserver/src/http/HttpServer.cc
 
 CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.i: cmake_force
@@ -170,7 +184,7 @@ CMakeFiles/kama_http_server.dir/src/http/HttpServer.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.o: ../memory/memoryPool.cc
 CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.o -MF CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.o.d -o CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.o -c /home/shl203/kama-webserver/memory/memoryPool.cc
 
 CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.i: cmake_force
@@ -184,7 +198,7 @@ CMakeFiles/kama_http_server.dir/memory/memoryPool.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.o: ../log/AsyncLogging.cc
 CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.o -MF CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.o.d -o CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.o -c /home/shl203/kama-webserver/log/AsyncLogging.cc
 
 CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.i: cmake_force
@@ -198,7 +212,7 @@ CMakeFiles/kama_http_server.dir/log/AsyncLogging.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/log/FileUtil.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/log/FileUtil.cc.o: ../log/FileUtil.cc
 CMakeFiles/kama_http_server.dir/log/FileUtil.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/kama_http_server.dir/log/FileUtil.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/kama_http_server.dir/log/FileUtil.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/log/FileUtil.cc.o -MF CMakeFiles/kama_http_server.dir/log/FileUtil.cc.o.d -o CMakeFiles/kama_http_server.dir/log/FileUtil.cc.o -c /home/shl203/kama-webserver/log/FileUtil.cc
 
 CMakeFiles/kama_http_server.dir/log/FileUtil.cc.i: cmake_force
@@ -212,7 +226,7 @@ CMakeFiles/kama_http_server.dir/log/FileUtil.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/log/LogFile.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/log/LogFile.cc.o: ../log/LogFile.cc
 CMakeFiles/kama_http_server.dir/log/LogFile.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/kama_http_server.dir/log/LogFile.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/kama_http_server.dir/log/LogFile.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/log/LogFile.cc.o -MF CMakeFiles/kama_http_server.dir/log/LogFile.cc.o.d -o CMakeFiles/kama_http_server.dir/log/LogFile.cc.o -c /home/shl203/kama-webserver/log/LogFile.cc
 
 CMakeFiles/kama_http_server.dir/log/LogFile.cc.i: cmake_force
@@ -226,7 +240,7 @@ CMakeFiles/kama_http_server.dir/log/LogFile.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/log/LogStream.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/log/LogStream.cc.o: ../log/LogStream.cc
 CMakeFiles/kama_http_server.dir/log/LogStream.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/kama_http_server.dir/log/LogStream.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/kama_http_server.dir/log/LogStream.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/log/LogStream.cc.o -MF CMakeFiles/kama_http_server.dir/log/LogStream.cc.o.d -o CMakeFiles/kama_http_server.dir/log/LogStream.cc.o -c /home/shl203/kama-webserver/log/LogStream.cc
 
 CMakeFiles/kama_http_server.dir/log/LogStream.cc.i: cmake_force
@@ -240,7 +254,7 @@ CMakeFiles/kama_http_server.dir/log/LogStream.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/Acceptor.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/Acceptor.cc.o: ../src/Acceptor.cc
 CMakeFiles/kama_http_server.dir/src/Acceptor.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/kama_http_server.dir/src/Acceptor.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/kama_http_server.dir/src/Acceptor.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/Acceptor.cc.o -MF CMakeFiles/kama_http_server.dir/src/Acceptor.cc.o.d -o CMakeFiles/kama_http_server.dir/src/Acceptor.cc.o -c /home/shl203/kama-webserver/src/Acceptor.cc
 
 CMakeFiles/kama_http_server.dir/src/Acceptor.cc.i: cmake_force
@@ -254,7 +268,7 @@ CMakeFiles/kama_http_server.dir/src/Acceptor.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/Buffer.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/Buffer.cc.o: ../src/Buffer.cc
 CMakeFiles/kama_http_server.dir/src/Buffer.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/kama_http_server.dir/src/Buffer.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/kama_http_server.dir/src/Buffer.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/Buffer.cc.o -MF CMakeFiles/kama_http_server.dir/src/Buffer.cc.o.d -o CMakeFiles/kama_http_server.dir/src/Buffer.cc.o -c /home/shl203/kama-webserver/src/Buffer.cc
 
 CMakeFiles/kama_http_server.dir/src/Buffer.cc.i: cmake_force
@@ -268,7 +282,7 @@ CMakeFiles/kama_http_server.dir/src/Buffer.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/Channel.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/Channel.cc.o: ../src/Channel.cc
 CMakeFiles/kama_http_server.dir/src/Channel.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/kama_http_server.dir/src/Channel.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/kama_http_server.dir/src/Channel.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/Channel.cc.o -MF CMakeFiles/kama_http_server.dir/src/Channel.cc.o.d -o CMakeFiles/kama_http_server.dir/src/Channel.cc.o -c /home/shl203/kama-webserver/src/Channel.cc
 
 CMakeFiles/kama_http_server.dir/src/Channel.cc.i: cmake_force
@@ -282,7 +296,7 @@ CMakeFiles/kama_http_server.dir/src/Channel.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o: ../src/DefaultPoller.cc
 CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o -MF CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o.d -o CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o -c /home/shl203/kama-webserver/src/DefaultPoller.cc
 
 CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.i: cmake_force
@@ -296,7 +310,7 @@ CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.o: ../src/EPollPoller.cc
 CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.o -MF CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.o.d -o CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.o -c /home/shl203/kama-webserver/src/EPollPoller.cc
 
 CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.i: cmake_force
@@ -310,7 +324,7 @@ CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/EventLoop.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/EventLoop.cc.o: ../src/EventLoop.cc
 CMakeFiles/kama_http_server.dir/src/EventLoop.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/kama_http_server.dir/src/EventLoop.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/kama_http_server.dir/src/EventLoop.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/EventLoop.cc.o -MF CMakeFiles/kama_http_server.dir/src/EventLoop.cc.o.d -o CMakeFiles/kama_http_server.dir/src/EventLoop.cc.o -c /home/shl203/kama-webserver/src/EventLoop.cc
 
 CMakeFiles/kama_http_server.dir/src/EventLoop.cc.i: cmake_force
@@ -324,7 +338,7 @@ CMakeFiles/kama_http_server.dir/src/EventLoop.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.o: ../src/EventLoopThread.cc
 CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.o -MF CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.o.d -o CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.o -c /home/shl203/kama-webserver/src/EventLoopThread.cc
 
 CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.i: cmake_force
@@ -338,7 +352,7 @@ CMakeFiles/kama_http_server.dir/src/EventLoopThread.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.o: ../src/EventLoopThreadPool.cc
 CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.o -MF CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.o.d -o CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.o -c /home/shl203/kama-webserver/src/EventLoopThreadPool.cc
 
 CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.i: cmake_force
@@ -352,7 +366,7 @@ CMakeFiles/kama_http_server.dir/src/EventLoopThreadPool.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/InetAddress.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/InetAddress.cc.o: ../src/InetAddress.cc
 CMakeFiles/kama_http_server.dir/src/InetAddress.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/kama_http_server.dir/src/InetAddress.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/kama_http_server.dir/src/InetAddress.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/InetAddress.cc.o -MF CMakeFiles/kama_http_server.dir/src/InetAddress.cc.o.d -o CMakeFiles/kama_http_server.dir/src/InetAddress.cc.o -c /home/shl203/kama-webserver/src/InetAddress.cc
 
 CMakeFiles/kama_http_server.dir/src/InetAddress.cc.i: cmake_force
@@ -366,7 +380,7 @@ CMakeFiles/kama_http_server.dir/src/InetAddress.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/Logger.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/Logger.cc.o: ../src/Logger.cc
 CMakeFiles/kama_http_server.dir/src/Logger.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/kama_http_server.dir/src/Logger.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/kama_http_server.dir/src/Logger.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/Logger.cc.o -MF CMakeFiles/kama_http_server.dir/src/Logger.cc.o.d -o CMakeFiles/kama_http_server.dir/src/Logger.cc.o -c /home/shl203/kama-webserver/src/Logger.cc
 
 CMakeFiles/kama_http_server.dir/src/Logger.cc.i: cmake_force
@@ -380,7 +394,7 @@ CMakeFiles/kama_http_server.dir/src/Logger.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/Poller.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/Poller.cc.o: ../src/Poller.cc
 CMakeFiles/kama_http_server.dir/src/Poller.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/kama_http_server.dir/src/Poller.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/kama_http_server.dir/src/Poller.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/Poller.cc.o -MF CMakeFiles/kama_http_server.dir/src/Poller.cc.o.d -o CMakeFiles/kama_http_server.dir/src/Poller.cc.o -c /home/shl203/kama-webserver/src/Poller.cc
 
 CMakeFiles/kama_http_server.dir/src/Poller.cc.i: cmake_force
@@ -394,7 +408,7 @@ CMakeFiles/kama_http_server.dir/src/Poller.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/Socket.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/Socket.cc.o: ../src/Socket.cc
 CMakeFiles/kama_http_server.dir/src/Socket.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/kama_http_server.dir/src/Socket.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/kama_http_server.dir/src/Socket.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/Socket.cc.o -MF CMakeFiles/kama_http_server.dir/src/Socket.cc.o.d -o CMakeFiles/kama_http_server.dir/src/Socket.cc.o -c /home/shl203/kama-webserver/src/Socket.cc
 
 CMakeFiles/kama_http_server.dir/src/Socket.cc.i: cmake_force
@@ -408,7 +422,7 @@ CMakeFiles/kama_http_server.dir/src/Socket.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.o: ../src/TcpConnection.cc
 CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.o -MF CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.o.d -o CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.o -c /home/shl203/kama-webserver/src/TcpConnection.cc
 
 CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.i: cmake_force
@@ -422,7 +436,7 @@ CMakeFiles/kama_http_server.dir/src/TcpConnection.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/TcpServer.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/TcpServer.cc.o: ../src/TcpServer.cc
 CMakeFiles/kama_http_server.dir/src/TcpServer.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/kama_http_server.dir/src/TcpServer.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/kama_http_server.dir/src/TcpServer.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/TcpServer.cc.o -MF CMakeFiles/kama_http_server.dir/src/TcpServer.cc.o.d -o CMakeFiles/kama_http_server.dir/src/TcpServer.cc.o -c /home/shl203/kama-webserver/src/TcpServer.cc
 
 CMakeFiles/kama_http_server.dir/src/TcpServer.cc.i: cmake_force
@@ -436,7 +450,7 @@ CMakeFiles/kama_http_server.dir/src/TcpServer.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/Thread.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/Thread.cc.o: ../src/Thread.cc
 CMakeFiles/kama_http_server.dir/src/Thread.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/kama_http_server.dir/src/Thread.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/kama_http_server.dir/src/Thread.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/Thread.cc.o -MF CMakeFiles/kama_http_server.dir/src/Thread.cc.o.d -o CMakeFiles/kama_http_server.dir/src/Thread.cc.o -c /home/shl203/kama-webserver/src/Thread.cc
 
 CMakeFiles/kama_http_server.dir/src/Thread.cc.i: cmake_force
@@ -450,7 +464,7 @@ CMakeFiles/kama_http_server.dir/src/Thread.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/Timer.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/Timer.cc.o: ../src/Timer.cc
 CMakeFiles/kama_http_server.dir/src/Timer.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/kama_http_server.dir/src/Timer.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/kama_http_server.dir/src/Timer.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/Timer.cc.o -MF CMakeFiles/kama_http_server.dir/src/Timer.cc.o.d -o CMakeFiles/kama_http_server.dir/src/Timer.cc.o -c /home/shl203/kama-webserver/src/Timer.cc
 
 CMakeFiles/kama_http_server.dir/src/Timer.cc.i: cmake_force
@@ -464,7 +478,7 @@ CMakeFiles/kama_http_server.dir/src/Timer.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o: ../src/TimerQueue.cc
 CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o -MF CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o.d -o CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.o -c /home/shl203/kama-webserver/src/TimerQueue.cc
 
 CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.i: cmake_force
@@ -478,7 +492,7 @@ CMakeFiles/kama_http_server.dir/src/TimerQueue.cc.s: cmake_force
 CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o: CMakeFiles/kama_http_server.dir/flags.make
 CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o: ../src/Timestamp.cc
 CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o: CMakeFiles/kama_http_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o -MF CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o.d -o CMakeFiles/kama_http_server.dir/src/Timestamp.cc.o -c /home/shl203/kama-webserver/src/Timestamp.cc
 
 CMakeFiles/kama_http_server.dir/src/Timestamp.cc.i: cmake_force
@@ -493,6 +507,7 @@ CMakeFiles/kama_http_server.dir/src/Timestamp.cc.s: cmake_force
 kama_http_server_OBJECTS = \
 "CMakeFiles/kama_http_server.dir/src/main_http.cc.o" \
 "CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.o" \
+"CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o" \
 "CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o" \
 "CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o" \
 "CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o" \
@@ -527,6 +542,7 @@ kama_http_server_EXTERNAL_OBJECTS =
 
 ../bin/kama_http_server: CMakeFiles/kama_http_server.dir/src/main_http.cc.o
 ../bin/kama_http_server: CMakeFiles/kama_http_server.dir/src/db/DatabaseManager.cpp.o
+../bin/kama_http_server: CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o
 ../bin/kama_http_server: CMakeFiles/kama_http_server.dir/src/http/HttpContext.cc.o
 ../bin/kama_http_server: CMakeFiles/kama_http_server.dir/src/http/HttpParser.cc.o
 ../bin/kama_http_server: CMakeFiles/kama_http_server.dir/src/http/HttpRequest.cc.o
@@ -569,7 +585,7 @@ kama_http_server_EXTERNAL_OBJECTS =
 ../bin/kama_http_server: /usr/lib/x86_64-linux-gnu/librt.a
 ../bin/kama_http_server: /usr/lib/x86_64-linux-gnu/libmysqlclient.so
 ../bin/kama_http_server: CMakeFiles/kama_http_server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Linking CXX executable ../bin/kama_http_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Linking CXX executable ../bin/kama_http_server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/kama_http_server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

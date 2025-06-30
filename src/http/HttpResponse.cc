@@ -28,6 +28,12 @@ void HttpResponse::setContentType(const std::string& type) {
     setHeader("Content-Type", type);
 }
 
+void HttpResponse::enableCORS() {
+    setHeader("Access-Control-Allow-Origin", "*");
+    setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+}
+
 void HttpResponse::setContentLength(size_t length) {
     setHeader("Content-Length", std::to_string(length));
 }

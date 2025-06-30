@@ -87,12 +87,15 @@ public:
     std::vector<SessionInfo> getUserSessions(const std::string& userId);
     SessionInfo getSessionInfo(const std::string& sessionId);
     bool deleteSession(const std::string& sessionId);
+    bool sessionExists(const std::string& sessionId); // 检查会话是否存在
     
     // 对话记录
     bool saveConversation(const std::string& sessionId, const std::string& messageType, 
                          const std::string& content, const std::string& model = "", 
                          int promptTokens = 0, int completionTokens = 0);
     std::vector<ConversationRecord> getConversationHistory(const std::string& sessionId, int limit = 20, int offset = 0);
+    
+    // 工具函数 - 已经在private中定义，无需重复
     int getConversationCount(const std::string& sessionId);
     bool deleteConversationHistory(const std::string& sessionId);
     
@@ -117,6 +120,12 @@ public:
     
     // 将 getCurrentTimestamp 从 private 部分移动到这里
     long getCurrentTimestamp() const;
+
+    // 数据库状态相关方法
+    int getUserCount();
+    int getSessionCount();
+    int getMessageCount();
+    int getCacheCount();
 
 private:
     DatabaseManager();

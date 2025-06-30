@@ -1,0 +1,102 @@
+2025/06/30 16:25:078445 DEBUG EventLoop createdtruein thread271337 - EventLoop.cc:53
+2025/06/30 16:25:078464 INFO  func =>fd5events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:078590 INFO  LLaMA 服务连接成功：127.0.0.1:8899 - main_http.cc:79
+2025/06/30 16:25:078598 INFO  尝试连接数据库: localhost:3306/kama_llm - main_http.cc:333
+2025/06/30 16:25:078601 INFO  使用用户: root - main_http.cc:334
+2025/06/30 16:25:078635 INFO  尝试连接MySQL - Host: localhost, Port: 3306, DB: kama_llm, User: root - DatabaseManager.cpp:86
+2025/06/30 16:25:081075 INFO  MySQL连接成功: localhost:3306/kama_llm - DatabaseManager.cpp:120
+2025/06/30 16:25:087737 INFO  数据库表初始化完成 - DatabaseManager.cpp:230
+2025/06/30 16:25:087747 INFO  MySQL数据库初始化成功 - DatabaseManager.cpp:52
+2025/06/30 16:25:087750 INFO  数据库初始化成功，连接到 localhost:3306 - main_http.cc:340
+2025/06/30 16:25:087761 INFO  Added route: POST /api/chat - HttpServer.cc:55
+2025/06/30 16:25:087766 INFO  Added route: GET /api/status - HttpServer.cc:55
+2025/06/30 16:25:087770 INFO  Added route: GET /api/history - HttpServer.cc:55
+2025/06/30 16:25:087775 INFO  Added route: POST /api/login - HttpServer.cc:55
+2025/06/30 16:25:087787 INFO  Added route: POST /api/register - HttpServer.cc:55
+2025/06/30 16:25:087792 INFO  Added route: GET /api/sessions - HttpServer.cc:55
+2025/06/30 16:25:087796 INFO  静态文件服务已启用，根目录: /home/shl203/kama-webserver/static - main_http.cc:388
+2025/06/30 16:25:087800 INFO  HTTP Server [LlamaHttpServer] started on 0.0.0.0:8081 - HttpServer.cc:36
+2025/06/30 16:25:087931 DEBUG EventLoop createdtruein thread271340 - EventLoop.cc:53
+2025/06/30 16:25:087949 INFO  func =>fd9events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:087971 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:25:087976 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:25:088074 DEBUG EventLoop createdtruein thread271341 - EventLoop.cc:53
+2025/06/30 16:25:088091 INFO  func =>fd11events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:088108 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:25:088111 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:25:088221 DEBUG EventLoop createdtruein thread271342 - EventLoop.cc:53
+2025/06/30 16:25:088237 INFO  func =>fd13events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:088254 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:25:088257 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:25:088459 DEBUG EventLoop createdtruein thread271343 - EventLoop.cc:53
+2025/06/30 16:25:088503 INFO  func =>fd15events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:088549 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:25:088560 INFO  func =>fd6events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:088561 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:25:088607 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:25:088611 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:26:831164 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:26:831218 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:26:831271 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/06/30 16:26:831299 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#1]from %s127.0.0.1:47968 - TcpServer.cc:96
+2025/06/30 16:26:831336 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#1]at fd=16 - TcpConnection.cc:52
+2025/06/30 16:26:831407 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:26:831421 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:26:831452 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:26:831469 INFO  func =>fd16events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:26:831508 INFO  New HTTP connection from: 127.0.0.1:47968 - HttpServer.cc:65
+2025/06/30 16:26:831518 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:26:834924 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:26:834938 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:26:834964 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/06/30 16:26:834976 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#2]from %s127.0.0.1:47970 - TcpServer.cc:96
+2025/06/30 16:26:834997 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#2]at fd=17 - TcpConnection.cc:52
+2025/06/30 16:26:835055 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:26:835063 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:26:835072 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:26:835080 INFO  func =>fd17events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:26:835093 INFO  New HTTP connection from: 127.0.0.1:47970 - HttpServer.cc:65
+2025/06/30 16:26:835101 INFO  fd total count:3 - EPollPoller.cc:34
+2025/06/30 16:26:835105 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:26:835110 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:26:835354 INFO  fd total count:3 - EPollPoller.cc:34
+2025/06/30 16:26:892486 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:26:892498 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:26:892598 INFO  fd total count:3 - EPollPoller.cc:34
+2025/06/30 16:26:105190 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:26:105215 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:26:105244 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/06/30 16:26:105255 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#3]from %s127.0.0.1:47974 - TcpServer.cc:96
+2025/06/30 16:26:105281 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#3]at fd=18 - TcpConnection.cc:52
+2025/06/30 16:26:105335 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:26:105348 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:26:105370 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:26:105383 INFO  func =>fd18events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:26:105402 INFO  New HTTP connection from: 127.0.0.1:47974 - HttpServer.cc:65
+2025/06/30 16:26:105410 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:26:088991 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:089026 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:098038 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:098090 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:098331 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:098378 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:115398 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:115450 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:26:115522 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:115570 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:26:099118 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:099174 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:108152 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:108215 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:108439 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:108483 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:125521 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:125577 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:26:125618 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:125648 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:26:109256 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:109315 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:118292 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:118351 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:118543 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:118588 INFO  fd total count:1 - EPollPoller.cc:34

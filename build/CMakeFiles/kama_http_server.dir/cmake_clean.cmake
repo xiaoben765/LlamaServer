@@ -17,6 +17,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/kama_http_server.dir/src/Buffer.cc.o.d"
   "CMakeFiles/kama_http_server.dir/src/Channel.cc.o"
   "CMakeFiles/kama_http_server.dir/src/Channel.cc.o.d"
+  "CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o"
+  "CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o.d"
   "CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o"
   "CMakeFiles/kama_http_server.dir/src/DefaultPoller.cc.o.d"
   "CMakeFiles/kama_http_server.dir/src/EPollPoller.cc.o"

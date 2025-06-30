@@ -1,0 +1,343 @@
+2025/06/30 16:55:396879 DEBUG EventLoop createdtruein thread273879 - EventLoop.cc:53
+2025/06/30 16:55:396895 INFO  func =>fd5events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:55:396999 INFO  LLaMA 服务连接成功：127.0.0.1:8899 - main_http.cc:79
+2025/06/30 16:55:397007 INFO  尝试连接数据库: localhost:3306/kama_llm - main_http.cc:333
+2025/06/30 16:55:397010 INFO  使用用户: root - main_http.cc:334
+2025/06/30 16:55:397047 INFO  尝试连接MySQL - Host: localhost, Port: 3306, DB: kama_llm, User: root - DatabaseManager.cpp:86
+2025/06/30 16:55:398544 INFO  MySQL连接成功: localhost:3306/kama_llm - DatabaseManager.cpp:120
+2025/06/30 16:55:403419 INFO  数据库表初始化完成 - DatabaseManager.cpp:230
+2025/06/30 16:55:403424 INFO  MySQL数据库初始化成功 - DatabaseManager.cpp:52
+2025/06/30 16:55:403428 INFO  数据库初始化成功，连接到 localhost:3306 - main_http.cc:340
+2025/06/30 16:55:403438 INFO  Added route: POST /api/chat - HttpServer.cc:55
+2025/06/30 16:55:403443 INFO  Added route: GET /api/status - HttpServer.cc:55
+2025/06/30 16:55:403448 INFO  Added route: GET /api/history - HttpServer.cc:55
+2025/06/30 16:55:403453 INFO  Added route: POST /api/login - HttpServer.cc:55
+2025/06/30 16:55:403457 INFO  Added route: POST /api/register - HttpServer.cc:55
+2025/06/30 16:55:403462 INFO  Added route: GET /api/sessions - HttpServer.cc:55
+2025/06/30 16:55:403465 INFO  静态文件服务已启用，根目录: /home/shl203/kama-webserver/static - main_http.cc:388
+2025/06/30 16:55:403469 INFO  HTTP Server [LlamaHttpServer] started on 0.0.0.0:8081 - HttpServer.cc:36
+2025/06/30 16:55:403587 DEBUG EventLoop createdtruein thread273881 - EventLoop.cc:53
+2025/06/30 16:55:403605 INFO  func =>fd9events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:55:403625 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:55:403629 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:55:403893 DEBUG EventLoop createdtruein thread273882 - EventLoop.cc:53
+2025/06/30 16:55:403934 INFO  func =>fd11events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:55:403980 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:55:403990 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:55:404076 DEBUG EventLoop createdtruein thread273883 - EventLoop.cc:53
+2025/06/30 16:55:404093 INFO  func =>fd13events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:55:404110 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:55:404114 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:55:404205 DEBUG EventLoop createdtruein thread273884 - EventLoop.cc:53
+2025/06/30 16:55:404224 INFO  func =>fd15events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:55:404243 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:55:404247 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:55:404257 INFO  func =>fd6events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:55:404297 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:55:404301 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:55:715147 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:715180 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:715207 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/06/30 16:55:715215 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#1]from %s127.0.0.1:47990 - TcpServer.cc:96
+2025/06/30 16:55:715233 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#1]at fd=16 - TcpConnection.cc:52
+2025/06/30 16:55:715278 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:55:715338 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:715392 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:715419 INFO  func =>fd16events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:55:715477 INFO  New HTTP connection from: 127.0.0.1:47990 - HttpServer.cc:65
+2025/06/30 16:55:715499 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:55:715511 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:715520 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:716061 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:55:765779 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:765810 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:767012 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:55:803733 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:803766 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:804613 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:55:978003 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:978053 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:978100 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/06/30 16:55:978115 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#2]from %s127.0.0.1:47992 - TcpServer.cc:96
+2025/06/30 16:55:978149 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#2]at fd=17 - TcpConnection.cc:52
+2025/06/30 16:55:978229 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:55:978266 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:978306 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:978331 INFO  func =>fd17events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:55:978374 INFO  New HTTP connection from: 127.0.0.1:47992 - HttpServer.cc:65
+2025/06/30 16:55:978394 INFO  fd total count:3 - EPollPoller.cc:34
+2025/06/30 16:55:987342 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:987360 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:987389 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/06/30 16:55:987401 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#3]from %s127.0.0.1:47994 - TcpServer.cc:96
+2025/06/30 16:55:987424 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#3]at fd=18 - TcpConnection.cc:52
+2025/06/30 16:55:987473 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:55:987515 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:987542 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:987564 INFO  func =>fd18events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:55:987595 INFO  New HTTP connection from: 127.0.0.1:47994 - HttpServer.cc:65
+2025/06/30 16:55:987613 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:55:351591 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:351650 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:352157 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:55:380000 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:380020 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:381083 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:55:411359 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:55:411394 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:55:413692 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:55:413719 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:55:414019 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:55:414036 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:55:995842 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:55:995904 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:55:645767 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:55:645800 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:55:645932 INFO  收到聊天请求: '你好，介绍下你自己' - main_http.cc:451
+2025/06/30 16:55:648746 ERROR SQL执行失败: Cannot add or update a child row: a foreign key constraint fails (`kama_llm`.`sessions`, CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE), SQL: INSERT INTO sessions (session_id, user_id, created_at, last_active, session_name) VALUES ('b6032cbb-fd56-4e3d-a71c-ae85196bb75b', 'anonymous', 1751273755, 1751273755, '默认会话') - DatabaseManager.cpp:241
+2025/06/30 16:55:648798 WARN  数据库创建会话失败，使用临时会话ID: session_ef782ef7-efc8-48f0-b912-7424789d8d1a - main_http.cc:462
+2025/06/30 16:55:649084 ERROR SQL执行失败: Data too long for column 'session_id' at row 1, SQL: INSERT INTO conversations (session_id, message_type, content, timestamp, model_used, prompt_tokens, completion_tokens) VALUES ('session_ef782ef7-efc8-48f0-b912-7424789d8d1a', 'user', '你好，介绍下你自己', 1751273755, '', 0, 0) - DatabaseManager.cpp:241
+2025/06/30 16:55:649090 WARN  保存用户消息到数据库失败 - main_http.cc:487
+2025/06/30 16:55:650042 INFO  成功建立到LLaMA服务的新连接 - main_http.cc:298
+2025/06/30 16:55:419800 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:55:419802 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:55:419842 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:55:419870 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:55:423807 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:55:423859 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:003808 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:003873 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:56:427813 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:427815 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:427902 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:427910 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:431807 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:431840 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:165081 INFO  接收到原始响应，长度: 969 - main_http.cc:163
+2025/06/30 16:56:165109 INFO  响应前100字符: {"cached":false,"response":"你好，介绍下你自己吧？\nAlice: 嗨，我是Alice。我是一� - main_http.cc:165
+2025/06/30 16:56:165115 INFO  响应最后100字符: ��在未来的几年里，人工智能将会在我们的生活中扮演越来越重要的角色。"} - main_http.cc:166
+2025/06/30 16:56:165259 INFO  成功解析JSON，获取到response字段 - main_http.cc:178
+2025/06/30 16:56:169100 ERROR SQL执行失败: Data too long for column 'session_id' at row 1, SQL: INSERT INTO conversations (session_id, message_type, content, timestamp, model_used, prompt_tokens, completion_tokens) VALUES ('session_ef782ef7-efc8-48f0-b912-7424789d8d1a', 'ai', '你好，介绍下你自己吧？\nAlice: 嗨，我是Alice。我是一名程序员，专注于开发和优化人工智能应用程序。\nBob: 哇，听起来很高大上啊！你用什么语言开发呢？\nAlice: 我主要使用Python和Java进行开发。这两种语言在人工智能领域都有广泛的应用。\nBob: 那你能介绍一下你最近在做的项目吗？\nAlice: 当然可以！我最近在开发一个人脸识别应用程序。这个应用程序可以识别和跟踪人脸，以帮助用户更轻松地管理他们的照片和视频库。\nBob: 那听起来真的很有趣！你觉得这个应用程序的未来发展前景如何？\nAlice: 我认为这个应用程序有很大的发展前景。随着人工智能技术的进步，我们可以期待这个应用程序的功能将会更加丰富和强大。我相信，在未来的几年里，人工智能将会在我们的生活中扮演越来越重要的角色。', 1751273771, '', 0, 0) - DatabaseManager.cpp:241
+2025/06/30 16:56:169211 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:56:013926 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:013986 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:56:435830 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:435889 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:437967 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:438025 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:441868 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:441884 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:179248 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:179281 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:56:024028 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:024065 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:56:445979 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:446044 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:447803 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:447835 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:451832 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:451873 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:189367 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:189408 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:56:034131 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:034186 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:56:103293 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:56:103354 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:56:103712 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:56:137164 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:56:137201 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:56:138887 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:56:145316 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:56:145329 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:56:146601 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:56:455821 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:455855 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:455864 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:455889 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:461994 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:462039 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:044222 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:044256 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:56:130817 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:56:130852 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:56:132139 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:56:143994 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:56:144000 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:56:144872 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:56:465912 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:465972 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:466049 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:465975 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:472108 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:472128 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:054316 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:054371 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:56:144962 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:56:144995 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:56:146213 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:56:158719 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:56:158728 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:56:159621 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:56:476138 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:476184 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:476138 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:476245 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:56:479839 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:56:479884 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:064418 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:064453 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:57:145935 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:146003 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:148110 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:57:155367 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:155394 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:156782 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:57:486265 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:486296 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:486318 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:486342 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:487857 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:487902 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:074508 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:074567 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:57:138364 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:138419 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:139702 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:57:147726 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:147741 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:148661 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:57:489431 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:489466 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:496398 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:496425 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:497981 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:498029 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:084628 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:084683 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:57:141098 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:141129 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:142342 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:57:150286 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:150290 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:151103 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:57:351568 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:351595 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:351748 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:57:387794 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:387805 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:388737 INFO  fd total count:4 - EPollPoller.cc:34
+2025/06/30 16:57:709415 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:709460 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:709514 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/06/30 16:57:709530 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#4]from %s127.0.0.1:47996 - TcpServer.cc:96
+2025/06/30 16:57:709575 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#4]at fd=20 - TcpConnection.cc:52
+2025/06/30 16:57:709673 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:57:709688 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:709708 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:709720 INFO  func =>fd20events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:57:709740 INFO  New HTTP connection from: 127.0.0.1:47996 - HttpServer.cc:65
+2025/06/30 16:57:709748 INFO  fd total count:5 - EPollPoller.cc:34
+2025/06/30 16:57:499513 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:499555 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:506463 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:506495 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:508089 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:508135 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:774602 INFO  events happend1 - EPollPoller.cc:51
+2025/06/30 16:57:774663 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/06/30 16:57:774935 INFO  收到聊天请求: '你好，介绍下你自己' - main_http.cc:451
+2025/06/30 16:57:777043 ERROR SQL执行失败: Cannot add or update a child row: a foreign key constraint fails (`kama_llm`.`sessions`, CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE), SQL: INSERT INTO sessions (session_id, user_id, created_at, last_active, session_name) VALUES ('70c8367f-36d7-4230-a242-f577bfe84bbc', 'anonymous', 1751273856, 1751273856, '默认会话') - DatabaseManager.cpp:241
+2025/06/30 16:57:777086 WARN  数据库创建会话失败，使用临时会话ID: session_7d4f89c3-aa75-4158-9206-91c9ad71436a - main_http.cc:462
+2025/06/30 16:57:777266 ERROR SQL执行失败: Data too long for column 'session_id' at row 1, SQL: INSERT INTO conversations (session_id, message_type, content, timestamp, model_used, prompt_tokens, completion_tokens) VALUES ('session_7d4f89c3-aa75-4158-9206-91c9ad71436a', 'user', '你好，介绍下你自己', 1751273856, '', 0, 0) - DatabaseManager.cpp:241
+2025/06/30 16:57:777281 WARN  保存用户消息到数据库失败 - main_http.cc:487
+2025/06/30 16:57:777663 INFO  数据库缓存命中 - main_http.cc:503
+2025/06/30 16:57:779675 ERROR SQL执行失败: Data too long for column 'session_id' at row 1, SQL: INSERT INTO conversations (session_id, message_type, content, timestamp, model_used, prompt_tokens, completion_tokens) VALUES ('session_7d4f89c3-aa75-4158-9206-91c9ad71436a', 'ai', '你好，介绍下你自己吧？\nAlice: 嗨，我是Alice。我是一名程序员，专注于开发和优化人工智能应用程序。\nBob: 哇，听起来很高大上啊！你用什么语言开发呢？\nAlice: 我主要使用Python和Java进行开发。这两种语言在人工智能领域都有广泛的应用。\nBob: 那你能介绍一下你最近在做的项目吗？\nAlice: 当然可以！我最近在开发一个人脸识别应用程序。这个应用程序可以识别和跟踪人脸，以帮助用户更轻松地管理他们的照片和视频库。\nBob: 那听起来真的很有趣！你觉得这个应用程序的未来发展前景如何？\nAlice: 我认为这个应用程序有很大的发展前景。随着人工智能技术的进步，我们可以期待这个应用程序的功能将会更加丰富和强大。我相信，在未来的几年里，人工智能将会在我们的生活中扮演越来越重要的角色。', 1751273856, '', 0, 0) - DatabaseManager.cpp:241
+2025/06/30 16:57:779977 INFO  fd total count:5 - EPollPoller.cc:34
+2025/06/30 16:57:715907 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:715970 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:57:509611 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:509655 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:516636 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:516697 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:518209 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:518256 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:790024 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:790056 INFO  fd total count:5 - EPollPoller.cc:34
+2025/06/30 16:57:726026 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:726061 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:57:519715 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:519746 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:526748 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:526775 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:528291 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:528311 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:800149 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:800213 INFO  fd total count:5 - EPollPoller.cc:34
+2025/06/30 16:57:736092 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:736130 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:57:529860 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:529919 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:536861 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:536898 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:57:538349 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:57:538368 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:810288 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:810350 INFO  fd total count:5 - EPollPoller.cc:34
+2025/06/30 16:58:743842 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:743904 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:58:539973 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:540023 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:546984 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:547044 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:548449 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:548496 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:811844 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:811876 INFO  fd total count:5 - EPollPoller.cc:34
+2025/06/30 16:58:753991 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:754052 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:58:550065 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:550100 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:557151 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:557184 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:558557 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:558606 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:821914 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:821950 INFO  fd total count:5 - EPollPoller.cc:34
+2025/06/30 16:58:759847 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:759904 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:58:560156 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:560198 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:567253 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:567283 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:568651 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:568675 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:832053 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:832114 INFO  fd total count:5 - EPollPoller.cc:34
+2025/06/30 16:58:770017 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:770078 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:58:570250 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:570282 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:577384 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:577413 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:578751 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:578799 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:842165 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:842199 INFO  fd total count:5 - EPollPoller.cc:34
+2025/06/30 16:58:780120 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:780151 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:58:580318 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:580350 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:587461 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:587487 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:588885 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:588934 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:852265 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:852299 INFO  fd total count:5 - EPollPoller.cc:34
+2025/06/30 16:58:790176 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:790204 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:58:590417 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:590473 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:597570 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:597606 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:58:599043 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:58:599093 INFO  fd total count:1 - EPollPoller.cc:34

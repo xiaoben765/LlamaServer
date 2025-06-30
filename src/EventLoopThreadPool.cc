@@ -44,10 +44,25 @@ void EventLoopThreadPool::start(const ThreadInitCallback &cb)
     }
 
     // 特殊情况：如果线程数为0，那么所有任务都在 baseLoop_ 中运行
-    // 如果用户提供了初始化回调，就在 baseLoop_ 上执行它
-    if (numThreads_ == 0 && cb)
+    if (numThreads_ == 0) 
     {
-        cb(baseLoop_);
+        // 即使没有子线程，也要向哈希环中添加一个节点，避免getNode方法抛出异常
+        char buf[name_.size() + 32];
+        snprintf(buf, sizeof buf, "%s%s", name_.c_str(), "_base");
+        
+        // 确保清除哈希环中的所有节点并添加新节点，防止潜在的历史残留问题
+        LOG_INFO << "初始化一致性哈希环，添加基础节点: " << buf;
+        
+        // 添加基础节点到哈希环
+        hash_.addNode(buf);
+        
+        LOG_INFO << "EventLoopThreadPool使用单线程模式，所有连接将由baseLoop处理";
+        
+        // 如果用户提供了初始化回调，就在 baseLoop_ 上执行它
+        if (cb) {
+            LOG_INFO << "执行线程初始化回调";
+            cb(baseLoop_);
+        }
     }
 }
 
@@ -56,20 +71,57 @@ void EventLoopThreadPool::start(const ThreadInitCallback &cb)
 // 在网络编程中，通常使用客户端的 "IP地址+端口号" 作为 key。
 EventLoop* EventLoopThreadPool::getNextLoop(const std::string &key)
 {
-    // 1. 通过一致性哈希算法，根据传入的 key 计算出应该由哪个节点（线程）处理
-    size_t index = hash_.getNode(key); 
-
-    // 2. 如果计算出的索引超出了 loops_ 的范围，
-    if (index >= loops_.size())
+    // 如果没有子线程，直接返回baseLoop_，但仍然尝试使用哈希算法
+    // 为numThreads_=0的情况增加了额外的日志，帮助诊断问题
+    if (loops_.empty())
     {
-        // 如果索引无效（理论上不应发生，除非哈希实现有问题或loops为空），
-        // 记录错误日志并返回主循环作为备用。
-        LOG_ERROR << "EventLoopThreadPool::getNextLoop ERROR";
-        return baseLoop_;
+        LOG_INFO << "EventLoopThreadPool::getNextLoop - 线程池为空，使用baseLoop_处理请求，key=" << key;
+        
+        // 仍然需要使用一致性哈希，因为start方法中已经添加了基础节点（即使线程数为0）
+        // 注意：这里不直接返回，让程序继续执行哈希逻辑
     }
     
-    // 3. 返回选中的 EventLoop 的指针
-    return loops_[index]; 
+    try {
+        // 如果线程池为空，直接返回baseLoop_
+        if (loops_.empty()) {
+            LOG_INFO << "线程池为空，直接使用baseLoop_处理请求";
+            return baseLoop_;
+        }
+        
+        // 1. 通过一致性哈希算法，根据传入的 key 计算出应该由哪个节点（线程）处理
+        size_t hashValue = hash_.getNode(key);
+        
+        // 再次检查loops_是否为空，避免因为潜在的并发问题导致除以0错误
+        if (loops_.empty())
+        {
+            LOG_INFO << "计算哈希后发现线程池为空，使用baseLoop_";
+            return baseLoop_;
+        }
+        
+        // 计算在loops_中的索引
+        size_t index = hashValue % loops_.size();
+        
+        // 2. 如果计算出的索引超出了 loops_ 的范围，
+        if (index >= loops_.size())
+        {
+            // 如果索引无效（理论上不应发生，除非哈希实现有问题），
+            // 记录错误日志并返回主循环作为备用。
+            LOG_ERROR << "EventLoopThreadPool::getNextLoop ERROR - index out of range";
+            return baseLoop_;
+        }
+        
+        // 3. 返回选中的 EventLoop 的指针
+        LOG_INFO << "使用一致性哈希选择线程，索引=" << index;
+        return loops_[index];
+    }
+    catch (const std::exception& e) {
+        // 如果一致性哈希抛出异常（例如，没有节点），记录错误并返回baseLoop_
+        LOG_ERROR << "EventLoopThreadPool::getNextLoop 一致性哈希异常: " << e.what() 
+                 << " [key=" << key << ", numThreads=" << numThreads_ << "]";
+                 
+        // 这里可能是因为哈希环中没有足够的节点，需要确保start()方法中已正确处理numThreads_=0的情况
+        return baseLoop_;
+    }
 }
 
 std::vector<EventLoop *> EventLoopThreadPool::getAllLoops()

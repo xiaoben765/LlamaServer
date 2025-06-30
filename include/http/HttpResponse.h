@@ -37,6 +37,9 @@ public:
     void setContentType(const std::string& type);
     void setContentLength(size_t length);
 
+    // 设置CORS头，允许跨域请求
+    void enableCORS();
+
     // 内容设置
     void setBody(const std::string& body);
     void appendBody(const std::string& content);

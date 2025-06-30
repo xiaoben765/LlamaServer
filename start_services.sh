@@ -39,6 +39,18 @@ fi
 # 创建日志目录
 mkdir -p $LOG_DIR
 
+# 创建配置目录并确保配置文件存在
+CONFIG_DIR="/home/shl203/kama-webserver/config"
+CONFIG_FILE="$CONFIG_DIR/config.json"
+mkdir -p $CONFIG_DIR
+
+if [[ ! -f "$CONFIG_FILE" ]]; then
+    echo -e "${YELLOW}配置文件不存在，将创建默认配置文件${NC}"
+    # 确保bin目录下的配置文件也存在
+    mkdir -p /home/shl203/kama-webserver/bin/config
+    cp -f /home/shl203/kama-webserver/config/config.json /home/shl203/kama-webserver/bin/config/ 2>/dev/null || true
+fi
+
 if [[ ! -f "$LLAMA_SERVICE" ]]; then
     echo "LLaMA 服务文件不存在: $LLAMA_SERVICE"
     exit 1
@@ -154,13 +166,30 @@ if ! systemctl is-active --quiet mysql; then
     fi
 fi
 
-# 使用更详细的日志记录方式启动HTTP服务器
-$HTTP_SERVER > $HTTP_LOG 2>&1 &
+# 确保配置文件存在
+if [[ ! -f "/home/shl203/kama-webserver/config/config.json" ]]; then
+    echo "⚠️ 配置文件不存在，创建默认配置..."
+    mkdir -p /home/shl203/kama-webserver/config
+    cp -f /home/shl203/kama-webserver/bin/config/config.json /home/shl203/kama-webserver/config/ 2>/dev/null || true
+fi
+
+# 清空之前的日志
+> $HTTP_LOG
+
+# 检查LLaMA服务是否在运行，如果不在则使用--disable-llama选项
+if ps -p $LLAMA_PID > /dev/null; then
+    echo "启动命令: $HTTP_SERVER ./config/config.json"
+    cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json > $HTTP_LOG 2>&1 &
+else
+    echo "⚠️ LLaMA服务未运行，HTTP服务器将在没有聊天功能的情况下启动"
+    echo "启动命令: $HTTP_SERVER ./config/config.json --disable-llama"
+    cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json --disable-llama > $HTTP_LOG 2>&1 &
+fi
 HTTP_PID=$!
 echo "HTTP 服务器 (PID: $HTTP_PID) 已启动，等待确认..."
 
 # 增加等待时间并检查端口是否正在监听
-sleep 3
+sleep 5
 if ! ps -p $HTTP_PID > /dev/null; then
     echo "❌ 无法启动 HTTP 服务器，进程已退出，检查日志："
     cat $HTTP_LOG

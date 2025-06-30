@@ -1,0 +1,42 @@
+2025/06/30 16:25:037686 DEBUG EventLoop createdtruein thread271321 - EventLoop.cc:53
+2025/06/30 16:25:037740 INFO  func =>fd4events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:037936 INFO  LlamaService 初始化，连接到 127.0.0.1:8899 (使用CPU) - main.cc:103
+2025/06/30 16:25:038050 DEBUG EventLoop createdtruein thread271328 - EventLoop.cc:53
+2025/06/30 16:25:038066 INFO  func =>fd8events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:038086 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:25:038090 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:25:038281 DEBUG EventLoop createdtruein thread271329 - EventLoop.cc:53
+2025/06/30 16:25:038324 INFO  func =>fd10events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:038366 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:25:038377 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:25:038497 DEBUG EventLoop createdtruein thread271330 - EventLoop.cc:53
+2025/06/30 16:25:038513 INFO  func =>fd12events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:038530 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:25:038533 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:25:038546 INFO  func =>fd5events=3index=-1 - EPollPoller.cc:91
+2025/06/30 16:25:038601 INFO  EventLoop start looping - EventLoop.cc:82
+2025/06/30 16:25:038605 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:26:048125 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:048151 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:048433 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:048455 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:048562 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:048582 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:048701 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:048749 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:26:058181 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:058208 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:058569 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:058619 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:058642 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:058624 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:058781 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:058799 INFO  fd total count:2 - EPollPoller.cc:34
+2025/06/30 16:26:068254 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:068292 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:068721 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:068721 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:068796 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:068802 INFO  fd total count:1 - EPollPoller.cc:34
+2025/06/30 16:26:068850 DEBUG timeout! - EPollPoller.cc:62
+2025/06/30 16:26:068897 INFO  fd total count:2 - EPollPoller.cc:34

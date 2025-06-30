@@ -89,7 +89,7 @@ clean: CMakeFiles/kama_http_server.dir/clean
 CMakeFiles/current_thread.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/current_thread.dir/build.make CMakeFiles/current_thread.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/current_thread.dir/build.make CMakeFiles/current_thread.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=26,27 "Built target current_thread"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=27,28 "Built target current_thread"
 .PHONY : CMakeFiles/current_thread.dir/all
 
 # Build rule for subdir invocation for target.
@@ -115,7 +115,7 @@ CMakeFiles/current_thread.dir/clean:
 CMakeFiles/llama_service.dir/all: CMakeFiles/current_thread.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service.dir/build.make CMakeFiles/llama_service.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=59,60,61,62,63,64,65,66,67 "Built target llama_service"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=61,62,63,64,65,66,67,68,69 "Built target llama_service"
 .PHONY : CMakeFiles/llama_service.dir/all
 
 # Build rule for subdir invocation for target.
@@ -141,7 +141,7 @@ CMakeFiles/llama_service.dir/clean:
 CMakeFiles/llama_service_tcp.dir/all: CMakeFiles/current_thread.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_service_tcp.dir/build.make CMakeFiles/llama_service_tcp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=68,69,70,71,72,73,74,75,76 "Built target llama_service_tcp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=70,71,72,73,74,75,76,77,78 "Built target llama_service_tcp"
 .PHONY : CMakeFiles/llama_service_tcp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -167,12 +167,12 @@ CMakeFiles/llama_service_tcp.dir/clean:
 CMakeFiles/KamaWebServer.dir/all: CMakeFiles/current_thread.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 "Built target KamaWebServer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26 "Built target KamaWebServer"
 .PHONY : CMakeFiles/KamaWebServer.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/KamaWebServer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/shl203/kama-webserver/build/CMakeFiles 27
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/shl203/kama-webserver/build/CMakeFiles 28
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/KamaWebServer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/shl203/kama-webserver/build/CMakeFiles 0
 .PHONY : CMakeFiles/KamaWebServer.dir/rule
@@ -193,12 +193,12 @@ CMakeFiles/KamaWebServer.dir/clean:
 CMakeFiles/kama_http_server.dir/all: CMakeFiles/current_thread.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58 "Built target kama_http_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60 "Built target kama_http_server"
 .PHONY : CMakeFiles/kama_http_server.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/kama_http_server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/shl203/kama-webserver/build/CMakeFiles 33
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/shl203/kama-webserver/build/CMakeFiles 34
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/kama_http_server.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/shl203/kama-webserver/build/CMakeFiles 0
 .PHONY : CMakeFiles/kama_http_server.dir/rule

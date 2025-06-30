@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kama WebServer</title>
+    <!-- 强制禁用缓存 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        #error-container {
+            border: 2px solid red;
+            background-color: #ffeeee;
+            padding: 10px;
+            margin: 10px 0;
+            color: #cc0000;
+            display: none;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        /* 添加一些漂亮的动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .container {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .service-item {
+            transition: all 0.3s ease;
+        }
+        
+        .service-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #e74c3c;
+            margin-right: 5px;
+        }
+        .status-indicator.active {
+            background-color: #2ecc71;
+        }
+        .service-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+        }
+        .button {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #95a5a6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kama WebServer 状态页面</h1>
+        
+        <!-- 错误显示容器 -->
+        <div id="error-container"></div>
+        
+        <div id="server-status"></div>
+        
+        <h2>服务状态</h2>
+        <div class="service-item">
+            <div>
+                <span class="status-indicator" id="llama-status"></span>
+                <strong>LLaMA 服务</strong>
+            </div>
+            <p>状态: <span id="llama-text">检查中...</span></p>
+        </div>
+        
+        <div class="service-item">
+            <div>
+                <span class="status-indicator" id="db-status"></span>
+                <strong>数据库服务</strong>
+            </div>
+            <p>状态: <span id="db-text">检查中...</span></p>
+        </div>
+        
+        <div class="service-item">
+            <div>
+                <span class="status-indicator" id="cache-status"></span>
+                <strong>缓存系统</strong>
+            </div>
+            <p>缓存大小: <span id="cache-size">未知</span></p>
+        </div>
+        
+        <h2>快速链接</h2>
+        <p>
+            <a href="/chat.html" class="button">聊天界面</a>
+            <a href="/api/status" class="button">API状态</a>
+        </p>
+        
+        <footer>
+            <p>&copy; 2025 Kama WebServer. 版本 1.0.0</p>
+        </footer>
+    </div>
+
+    <script>
+        // 添加全局错误处理
+        window.onerror = function(message, source, lineno, colno, error) {
+            showError('JavaScript错误: ' + message + ' 在 ' + source + ' 第 ' + lineno + ' 行');
+            console.error('捕获到错误:', message, source, lineno, error);
+            return true; // 防止默认处理
+        };
+        
+        // 捕获未处理的Promise错误
+        window.addEventListener('unhandledrejection', function(event) {
+            showError('Promise错误: ' + event.reason);
+            console.error('未处理的Promise错误:', event.reason);
+        });
+        
+        function showError(message) {
+            var errorContainer = document.getElementById('error-container');
+            if (errorContainer) {
+                errorContainer.style.display = 'block';
+                errorContainer.innerHTML += '<p>' + message + '</p>';
+            }
+        }
+        
+        // 页面加载完成后的处理逻辑（不显示通知）
+        window.addEventListener('load', function() {
+            console.log('页面已完全加载');
+            // 可以在这里添加页面加载完成后的逻辑，但不再显示通知
+        });
+        
+        // 页面DOM加载完成后立即检查状态
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM内容已加载完成');
+            
+            // 添加加载指示器
+            var loadingIndicator = document.createElement('div');
+            loadingIndicator.id = 'loading-indicator';
+            loadingIndicator.style.position = 'fixed';
+            loadingIndicator.style.top = '10px';
+            loadingIndicator.style.right = '10px';
+            loadingIndicator.style.background = '#3498db';
+            loadingIndicator.style.color = 'white';
+            loadingIndicator.style.padding = '5px 10px';
+            loadingIndicator.style.borderRadius = '3px';
+            loadingIndicator.style.fontSize = '12px';
+            loadingIndicator.style.transition = 'opacity 0.5s';
+            loadingIndicator.textContent = '正在加载服务状态...';
+            document.body.appendChild(loadingIndicator);
+            
+            try {
+                // 立即检查服务器状态
+                checkServerStatus();
+                
+                // 每10秒更新一次状态
+                setInterval(checkServerStatus, 10000);
+            } catch (e) {
+                showError('初始化错误: ' + e.message);
+                console.error('初始化错误:', e);
+            }
+        });
+        
+        function checkServerStatus() {
+            console.log('正在检查服务器状态...');
+            document.getElementById('server-status').innerHTML = '<div style="padding: 10px; background-color: #f8f9fa; border-left: 4px solid #17a2b8;">正在获取最新服务状态...</div>';
+            
+            // 显示加载指示器
+            var loadingIndicator = document.getElementById('loading-indicator');
+            if (loadingIndicator) {
+                loadingIndicator.style.opacity = '1';
+            }
+            
+            fetch('/api/status')
+                .then(response => {
+                    console.log('收到API响应:', response.status);
+                    if (!response.ok) {
+                        throw new Error('API请求失败，状态码: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('解析API数据:', data);
+                    // 隐藏加载指示器
+                    var loadingIndicator = document.getElementById('loading-indicator');
+                    if (loadingIndicator) {
+                        loadingIndicator.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingIndicator.textContent = '状态已更新';
+                            loadingIndicator.style.background = '#2ecc71';
+                            loadingIndicator.style.opacity = '1';
+                            setTimeout(() => {
+                                loadingIndicator.style.opacity = '0';
+                            }, 1000);
+                        }, 500);
+                    }
+                    
+                    // 更新LLaMA服务状态
+                    const llamaStatus = document.getElementById('llama-status');
+                    const llamaText = document.getElementById('llama-text');
+                    if (data.llama_available) {
+                        llamaStatus.classList.add('active');
+                        llamaText.textContent = '正常运行';
+                    } else {
+                        llamaStatus.classList.remove('active');
+                        llamaText.textContent = '不可用';
+                    }
+                    
+                    // 更新缓存状态
+                    const cacheStatus = document.getElementById('cache-status');
+                    const cacheSize = document.getElementById('cache-size');
+                    if (data.cache_size > 0) {
+                        cacheStatus.classList.add('active');
+                        cacheSize.textContent = `${data.cache_size} 条记录`;
+                    } else {
+                        cacheStatus.classList.add('active'); // 缓存为空也是正常的
+                        cacheSize.textContent = '0 条记录';
+                    }
+                    
+                    // 更新数据库状态
+                    checkDatabaseStatus();
+                    
+                    // 更新服务器状态面板
+                    document.getElementById('server-status').innerHTML = `
+                        <div class="service-item">
+                            <p><strong>系统状态:</strong> 运行正常</p>
+                            <p><strong>最后更新:</strong> ${new Date().toLocaleString()}</p>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    console.error('获取状态失败:', error);
+                    
+                    // 处理加载指示器
+                    var loadingIndicator = document.getElementById('loading-indicator');
+                    if (loadingIndicator) {
+                        loadingIndicator.textContent = '连接失败';
+                        loadingIndicator.style.background = '#e74c3c';
+                        loadingIndicator.style.opacity = '1';
+                        setTimeout(() => {
+                            loadingIndicator.style.opacity = '0.7';
+                        }, 2000);
+                    }
+                    
+                    document.getElementById('server-status').innerHTML = `
+                        <div class="service-item" style="border-left-color: #e74c3c;">
+                            <p><strong>系统状态:</strong> 无法连接到服务器</p>
+                            <p><strong>最后尝试:</strong> ${new Date().toLocaleString()}</p>
+                            <p><a href="javascript:void(0)" onclick="checkServerStatus()" class="button">重试连接</a></p>
+                        </div>
+                    `;
+                });
+        }
+        
+        function checkDatabaseStatus() {
+            // 直接从/api/status获取数据库状态信息
+            fetch('/api/status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.database_available) {
+                        document.getElementById('db-status').classList.add('active');
+                        document.getElementById('db-text').textContent = '已连接';
+                    } else {
+                        throw new Error('数据库不可用');
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('db-status').classList.remove('active');
+                    document.getElementById('db-text').textContent = '无法连接';
+                });
+        }
+    </script>
+</body>
+</html>

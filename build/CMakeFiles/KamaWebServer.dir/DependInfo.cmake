@@ -16,6 +16,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/shl203/kama-webserver/src/Acceptor.cc" "CMakeFiles/KamaWebServer.dir/src/Acceptor.cc.o" "gcc" "CMakeFiles/KamaWebServer.dir/src/Acceptor.cc.o.d"
   "/home/shl203/kama-webserver/src/Buffer.cc" "CMakeFiles/KamaWebServer.dir/src/Buffer.cc.o" "gcc" "CMakeFiles/KamaWebServer.dir/src/Buffer.cc.o.d"
   "/home/shl203/kama-webserver/src/Channel.cc" "CMakeFiles/KamaWebServer.dir/src/Channel.cc.o" "gcc" "CMakeFiles/KamaWebServer.dir/src/Channel.cc.o.d"
+  "/home/shl203/kama-webserver/src/ConfigManager.cc" "CMakeFiles/KamaWebServer.dir/src/ConfigManager.cc.o" "gcc" "CMakeFiles/KamaWebServer.dir/src/ConfigManager.cc.o.d"
   "/home/shl203/kama-webserver/src/DefaultPoller.cc" "CMakeFiles/KamaWebServer.dir/src/DefaultPoller.cc.o" "gcc" "CMakeFiles/KamaWebServer.dir/src/DefaultPoller.cc.o.d"
   "/home/shl203/kama-webserver/src/EPollPoller.cc" "CMakeFiles/KamaWebServer.dir/src/EPollPoller.cc.o" "gcc" "CMakeFiles/KamaWebServer.dir/src/EPollPoller.cc.o.d"
   "/home/shl203/kama-webserver/src/EventLoop.cc" "CMakeFiles/KamaWebServer.dir/src/EventLoop.cc.o" "gcc" "CMakeFiles/KamaWebServer.dir/src/EventLoop.cc.o.d"

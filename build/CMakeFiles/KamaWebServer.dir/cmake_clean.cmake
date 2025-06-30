@@ -17,6 +17,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/KamaWebServer.dir/src/Buffer.cc.o.d"
   "CMakeFiles/KamaWebServer.dir/src/Channel.cc.o"
   "CMakeFiles/KamaWebServer.dir/src/Channel.cc.o.d"
+  "CMakeFiles/KamaWebServer.dir/src/ConfigManager.cc.o"
+  "CMakeFiles/KamaWebServer.dir/src/ConfigManager.cc.o.d"
   "CMakeFiles/KamaWebServer.dir/src/DefaultPoller.cc.o"
   "CMakeFiles/KamaWebServer.dir/src/DefaultPoller.cc.o.d"
   "CMakeFiles/KamaWebServer.dir/src/EPollPoller.cc.o"

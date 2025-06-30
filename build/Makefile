@@ -454,6 +454,33 @@ src/Channel.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/Channel.cc.s
 .PHONY : src/Channel.cc.s
 
+src/ConfigManager.o: src/ConfigManager.cc.o
+.PHONY : src/ConfigManager.o
+
+# target to build an object file
+src/ConfigManager.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/ConfigManager.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.o
+.PHONY : src/ConfigManager.cc.o
+
+src/ConfigManager.i: src/ConfigManager.cc.i
+.PHONY : src/ConfigManager.i
+
+# target to preprocess a source file
+src/ConfigManager.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/ConfigManager.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.i
+.PHONY : src/ConfigManager.cc.i
+
+src/ConfigManager.s: src/ConfigManager.cc.s
+.PHONY : src/ConfigManager.s
+
+# target to generate assembly for a file
+src/ConfigManager.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/KamaWebServer.dir/build.make CMakeFiles/KamaWebServer.dir/src/ConfigManager.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server.dir/build.make CMakeFiles/kama_http_server.dir/src/ConfigManager.cc.s
+.PHONY : src/ConfigManager.cc.s
+
 src/CurrentThread.o: src/CurrentThread.cc.o
 .PHONY : src/CurrentThread.o
 
@@ -1169,6 +1196,9 @@ help:
 	@echo "... src/Channel.o"
 	@echo "... src/Channel.i"
 	@echo "... src/Channel.s"
+	@echo "... src/ConfigManager.o"
+	@echo "... src/ConfigManager.i"
+	@echo "... src/ConfigManager.s"
 	@echo "... src/CurrentThread.o"
 	@echo "... src/CurrentThread.i"
 	@echo "... src/CurrentThread.s"
