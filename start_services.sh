@@ -18,7 +18,9 @@ WEB_LOG="$LOG_DIR/webserver.log"
 
 # 设置HTTP服务器路径
 HTTP_SERVER="/home/shl203/kama-webserver/bin/kama_http_server"
+HTTP_SERVER_MODULAR="/home/shl203/kama-webserver/bin/kama_http_server_modular"
 HTTP_LOG="$LOG_DIR/http_server.log"
+HTTP_LOG_MODULAR="$LOG_DIR/http_server_modular.log"
 
 # 打印启动时间和环境信息
 echo -e "${GREEN}=== 服务启动 ($(date '+%Y-%m-%d %H:%M:%S')) ===${NC}"
@@ -175,30 +177,66 @@ fi
 
 # 清空之前的日志
 > $HTTP_LOG
+> $HTTP_LOG_MODULAR
 
-# 检查LLaMA服务是否在运行，如果不在则使用--disable-llama选项
+# 选择是否使用模块化版本的HTTP服务器
+USE_MODULAR=false
+for arg in "$@"; do
+    case $arg in
+        --modular)
+            USE_MODULAR=true
+            ;;
+    esac
+done
+
+# 检查LLaMA服务是否在运行
 if ps -p $LLAMA_PID > /dev/null; then
-    echo "启动命令: $HTTP_SERVER ./config/config.json"
-    cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json > $HTTP_LOG 2>&1 &
+    if $USE_MODULAR; then
+        echo "🚀 启动模块化HTTP服务器..."
+        cd /home/shl203/kama-webserver && $HTTP_SERVER_MODULAR > $HTTP_LOG_MODULAR 2>&1 &
+        HTTP_PID=$!
+        echo "模块化HTTP服务器 (PID: $HTTP_PID) 已启动，等待确认..."
+    else
+        echo "启动命令: $HTTP_SERVER ./config/config.json"
+        cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json > $HTTP_LOG 2>&1 &
+        HTTP_PID=$!
+        echo "HTTP 服务器 (PID: $HTTP_PID) 已启动，等待确认..."
+    fi
 else
     echo "⚠️ LLaMA服务未运行，HTTP服务器将在没有聊天功能的情况下启动"
-    echo "启动命令: $HTTP_SERVER ./config/config.json --disable-llama"
-    cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json --disable-llama > $HTTP_LOG 2>&1 &
+    if $USE_MODULAR; then
+        echo "⚠️ 警告: 模块化HTTP服务器需要LLaMA服务，将降级使用传统HTTP服务器"
+        echo "启动命令: $HTTP_SERVER ./config/config.json --disable-llama"
+        cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json --disable-llama > $HTTP_LOG 2>&1 &
+    else
+        echo "启动命令: $HTTP_SERVER ./config/config.json --disable-llama"
+        cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json --disable-llama > $HTTP_LOG 2>&1 &
+    fi
+    HTTP_PID=$!
+    echo "HTTP 服务器 (PID: $HTTP_PID) 已启动，等待确认..."
 fi
-HTTP_PID=$!
-echo "HTTP 服务器 (PID: $HTTP_PID) 已启动，等待确认..."
 
 # 增加等待时间并检查端口是否正在监听
 sleep 5
 if ! ps -p $HTTP_PID > /dev/null; then
     echo "❌ 无法启动 HTTP 服务器，进程已退出，检查日志："
-    cat $HTTP_LOG
+    if $USE_MODULAR; then
+        cat $HTTP_LOG_MODULAR
+    else
+        cat $HTTP_LOG
+    fi
     exit 1
+elif $USE_MODULAR && netstat -tulpn 2>/dev/null | grep -q ":8080"; then
+    echo "✅ 模块化 HTTP 服务器成功启动并监听在端口 8080"
 elif netstat -tulpn 2>/dev/null | grep -q ":8081"; then
     echo "✅ HTTP 服务器成功启动并监听在端口 8081"
 else
     echo "⚠️ HTTP 服务器进程存在，但未检测到端口监听，检查日志："
-    tail -10 $HTTP_LOG
+    if $USE_MODULAR; then
+        tail -10 $HTTP_LOG_MODULAR
+    else
+        tail -10 $HTTP_LOG
+    fi
     # 不退出，继续运行
 fi
 
@@ -214,10 +252,18 @@ else
 fi
 
 if ps -p $HTTP_PID > /dev/null; then
-    echo -e "${GREEN}🌍 HTTP 服务器正在运行（端口8081）${NC}"
-    echo -e "   访问: http://localhost:8081/"
-    echo -e "   API状态: http://localhost:8081/api/status"
-    echo -e "   日志: $HTTP_LOG" 
+    if $USE_MODULAR; then
+        echo -e "${GREEN}🌍 模块化 HTTP 服务器正在运行（端口8080）${NC}"
+        echo -e "   访问: http://localhost:8080/"
+        echo -e "   API状态: http://localhost:8080/api/status"
+        echo -e "   模块化示例: http://localhost:8080/basic.html"
+        echo -e "   日志: $HTTP_LOG_MODULAR"
+    else
+        echo -e "${GREEN}🌍 HTTP 服务器正在运行（端口8081）${NC}"
+        echo -e "   访问: http://localhost:8081/"
+        echo -e "   API状态: http://localhost:8081/api/status"
+        echo -e "   日志: $HTTP_LOG"
+    fi
 else
     echo -e "${YELLOW}⚠️ HTTP 服务器未正常运行${NC}"
 fi

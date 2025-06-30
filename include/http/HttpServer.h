@@ -1,9 +1,10 @@
 #pragma once
 
 #include "TcpServer.h"
-#include "HttpRequest.h"
-#include "HttpResponse.h"
-#include "HttpContext.h"
+#include "http/HttpRequest.h"
+#include "http/HttpResponse.h"
+#include "http/HttpContext.h"
+#include "http/Middleware.h"  // 添加中间件支持
 #include <functional>
 #include <memory>
 #include <unordered_map>
@@ -32,12 +33,40 @@ public:
     void setStaticFileRoot(const std::string& root) { staticFileRoot_ = root; }
     void enableStaticFiles(bool enable = true) { enableStaticFiles_ = enable; }
 
-private:
-    void onConnection(const TcpConnectionPtr& conn);
-    void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp time);
+    // 中间件支持
+    void use(std::shared_ptr<IMiddleware> middleware) {
+        middlewareChain_.use(std::move(middleware));
+    }
     
-    void handleHttpRequest(const TcpConnectionPtr& conn, const HttpRequest& req);
-    void sendHttpResponse(const TcpConnectionPtr& conn, const HttpResponse& resp);
+    // 方便中间件添加的辅助函数
+    void enableLogging() {
+        use(std::make_shared<LoggingMiddleware>());
+    }
+    
+    void enableCors(const std::string& allowOrigin = "*") {
+        use(std::make_shared<CorsMiddleware>(allowOrigin));
+    }
+    
+    void enableRateLimit(int maxRequests, int perSeconds) {
+        use(std::make_shared<RateLimitMiddleware>(maxRequests, perSeconds));
+    }
+    
+    void enableCompression() {
+        use(std::make_shared<CompressionMiddleware>());
+    }
+    
+    std::shared_ptr<AuthMiddleware> enableAuth() {
+        auto authMiddleware = std::make_shared<AuthMiddleware>();
+        use(authMiddleware);
+        return authMiddleware;
+    }
+
+private:
+    void onConnection(const ::TcpConnectionPtr& conn);
+    void onMessage(const ::TcpConnectionPtr& conn, Buffer* buf, Timestamp time);
+    
+    void handleHttpRequest(const ::TcpConnectionPtr& conn, const HttpRequest& req);
+    void sendHttpResponse(const ::TcpConnectionPtr& conn, const HttpResponse& resp);
     
     RouteHandler findRoute(const std::string& method, const std::string& path);
     void handleStaticFile(const HttpRequest& req, HttpResponse& resp);
@@ -54,6 +83,9 @@ private:
     
     // 路由表
     std::unordered_map<std::string, RouteHandler> routes_;
+    
+    // 中间件链
+    MiddlewareChain middlewareChain_;
 };
 
 } // namespace http

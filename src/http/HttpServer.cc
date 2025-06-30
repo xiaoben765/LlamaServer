@@ -2,9 +2,13 @@
 #include "http/HttpContext.h"
 #include "Buffer.h"
 #include "Logger.h"
+#include "TcpConnection.h"
 #include <fstream>
 #include <unordered_map>
 #include <memory>
+
+// 解决命名空间冲突，指定使用全局的TcpConnection
+using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
 
 namespace kama {
 namespace http {
@@ -112,21 +116,28 @@ void HttpServer::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp 
 void HttpServer::handleHttpRequest(const TcpConnectionPtr& conn, const HttpRequest& req) {
     HttpResponse response;
     
-    try {
-        // 查找路由
-        RouteHandler handler = findRoute(req.methodString(), req.path());
-        
-        if (handler) {
-            handler(req, response);
-        } else if (enableStaticFiles_) {
-            handleStaticFile(req, response);
-        } else {
-            handleNotFound(req, response);
+    // 创建最终处理函数，在中间件链执行完毕后调用
+    auto finalHandler = [this, &conn](const HttpRequest& request, HttpResponse& resp) {
+        try {
+            // 查找路由
+            RouteHandler handler = findRoute(request.methodString(), request.path());
+            
+            if (handler) {
+                handler(request, resp);
+            } else if (enableStaticFiles_) {
+                handleStaticFile(request, resp);
+            } else {
+                handleNotFound(request, resp);
+            }
+        } catch (const std::exception& e) {
+            handleError(request, resp, e.what());
         }
-    } catch (const std::exception& e) {
-        handleError(req, response, e.what());
-    }
+    };
     
+    // 执行中间件链
+    middlewareChain_.execute(req, response, finalHandler);
+    
+    // 发送响应
     sendHttpResponse(conn, response);
     
     // HTTP/1.0 或者没有 Keep-Alive 就关闭连接

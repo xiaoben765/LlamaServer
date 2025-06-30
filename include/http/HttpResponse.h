@@ -11,12 +11,14 @@ enum class HttpStatusCode {
     OK = 200,
     CREATED = 201,
     NO_CONTENT = 204,
+    MOVED_PERMANENTLY = 301,  // 添加301重定向状态码
     BAD_REQUEST = 400,
     UNAUTHORIZED = 401,
     FORBIDDEN = 403,
     NOT_FOUND = 404,
     METHOD_NOT_ALLOWED = 405,
-    CONFLICT = 409,  // 添加这行
+    CONFLICT = 409,
+    TOO_MANY_REQUESTS = 429,  // 添加速率限制状态码
     INTERNAL_SERVER_ERROR = 500,
     NOT_IMPLEMENTED = 501,
     BAD_GATEWAY = 502,
@@ -55,7 +57,13 @@ public:
 
     // 获取属性
     HttpStatusCode statusCode() const { return statusCode_; }
+    const std::string& statusMessage() const { return statusMessage_; }
     const std::string& body() const { return body_; }
+    
+    // 获取/添加头部信息
+    std::string getHeader(const std::string& key) const;
+    void addHeader(const std::string& key, const std::string& value) { setHeader(key, value); }
+    const std::unordered_map<std::string, std::string>& headers() const { return headers_; }
 
 private:
     HttpVersion version_;

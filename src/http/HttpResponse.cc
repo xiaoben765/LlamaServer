@@ -94,16 +94,27 @@ void HttpResponse::setErrorResponse(HttpStatusCode code, const std::string& mess
     setBody(json.str());
 }
 
+std::string HttpResponse::getHeader(const std::string& key) const {
+    auto it = headers_.find(key);
+    if (it != headers_.end()) {
+        return it->second;
+    }
+    return "";
+}
+
 std::string HttpResponse::getStatusString(HttpStatusCode code) const {
     switch (code) {
         case HttpStatusCode::OK: return "OK";
         case HttpStatusCode::CREATED: return "Created";
         case HttpStatusCode::NO_CONTENT: return "No Content";
+        case HttpStatusCode::MOVED_PERMANENTLY: return "Moved Permanently";
         case HttpStatusCode::BAD_REQUEST: return "Bad Request";
         case HttpStatusCode::UNAUTHORIZED: return "Unauthorized";
         case HttpStatusCode::FORBIDDEN: return "Forbidden";
         case HttpStatusCode::NOT_FOUND: return "Not Found";
         case HttpStatusCode::METHOD_NOT_ALLOWED: return "Method Not Allowed";
+        case HttpStatusCode::CONFLICT: return "Conflict";
+        case HttpStatusCode::TOO_MANY_REQUESTS: return "Too Many Requests";
         case HttpStatusCode::INTERNAL_SERVER_ERROR: return "Internal Server Error";
         case HttpStatusCode::NOT_IMPLEMENTED: return "Not Implemented";
         case HttpStatusCode::BAD_GATEWAY: return "Bad Gateway";

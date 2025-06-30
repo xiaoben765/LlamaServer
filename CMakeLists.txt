@@ -89,6 +89,7 @@ endif()
 # 为KamaWebServer指定源文件，排除所有包含main函数的文件和重复的CurrentThread实现
 file(GLOB WebServer_SRC src/*.cc)
 list(FILTER WebServer_SRC EXCLUDE REGEX ".*main_http\\.cc$")
+list(FILTER WebServer_SRC EXCLUDE REGEX ".*main_http_modular\\.cc$")  # 排除模块化的main文件
 list(FILTER WebServer_SRC EXCLUDE REGEX ".*llama_service\\.cc$") 
 list(FILTER WebServer_SRC EXCLUDE REGEX ".*llama_service_tcp\\.cc$")
 list(FILTER WebServer_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$") # 排除src中的CurrentThread.cc
@@ -115,6 +116,19 @@ if (USE_CUDA)
     message(STATUS "✅ Compiling KamaWebServer with CUDA support.")
 endif()
 
+# ==================== 数据库库构建 ====================
+set(DB_SOURCES 
+    ${CMAKE_SOURCE_DIR}/src/db/DatabaseManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/db/DatabaseManagerStubs.cpp
+)
+add_library(db_lib STATIC ${DB_SOURCES})
+target_include_directories(db_lib PRIVATE 
+    ${CMAKE_SOURCE_DIR}/include
+    ${MYSQL_INCLUDE_DIR}
+)
+target_link_libraries(db_lib ${MYSQL_LIBRARY})
+message(STATUS "✅ 构建数据库静态库，包含 ${DB_SOURCES}")
+
 # ==================== HTTP服务器构建 ====================
 file(GLOB HTTP_SOURCES "src/http/*.cc")
 file(GLOB HTTP_MEMORY_SRC "memory/*.cc")
@@ -124,6 +138,7 @@ file(GLOB HTTP_LOG_SRC "log/*.cc")
 file(GLOB NETWORK_SRC "src/*.cc")
 list(FILTER NETWORK_SRC EXCLUDE REGEX ".*main\\.cc$")
 list(FILTER NETWORK_SRC EXCLUDE REGEX ".*main_http\\.cc$")
+list(FILTER NETWORK_SRC EXCLUDE REGEX ".*main_http_modular\\.cc$") # 排除模块化main
 list(FILTER NETWORK_SRC EXCLUDE REGEX ".*llama_service\\.cc$") 
 list(FILTER NETWORK_SRC EXCLUDE REGEX ".*llama_service_tcp\\.cc$")
 list(FILTER NETWORK_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$")
@@ -145,6 +160,11 @@ add_executable(kama_http_server
 target_link_libraries(kama_http_server 
     ${LIBS} 
     current_thread  # 直接链接已经构建的CurrentThread库
+    db_lib         # 数据库库
+    ${MYSQL_LIBRARY}
+    ssl
+    crypto
+    z              # 添加zlib库用于压缩中间件
 )
 
 target_include_directories(kama_http_server PRIVATE 
@@ -190,5 +210,45 @@ target_link_libraries(kama_http_server
     ssl
     crypto
 )
+
+# ==================== 构建模块化HTTP服务器 ====================
+add_executable(kama_http_server_modular 
+    src/main_http_modular.cc 
+    src/http/HttpServer.cc
+    src/http/HttpContext.cc
+    src/http/HttpParser.cc
+    src/http/HttpRequest.cc
+    src/http/HttpResponse.cc
+    src/http/Middleware.cc
+    src/services/DatabaseService.cc
+    src/ConfigManager.cc
+    ${HTTP_MEMORY_SRC}
+    ${HTTP_LOG_SRC}
+    ${NETWORK_SRC}
+)
+
+target_link_libraries(kama_http_server_modular 
+    ${LIBS} 
+    current_thread
+    db_lib         # 数据库库
+    ${MYSQL_LIBRARY}
+    ssl
+    crypto
+    z  # 添加zlib库用于压缩中间件
+)
+
+target_include_directories(kama_http_server_modular PRIVATE 
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/include/http
+    ${CMAKE_SOURCE_DIR}/include/services
+    ${CMAKE_SOURCE_DIR}/memory
+    ${CMAKE_SOURCE_DIR}/log
+    ${MYSQL_INCLUDE_DIR}
+)
+
+if (USE_CUDA)
+    target_compile_definitions(kama_http_server_modular PRIVATE USE_CUDA)
+    target_link_libraries(kama_http_server_modular ${CUDA_LIBRARIES})
+endif()
 
 message(STATUS "✅ Configuring HTTP Server build with MySQL support.")

@@ -52,6 +52,10 @@ public:
     void reset();
     std::string methodString() const;
     std::string versionString() const;
+    
+    // 获取客户端地址（用于日志和速率限制）
+    std::string clientAddr() const { return clientAddr_; }
+    void setClientAddr(const std::string& addr) { clientAddr_ = addr; }
 
     // 静态工具方法
     static HttpMethod stringToMethod(const std::string& method);
@@ -64,6 +68,7 @@ private:
     HttpVersion version_;
     std::unordered_map<std::string, std::string> headers_;
     std::string body_;
+    std::string clientAddr_; // 客户端地址
 };
 
 } // namespace http
