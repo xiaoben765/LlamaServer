@@ -1371,6 +1371,30 @@ src/services/DatabaseService.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server_modular.dir/build.make CMakeFiles/kama_http_server_modular.dir/src/services/DatabaseService.cc.s
 .PHONY : src/services/DatabaseService.cc.s
 
+src/services/LlamaService.o: src/services/LlamaService.cc.o
+.PHONY : src/services/LlamaService.o
+
+# target to build an object file
+src/services/LlamaService.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server_modular.dir/build.make CMakeFiles/kama_http_server_modular.dir/src/services/LlamaService.cc.o
+.PHONY : src/services/LlamaService.cc.o
+
+src/services/LlamaService.i: src/services/LlamaService.cc.i
+.PHONY : src/services/LlamaService.i
+
+# target to preprocess a source file
+src/services/LlamaService.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server_modular.dir/build.make CMakeFiles/kama_http_server_modular.dir/src/services/LlamaService.cc.i
+.PHONY : src/services/LlamaService.cc.i
+
+src/services/LlamaService.s: src/services/LlamaService.cc.s
+.PHONY : src/services/LlamaService.s
+
+# target to generate assembly for a file
+src/services/LlamaService.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kama_http_server_modular.dir/build.make CMakeFiles/kama_http_server_modular.dir/src/services/LlamaService.cc.s
+.PHONY : src/services/LlamaService.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1506,6 +1530,9 @@ help:
 	@echo "... src/services/DatabaseService.o"
 	@echo "... src/services/DatabaseService.i"
 	@echo "... src/services/DatabaseService.s"
+	@echo "... src/services/LlamaService.o"
+	@echo "... src/services/LlamaService.i"
+	@echo "... src/services/LlamaService.s"
 .PHONY : help
 
 

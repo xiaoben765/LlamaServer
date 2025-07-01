@@ -27,6 +27,22 @@ echo -e "${GREEN}=== 服务启动 ($(date '+%Y-%m-%d %H:%M:%S')) ===${NC}"
 echo "主机: $(hostname)"
 echo "用户: $(whoami)"
 
+# 检查并编译必要的二进制文件
+echo -e "${YELLOW}检查并编译必要组件...${NC}"
+if [[ ! -f "$LLAMA_SERVICE" || ! -f "$KAMA_WEBSERVER" || ! -f "$HTTP_SERVER" || ! -f "$HTTP_SERVER_MODULAR" ]]; then
+    echo "编译必要组件..."
+    # 调用专门的编译脚本
+    cd /home/shl203/kama-webserver
+    bash ./build.sh
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}❌ 编译失败，无法启动服务${NC}"
+        exit 1
+    fi
+    echo "✅ 编译完成"
+else
+    echo "✅ 所有必要的二进制文件已存在，跳过编译"
+fi
+
 # CUDA 环境变量（确保 GPU 可用）
 export CUDA_HOME=/usr/local/cuda-12.8
 export PATH=$CUDA_HOME/bin:$PATH
@@ -128,31 +144,9 @@ if ! ps -p $LLAMA_PID > /dev/null; then
 fi
 
 # 启动 WebServer（连接 LLaMA TCP 服务）
-echo "启动 WebServer..."
-# 检查是否已有WebServer实例正在运行
-if pgrep -f "KamaWebServer" > /dev/null; then
-    echo "⚠️ 检测到WebServer已经在运行，跳过启动步骤"
-    WEBSERVER_PID=$(pgrep -f "KamaWebServer")
-    echo "使用已存在的WebServer进程 (PID: $WEBSERVER_PID)"
-else
-    # 启动新的WebServer实例
-    $KAMA_WEBSERVER > $WEB_LOG 2>&1 &
-    WEBSERVER_PID=$!
-    echo "WebServer (PID: $WEBSERVER_PID) 已启动"
-
-    # 检查 WebServer 是否正常启动
-    sleep 2
-    if ! ps -p $WEBSERVER_PID > /dev/null; then
-        echo "⚠️ WebServer 启动失败，检查日志："
-        tail -10 $WEB_LOG
-        echo "继续启动其他服务..."
-        # 注意：允许脚本继续执行，即使WebServer启动失败
-    elif netstat -tulpn 2>/dev/null | grep -q ":8080"; then
-        echo "✅ WebServer 启动成功，监听在端口 8080"
-    else
-        echo "⚠️ WebServer 进程存在，但未检测到端口监听，可能存在问题"
-    fi
-fi
+echo "跳过 WebServer 启动..."
+# 不再启动 WebServer，因为它不能正确处理 HTTP 请求
+WEBSERVER_PID=""
 
 # 启动HTTP服务器（增强版）
 echo "启动 HTTP 服务器..."

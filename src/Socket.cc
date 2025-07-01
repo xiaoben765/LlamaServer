@@ -18,7 +18,11 @@ void Socket::bindAddress(const InetAddress &localaddr) // 绑定 socket 到指�
 {
     if (0 != ::bind(sockfd_, (sockaddr *)localaddr.getSockAddr(), sizeof(sockaddr_in))) // sockaddr_in 是一个结构体(for IPv4)，包含了 IP 地址和端口号。
     {
-        LOG_FATAL<<"bind sockfd:"<<sockfd_ <<"fail";
+        int errorCode = errno;
+        std::cerr << "Socket绑定失败，错误码: " << errorCode 
+                  << ", 错误信息: " << strerror(errorCode)
+                  << ", 端口: " << localaddr.toIpPort() << std::endl;
+        LOG_FATAL << "bind sockfd:" << sockfd_ << " fail, error: " << strerror(errorCode) << ", port: " << localaddr.toIpPort();
     }
 }
 

@@ -126,11 +126,26 @@ int main(int argc, char *argv[]) {
         // 使用清理后的prompt
         prompt = trimmed_prompt;
 
-        // 构建命令 - 每次请求创建新进程
+        // 使用临时文件存储prompt，避免shell转义问题
+        std::string temp_prompt_file = "/tmp/llama_prompt_" + std::to_string(getpid()) + ".txt";
+        
+        // 将prompt写入临时文件
+        {
+            std::ofstream prompt_file(temp_prompt_file);
+            if (!prompt_file) {
+                std::cerr << "❌ 无法创建临时文件: " << temp_prompt_file << std::endl;
+                std::string error_msg = "无法创建临时文件";
+                send(new_socket, error_msg.c_str(), error_msg.size(), 0);
+                close(new_socket);
+                continue;
+            }
+            prompt_file << prompt;
+        }
+        
+        // 构建使用文件的命令
         std::string command = "/home/shl203/llama.cpp/build/bin/main";
         command += " -m /home/shl203/llama.cpp/models/qwen/Qwen-7B-Chat.Q4_K_M.gguf";
-        // command += " --interactive"; // 交互模式
-        command += " --prompt \"" + prompt + "\"";
+        command += " --file " + temp_prompt_file;  // 使用文件而非--prompt参数
         command += " -n 1024";  // 限制输出长度
         // command += " --no-color"; // 禁用颜色输出
         // command += " --log-disable"; // 禁用日志
@@ -223,13 +238,28 @@ int main(int argc, char *argv[]) {
                 std::cerr << "⚠️ 命令返回非零状态: " << status << std::endl;
             }
             
+            // 清理临时文件
+            if (remove(temp_prompt_file.c_str()) != 0) {
+                std::cerr << "⚠️ 无法删除临时文件: " << temp_prompt_file << ": " << strerror(errno) << std::endl;
+            }
+            
             // 没有输出时返回错误消息
             if (!has_output) {
                 std::cerr << "⚠️ 未检测到有效输出，原始响应长度: " << full_response.length() << std::endl;
                 // 尝试从未过滤的输出中提取内容
                 if (full_response.empty()) {
-                    // 重新运行命令获取更简单的输出
-                    std::string simple_cmd = "/home/shl203/llama.cpp/build/bin/main -m /home/shl203/llama.cpp/models/qwen/Qwen-7B-Chat.Q4_K_M.gguf --prompt \"请用简短的一句话回答: " + prompt + "\" -n 100 -ngl 32 --temp 0.5";
+                    // 重新运行命令获取更简单的输出 - 使用临时文件
+                    std::string backup_prompt_file = "/tmp/llama_backup_prompt_" + std::to_string(getpid()) + ".txt";
+                    {
+                        std::ofstream prompt_file(backup_prompt_file);
+                        if (!prompt_file) {
+                            std::cerr << "❌ 无法创建备用临时文件" << std::endl;
+                            full_response = "模型没有生成回复。请检查日志以获取详细信息。";
+                        } else {
+                            prompt_file << "请用简短的一句话回答: " << prompt;
+                        }
+                    }
+                    std::string simple_cmd = "/home/shl203/llama.cpp/build/bin/main -m /home/shl203/llama.cpp/models/qwen/Qwen-7B-Chat.Q4_K_M.gguf --file " + backup_prompt_file + " -n 100 -ngl 32 --temp 0.5";
                     FILE* backup_fp = popen(simple_cmd.c_str(), "r");
                     if (backup_fp) {
                         std::string backup_response;
@@ -237,6 +267,11 @@ int main(int argc, char *argv[]) {
                             backup_response += buffer;
                         }
                         pclose(backup_fp);
+                        
+                        // 清理备用临时文件
+                        if (remove(backup_prompt_file.c_str()) != 0) {
+                            std::cerr << "⚠️ 无法删除备用临时文件: " << backup_prompt_file << ": " << strerror(errno) << std::endl;
+                        }
                         
                         // 提取最后一行非空内容
                         std::istringstream iss(backup_response);

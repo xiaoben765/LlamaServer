@@ -130,7 +130,6 @@ target_link_libraries(db_lib ${MYSQL_LIBRARY})
 message(STATUS "✅ 构建数据库静态库，包含 ${DB_SOURCES}")
 
 # ==================== HTTP服务器构建 ====================
-file(GLOB HTTP_SOURCES "src/http/*.cc")
 file(GLOB HTTP_MEMORY_SRC "memory/*.cc")
 file(GLOB HTTP_LOG_SRC "log/*.cc")
 
@@ -146,15 +145,27 @@ list(FILTER NETWORK_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$")
 # 排除可能导致重复定义的文件
 list(FILTER HTTP_LOG_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$")
 
+# 显式列出HTTP相关源文件，确保包含所有必要文件
+set(HTTP_SOURCES
+    src/http/HttpServer.cc
+    src/http/HttpContext.cc
+    src/http/HttpParser.cc
+    src/http/HttpRequest.cc
+    src/http/HttpResponse.cc  # 确保包含 HttpResponse.cc
+    src/http/Middleware.cc
+)
+
+message(STATUS "HTTP源文件 (显式列出): ${HTTP_SOURCES}")
+
 # 构建HTTP服务器 - 包含基础网络库源文件
 add_executable(kama_http_server 
     src/main_http.cc 
     src/db/DatabaseManager.cpp  # 确保这行存在
     src/ConfigManager.cc       # 添加配置管理器
-    ${HTTP_SOURCES}
+    ${HTTP_SOURCES}           # HTTP源文件
     ${HTTP_MEMORY_SRC}
     ${HTTP_LOG_SRC}
-    ${NETWORK_SRC}  # 添加网络库源文件
+    ${NETWORK_SRC}            # 网络库源文件
 )
 
 target_link_libraries(kama_http_server 
@@ -221,6 +232,7 @@ add_executable(kama_http_server_modular
     src/http/HttpResponse.cc
     src/http/Middleware.cc
     src/services/DatabaseService.cc
+    src/services/LlamaService.cc
     src/ConfigManager.cc
     ${HTTP_MEMORY_SRC}
     ${HTTP_LOG_SRC}

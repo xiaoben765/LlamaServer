@@ -1,12 +1,17 @@
 {
+  "_comment": "端口配置: 为避免端口冲突，各服务使用固定不同的端口。HTTP模块化服务器使用8080端口，不再使用WebServer。",
   "server": {
-    "http_port": 8081,
+    "http_port": 8080,
     "websocket_port": 8082,
     "webserver_port": 8080,
     "llama_service_port": 8899,
     "host": "0.0.0.0",
     "thread_num": 4,
     "static_files_root": "./static"
+  },
+  "db": {
+    "type": "mysql",
+    "connection_pool_size": 10
   },
   "database": {
     "host": "127.0.0.1",

@@ -212,7 +212,7 @@
                 loadingIndicator.style.opacity = '1';
             }
             
-            fetch('/api/status')
+            fetch('http://localhost:8080/api/status')
                 .then(response => {
                     console.log('收到API响应:', response.status);
                     if (!response.ok) {
@@ -294,13 +294,13 @@
         }
         
         function checkDatabaseStatus() {
-            // 直接从/api/status获取数据库状态信息
-            fetch('/api/status')
+            // 直接从Web服务器获取数据库状态信息
+            fetch('http://localhost:8080/api/status')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.database_available) {
+                    if (data.db_available) {  // 修改为 db_available
                         document.getElementById('db-status').classList.add('active');
-                        document.getElementById('db-text').textContent = '已连接';
+                        document.getElementById('db-text').textContent = data.db_type === 'memory' ? '内存数据库' : '已连接';
                     } else {
                         throw new Error('数据库不可用');
                     }
