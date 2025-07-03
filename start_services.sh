@@ -48,10 +48,61 @@ export CUDA_HOME=/usr/local/cuda-12.8
 export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
-# 检查MySQL是否已安装
+# 数据库配置
+DB_NAME="kama_llm"  # 更改为与代码中实际使用的数据库名一致
+DB_USER="root"
+DB_PASSWORD=""  # 默认为空
+
+# 提示用户输入MySQL密码
+echo -e "${YELLOW}请输入 MySQL root 用户的密码 (如无密码请直接回车):${NC}"
+read -s DB_PASSWORD
+echo ""
+
+# 检查并确保 MySQL 服务正在运行
+echo -e "${YELLOW}检查 MySQL 服务状态...${NC}"
 if ! command -v mysql &> /dev/null; then
-    echo -e "${RED}MySQL客户端未安装，HTTP服务器可能无法正常工作${NC}"
+    echo -e "${RED}MySQL客户端未安装，HTTP服务器无法正常工作${NC}"
     echo "提示: 运行 sudo apt install mysql-server mysql-client 安装MySQL"
+    exit 1
+else
+    echo "✅ MySQL 客户端已安装"
+    
+    # 确保 MySQL 服务正在运行
+    if ! systemctl is-active --quiet mysql; then
+        echo "⚠️ MySQL服务未运行，尝试启动MySQL..."
+        sudo systemctl start mysql
+        sleep 3
+        if ! systemctl is-active --quiet mysql; then
+            echo -e "${RED}❌ 无法启动MySQL服务，HTTP服务器无法正常工作${NC}"
+            exit 1
+        else
+            echo "✅ MySQL服务已启动"
+        fi
+    else
+        echo "✅ MySQL服务已在运行"
+    fi
+    
+    # 检查数据库是否存在，如不存在则创建
+    echo "检查数据库是否存在..."
+    if [[ -z "$DB_PASSWORD" ]]; then
+        MYSQL_CMD="mysql -u $DB_USER"
+        MYSQL_CREATE_CMD="mysql -u $DB_USER -e \"CREATE DATABASE $DB_NAME CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci\""
+    else
+        MYSQL_CMD="mysql -u $DB_USER -p'$DB_PASSWORD'"
+        MYSQL_CREATE_CMD="mysql -u $DB_USER -p'$DB_PASSWORD' -e \"CREATE DATABASE $DB_NAME CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci\""
+    fi
+    
+    if ! eval "$MYSQL_CMD -e 'USE $DB_NAME'" 2>/dev/null; then
+        echo "⚠️ 数据库 '$DB_NAME' 不存在，尝试创建..."
+        if eval "$MYSQL_CREATE_CMD"; then
+            echo "✅ 数据库 '$DB_NAME' 创建成功"
+        else
+            echo -e "${RED}❌ 创建数据库失败，请检查MySQL权限${NC}"
+            exit 1
+        fi
+    else
+        echo "✅ 数据库 '$DB_NAME' 已存在"
+    fi
 fi
 
 # 创建日志目录
@@ -150,23 +201,28 @@ WEBSERVER_PID=""
 
 # 启动HTTP服务器（增强版）
 echo "启动 HTTP 服务器..."
-# 先确保MySQL服务正在运行
-if ! systemctl is-active --quiet mysql; then
-    echo "⚠️ MySQL服务未运行，尝试启动MySQL..."
-    sudo systemctl start mysql
-    sleep 2
-    if ! systemctl is-active --quiet mysql; then
-        echo "❌ 无法启动MySQL服务，HTTP服务器可能无法正常工作"
-    else
-        echo "✅ MySQL服务已启动"
-    fi
-fi
+# MySQL 服务已在脚本开始时确认启动
 
-# 确保配置文件存在
-if [[ ! -f "/home/shl203/kama-webserver/config/config.json" ]]; then
-    echo "⚠️ 配置文件不存在，创建默认配置..."
-    mkdir -p /home/shl203/kama-webserver/config
-    cp -f /home/shl203/kama-webserver/bin/config/config.json /home/shl203/kama-webserver/config/ 2>/dev/null || true
+# 已在上方处理了配置文件的创建
+
+# 更新配置文件中的数据库密码
+if [[ -f "/home/shl203/kama-webserver/config/config.json" ]]; then
+    echo "更新配置文件中的数据库连接信息..."
+    # 使用临时文件更新配置
+    TMP_CONFIG=$(mktemp)
+    cat /home/shl203/kama-webserver/config/config.json | \
+    sed "s/\"db_name\": \"[^\"]*\"/\"db_name\": \"$DB_NAME\"/" | \
+    sed "s/\"user\": \"[^\"]*\"/\"user\": \"$DB_USER\"/" | \
+    sed "s/\"password\": \"[^\"]*\"/\"password\": \"$DB_PASSWORD\"/" > $TMP_CONFIG
+    mv $TMP_CONFIG /home/shl203/kama-webserver/config/config.json
+    
+    # 确保bin目录下的配置文件也被更新
+    if [[ -d "/home/shl203/kama-webserver/bin/config" ]]; then
+        cp -f /home/shl203/kama-webserver/config/config.json /home/shl203/kama-webserver/bin/config/
+        echo "✅ 同时更新了bin目录下的配置文件"
+    fi
+    
+    echo "✅ 配置文件更新完成"
 fi
 
 # 清空之前的日志
@@ -185,6 +241,23 @@ done
 
 # 检查LLaMA服务是否在运行
 if ps -p $LLAMA_PID > /dev/null; then
+    # 测试数据库连接
+    echo "测试数据库连接..."
+    if ! eval "$MYSQL_CMD -e 'USE $DB_NAME; SELECT 1;'" &>/dev/null; then
+        echo -e "${RED}❌ 无法连接到数据库，请检查数据库配置${NC}"
+        echo "尝试重启 MySQL 服务..."
+        sudo systemctl restart mysql
+        sleep 3
+        if ! eval "$MYSQL_CMD -e 'USE $DB_NAME; SELECT 1;'" &>/dev/null; then
+            echo -e "${RED}❌ 数据库连接失败，HTTP 服务器可能无法正常工作${NC}"
+            # 继续尝试启动，但提示用户可能会出现问题
+        else
+            echo "✅ 数据库连接成功"
+        fi
+    else
+        echo "✅ 数据库连接成功"
+    fi
+    
     if $USE_MODULAR; then
         echo "🚀 启动模块化HTTP服务器..."
         cd /home/shl203/kama-webserver && $HTTP_SERVER_MODULAR > $HTTP_LOG_MODULAR 2>&1 &
@@ -192,6 +265,7 @@ if ps -p $LLAMA_PID > /dev/null; then
         echo "模块化HTTP服务器 (PID: $HTTP_PID) 已启动，等待确认..."
     else
         echo "启动命令: $HTTP_SERVER ./config/config.json"
+        echo "使用数据库: $DB_NAME, 用户: $DB_USER"
         cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json > $HTTP_LOG 2>&1 &
         HTTP_PID=$!
         echo "HTTP 服务器 (PID: $HTTP_PID) 已启动，等待确认..."

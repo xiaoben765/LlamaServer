@@ -4,6 +4,7 @@
 #include "services/DatabaseService.h"
 #include "services/ILlamaService.h"
 #include "services/LlamaService.h"
+#include "services/LlamaMockService.h"
 #include "AsyncLogging.h"
 #include "Logger.h"
 #include "ConfigManager.h"

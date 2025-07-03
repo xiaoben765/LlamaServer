@@ -298,7 +298,7 @@
             fetch('http://localhost:8080/api/status')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.db_available) {  // 修改为 db_available
+                    if (data.database_available) {  // 使用API返回的 database_available 字段
                         document.getElementById('db-status').classList.add('active');
                         document.getElementById('db-text').textContent = data.db_type === 'memory' ? '内存数据库' : '已连接';
                     } else {

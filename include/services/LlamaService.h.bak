@@ -52,5 +52,22 @@ private:
     int persistent_sock_; // 持久连接套接字
 };
 
+/**
+ * @brief LLaMA Mock服务实现
+ * 
+ * 用于测试，返回预定义的响应
+ */
+class LlamaMockService : public ILlamaService {
+public:
+    LlamaMockService(bool available = true);
+    
+    bool isAvailable() const override;
+    std::string query(const std::string& prompt) override;
+    bool resetConnection() override;
+    
+private:
+    bool available_;
+};
+
 } // namespace services
 } // namespace kama

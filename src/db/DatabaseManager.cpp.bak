@@ -64,7 +64,7 @@ void DatabaseManager::cleanup() {
     }
 }
 
-bool DatabaseManager::connect() {
+bool Database
     connection_ = mysql_init(nullptr);
     if (!connection_) {
         LOG_ERROR << "MySQL初始化失败";

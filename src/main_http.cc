@@ -1052,11 +1052,11 @@ int main(int argc, char* argv[]) {
     
     // 启动HTTP服务器
     EventLoop loop;
-    InetAddress httpAddr(8081, "0.0.0.0");  // 修改为监听所有接口
+    InetAddress httpAddr(8080, "0.0.0.0");  // 修改为监听所有接口
     LlamaHttpService service(&loop, httpAddr);
     service.start();
 
-    std::cout << "HTTP Server started on http://0.0.0.0:8081" << std::endl;
+    std::cout << "HTTP Server started on http://0.0.0.0:8080" << std::endl;
     loop.loop();
     
     // 清理MySQL库

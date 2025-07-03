@@ -92,6 +92,7 @@ list(FILTER WebServer_SRC EXCLUDE REGEX ".*main_http\\.cc$")
 list(FILTER WebServer_SRC EXCLUDE REGEX ".*main_http_modular\\.cc$")  # 排除模块化的main文件
 list(FILTER WebServer_SRC EXCLUDE REGEX ".*llama_service\\.cc$") 
 list(FILTER WebServer_SRC EXCLUDE REGEX ".*llama_service_tcp\\.cc$")
+list(FILTER WebServer_SRC EXCLUDE REGEX ".*test_concurrency\\.cc$")  # 排除测试并发的文件
 list(FILTER WebServer_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$") # 排除src中的CurrentThread.cc
 
 file(GLOB MEMORY_SRC memory/*.cc)
@@ -118,16 +119,73 @@ endif()
 
 # ==================== 数据库库构建 ====================
 set(DB_SOURCES 
-    ${CMAKE_SOURCE_DIR}/src/db/DatabaseManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/db/DatabaseManagerStubs.cpp
+    ${CMAKE_SOURCE_DIR}/src/db/DBConnectionPool.cc
+    ${CMAKE_SOURCE_DIR}/src/db/DBQueryHelper.cc
+    ${CMAKE_SOURCE_DIR}/src/db/DBIndexOptimizer.cc
 )
+
+# ==================== 高并发处理模块构建 ====================
+set(CONCURRENCY_SOURCES
+    ${CMAKE_SOURCE_DIR}/src/AsyncTaskQueue.cc
+    ${CMAKE_SOURCE_DIR}/src/services/ModelInstancePool.cc
+    ${CMAKE_SOURCE_DIR}/src/services/AsyncLlamaService.cc
+    ${CMAKE_SOURCE_DIR}/src/services/LlamaService.cc
+    ${CMAKE_SOURCE_DIR}/src/http/HighConcurrentHttpServer.cc
+    ${CMAKE_SOURCE_DIR}/src/http/HttpContext.cc
+    ${CMAKE_SOURCE_DIR}/src/http/HttpParser.cc
+    ${CMAKE_SOURCE_DIR}/src/http/HttpRequest.cc
+    ${CMAKE_SOURCE_DIR}/src/http/HttpResponse.cc
+    ${CMAKE_SOURCE_DIR}/src/http/Middleware.cc
+    ${CMAKE_SOURCE_DIR}/src/EventLoop.cc
+    ${CMAKE_SOURCE_DIR}/src/InetAddress.cc
+    ${CMAKE_SOURCE_DIR}/src/TcpServer.cc
+    ${CMAKE_SOURCE_DIR}/src/TcpConnection.cc
+    ${CMAKE_SOURCE_DIR}/src/Buffer.cc
+    ${CMAKE_SOURCE_DIR}/src/Socket.cc
+    ${CMAKE_SOURCE_DIR}/src/Channel.cc
+    ${CMAKE_SOURCE_DIR}/src/Poller.cc
+    ${CMAKE_SOURCE_DIR}/src/EPollPoller.cc
+    ${CMAKE_SOURCE_DIR}/src/DefaultPoller.cc
+    ${CMAKE_SOURCE_DIR}/src/Acceptor.cc
+    ${CMAKE_SOURCE_DIR}/src/EventLoopThread.cc
+    ${CMAKE_SOURCE_DIR}/src/EventLoopThreadPool.cc
+    ${CMAKE_SOURCE_DIR}/src/Timer.cc
+    ${CMAKE_SOURCE_DIR}/src/TimerQueue.cc
+    ${CMAKE_SOURCE_DIR}/src/Timestamp.cc
+    ${CMAKE_SOURCE_DIR}/src/Thread.cc
+    ${CMAKE_SOURCE_DIR}/src/CurrentThread.cc
+    ${CMAKE_SOURCE_DIR}/src/Logger.cc
+    ${CMAKE_SOURCE_DIR}/log/AsyncLogging.cc
+    ${CMAKE_SOURCE_DIR}/log/FileUtil.cc
+    ${CMAKE_SOURCE_DIR}/log/LogFile.cc
+    ${CMAKE_SOURCE_DIR}/log/LogStream.cc
+)
+
+# 检查文件是否存在
+foreach(SRC_FILE ${DB_SOURCES})
+    if(NOT EXISTS ${SRC_FILE})
+        message(FATAL_ERROR "❌ 数据库源文件不存在: ${SRC_FILE}")
+    endif()
+endforeach()
+
 add_library(db_lib STATIC ${DB_SOURCES})
 target_include_directories(db_lib PRIVATE 
     ${CMAKE_SOURCE_DIR}/include
     ${MYSQL_INCLUDE_DIR}
 )
 target_link_libraries(db_lib ${MYSQL_LIBRARY})
-message(STATUS "✅ 构建数据库静态库，包含 ${DB_SOURCES}")
+message(STATUS "✅ 构建数据库静态库，包含优化的连接池和查询助手")
+
+# 构建高并发处理库
+add_library(concurrency_lib STATIC ${CONCURRENCY_SOURCES})
+target_include_directories(concurrency_lib PRIVATE 
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/include/services
+    ${CMAKE_SOURCE_DIR}/include/http
+    ${CMAKE_SOURCE_DIR}/include/db
+)
+target_link_libraries(concurrency_lib pthread)
+message(STATUS "✅ 构建高并发处理库，包含异步任务队列、模型实例池和异步服务")
 
 # ==================== HTTP服务器构建 ====================
 file(GLOB HTTP_MEMORY_SRC "memory/*.cc")
@@ -140,6 +198,7 @@ list(FILTER NETWORK_SRC EXCLUDE REGEX ".*main_http\\.cc$")
 list(FILTER NETWORK_SRC EXCLUDE REGEX ".*main_http_modular\\.cc$") # 排除模块化main
 list(FILTER NETWORK_SRC EXCLUDE REGEX ".*llama_service\\.cc$") 
 list(FILTER NETWORK_SRC EXCLUDE REGEX ".*llama_service_tcp\\.cc$")
+list(FILTER NETWORK_SRC EXCLUDE REGEX ".*test_concurrency\\.cc$") # 排除测试文件
 list(FILTER NETWORK_SRC EXCLUDE REGEX ".*CurrentThread\\.cc$")
 
 # 排除可能导致重复定义的文件
@@ -162,6 +221,7 @@ add_executable(kama_http_server
     src/main_http.cc 
     src/db/DatabaseManager.cpp  # 确保这行存在
     src/ConfigManager.cc       # 添加配置管理器
+    src/http/HttpResponse.cc   # 显式包含HttpResponse实现，修复链接错误
     ${HTTP_SOURCES}           # HTTP源文件
     ${HTTP_MEMORY_SRC}
     ${HTTP_LOG_SRC}
@@ -234,6 +294,7 @@ add_executable(kama_http_server_modular
     src/services/DatabaseService.cc
     src/services/LlamaService.cc
     src/ConfigManager.cc
+    src/db/DatabaseManager.cpp  # 添加DatabaseManager.cpp
     ${HTTP_MEMORY_SRC}
     ${HTTP_LOG_SRC}
     ${NETWORK_SRC}
@@ -243,6 +304,7 @@ target_link_libraries(kama_http_server_modular
     ${LIBS} 
     current_thread
     db_lib         # 数据库库
+    concurrency_lib # 高并发处理库
     ${MYSQL_LIBRARY}
     ssl
     crypto
@@ -264,3 +326,13 @@ if (USE_CUDA)
 endif()
 
 message(STATUS "✅ Configuring HTTP Server build with MySQL support.")
+
+# ==================== 高并发测试程序 ====================
+add_executable(test_concurrency src/test_concurrency.cc)
+target_link_libraries(test_concurrency 
+    ${LIBS}
+    concurrency_lib
+    db_lib
+    ${MYSQL_LIBRARY}
+)
+message(STATUS "✅ 构建高并发测试程序")
