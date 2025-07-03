@@ -322,16 +322,20 @@ fi
 if ps -p $HTTP_PID > /dev/null; then
     if $USE_MODULAR; then
         echo -e "${GREEN}🌍 模块化 HTTP 服务器正在运行（端口8080）${NC}"
-        echo -e "   访问: http://localhost:8080/"
+        echo -e "   访问界面: http://localhost:8080/"
+        echo -e "   聊天界面: http://localhost:8080/chat.html"
         echo -e "   API状态: http://localhost:8080/api/status"
         echo -e "   模块化示例: http://localhost:8080/basic.html"
         echo -e "   日志: $HTTP_LOG_MODULAR"
     else
         echo -e "${GREEN}🌍 HTTP 服务器正在运行（端口8081）${NC}"
-        echo -e "   访问: http://localhost:8081/"
+        echo -e "   访问界面: http://localhost:8081/"
+        echo -e "   聊天界面: http://localhost:8081/chat.html (全新界面设计!)"
         echo -e "   API状态: http://localhost:8081/api/status"
         echo -e "   日志: $HTTP_LOG"
     fi
+    
+    echo -e "\n${GREEN}✨ 提示: 已更新聊天界面! 现代化设计和更好的用户体验${NC}"
 else
     echo -e "${YELLOW}⚠️ HTTP 服务器未正常运行${NC}"
 fi

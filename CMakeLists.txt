@@ -122,6 +122,7 @@ set(DB_SOURCES
     ${CMAKE_SOURCE_DIR}/src/db/DBConnectionPool.cc
     ${CMAKE_SOURCE_DIR}/src/db/DBQueryHelper.cc
     ${CMAKE_SOURCE_DIR}/src/db/DBIndexOptimizer.cc
+    ${CMAKE_SOURCE_DIR}/src/db/DatabaseManager.cpp
 )
 
 # ==================== 高并发处理模块构建 ====================
@@ -221,8 +222,12 @@ add_executable(kama_http_server
     src/main_http.cc 
     src/db/DatabaseManager.cpp  # 确保这行存在
     src/ConfigManager.cc       # 添加配置管理器
-    src/http/HttpResponse.cc   # 显式包含HttpResponse实现，修复链接错误
-    ${HTTP_SOURCES}           # HTTP源文件
+    src/http/HttpServer.cc
+    src/http/HttpContext.cc
+    src/http/HttpParser.cc
+    src/http/HttpRequest.cc
+    src/http/HttpResponse.cc    # 显式包含，修复链接错误
+    src/http/Middleware.cc      # 显式包含，修复链接错误
     ${HTTP_MEMORY_SRC}
     ${HTTP_LOG_SRC}
     ${NETWORK_SRC}            # 网络库源文件
@@ -285,6 +290,7 @@ target_link_libraries(kama_http_server
 # ==================== 构建模块化HTTP服务器 ====================
 add_executable(kama_http_server_modular 
     src/main_http_modular.cc 
+    src/ConfigManager.cc
     src/http/HttpServer.cc
     src/http/HttpContext.cc
     src/http/HttpParser.cc
@@ -293,8 +299,6 @@ add_executable(kama_http_server_modular
     src/http/Middleware.cc
     src/services/DatabaseService.cc
     src/services/LlamaService.cc
-    src/ConfigManager.cc
-    src/db/DatabaseManager.cpp  # 添加DatabaseManager.cpp
     ${HTTP_MEMORY_SRC}
     ${HTTP_LOG_SRC}
     ${NETWORK_SRC}

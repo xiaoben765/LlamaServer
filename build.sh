@@ -38,6 +38,11 @@ if [ "$1" == "--clean" ]; then
     echo -e "${YELLOW}执行完全重新构建...${NC}"
     rm -rf build/*
     cmake -S . -B build
+else
+    # 由于修复了CMakeLists.txt，我们需要清除CMakeCache.txt
+    echo -e "${YELLOW}清除CMake缓存...${NC}"
+    rm -f build/CMakeCache.txt
+    cmake -S . -B build
 fi
 
 # 执行编译

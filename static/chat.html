@@ -3,120 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kama Chat</title>
+    <title>Kama AI 助手</title>
     <!-- 强制禁用缓存 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 20px; 
-            background-color: #f5f5f5; 
-            color: #333;
-        }
-        .container { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 10px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            animation: fadeIn 0.5s ease-out;
-        }
-        .chat-box { 
-            border: 1px solid #ddd; 
-            height: 400px; 
-            overflow-y: auto; 
-            padding: 10px; 
-            margin-bottom: 20px; 
-            background-color: #fafafa;
-            border-radius: 5px;
-        }
-        .message { 
-            margin-bottom: 10px; 
-            padding: 8px; 
-            border-radius: 5px;
-            max-width: 80%;
-            word-wrap: break-word;
-            animation: slideIn 0.3s ease-out;
-        }
-        .user-message { 
-            background-color: #007bff; 
-            color: white; 
-            text-align: right;
-            margin-left: auto;
-        }
-        .bot-message { 
-            background-color: #e9ecef; 
-            color: #333;
-            margin-right: auto;
-        }
-        .input-area { 
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 10px; 
-        }
-        #messageInput { 
-            flex: 1; 
-            padding: 10px; 
-            border: 1px solid #ddd; 
-            border-radius: 5px;
-            transition: border-color 0.3s;
-        }
-        #messageInput:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-        }
-        #sendButton { 
-            padding: 10px 20px; 
-            background-color: #007bff; 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer;
-            transition: background-color 0.3s; 
-        }
-        #sendButton:hover { 
-            background-color: #0056b3; 
-        }
-        #sendButton:disabled { 
-            background-color: #ccc; 
-            cursor: not-allowed; 
-        }
-        .status { 
-            margin-top: 10px; 
-            font-size: 12px; 
-            color: #666; 
-        }
-        .user-info { 
-            display: flex; 
-            justify-content: space-between; 
-            margin-bottom: 10px; 
-        }
-        .session-info { 
-            font-size: 13px; 
-            color: #666; 
-        }
-        .user-menu { 
-            display: flex; 
-            gap: 10px; 
-        }
-        .btn { 
-            padding: 5px 10px; 
-            background-color: #6c757d; 
-            color: white; 
-            border: none; 
-            border-radius: 3px; 
-            cursor: pointer; 
-            font-size: 12px;
-            transition: background-color 0.2s;
-        }
-        .btn:hover {
-            background-color: #5a6268;
-        }
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- 引入系统字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
         .login-form { 
             display: none; 
             padding: 20px; 
@@ -199,28 +95,108 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="/" class="back-link">← 返回状态页面</a>
-        <h1>Kama 聊天界面</h1>
-
-        <!-- 错误显示容器 -->
-        <div id="error-container"></div>
-        
-        <!-- 登录表单 -->
-        <div id="login-form" class="login-form">
-            <h2>用户登录</h2>
-            <div class="form-group">
-                <label for="username">用户名：</label>
-                <input type="text" id="username" name="username" required>
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <div id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="img/logo.svg" alt="Kama AI">
+                    <span>Kama AI 助手</span>
+                </div>
+                <button id="toggle-sidebar" class="icon-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
             </div>
-            <div class="form-group">
-                <label for="password">密码：</label>
-                <input type="password" id="password" name="password" required>
+            
+            <div class="sidebar-content">
+                <div class="section-title">会话</div>
+                <a href="#" class="nav-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>当前会话</span>
+                </a>
+                
+                <div class="section-title">工具</div>
+                <a href="#" id="clear-chat" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span>清除聊天记录</span>
+                </a>
+                <a href="/" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span>返回主页</span>
+                </a>
             </div>
-            <button id="loginButton" class="btn" style="background-color: #28a745;">登录</button>
-            <button id="registerButton" class="btn">注册</button>
-            <button id="cancelButton" class="btn" style="background-color: #dc3545;">取消</button>
+            
+            <div class="sidebar-footer">
+                <div class="status">
+                    <div class="status-info">
+                        <span id="status-indicator" class="status-indicator status-offline"></span>
+                        <span id="status-text">检查连接状态...</span>
+                    </div>
+                    <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-light);">
+                        Kama AI v1.0.0
+                    </div>
+                </div>
+            </div>
         </div>
+        
+        <!-- 主内容区 -->
+        <div class="main">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <h2>聊天会话</h2>
+                </div>
+                <div class="chat-header-actions">
+                    <button class="icon-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="19" cy="12" r="1"></circle>
+                            <circle cx="5" cy="12" r="1"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 聊天区域 -->
+            <div id="chat-container" class="chat-container">
+                <!-- 消息将通过JavaScript动态添加 -->
+            </div>
+            
+            <!-- 输入区域 -->
+            <div class="input-container">
+                <form id="message-form" class="input-form">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="message-input" 
+                            class="chat-input" 
+                            placeholder="发送消息..." 
+                            rows="1"
+                            autofocus
+                        ></textarea>
+                    </div>
+                    <button id="send-button" type="submit" class="send-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </form>
+                <div style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.5rem; text-align: center;">
+                    按 Ctrl+Enter 发送
+                </div>
+            </div>
+        </div>
+    </div>
         
         <!-- 用户信息 -->
         <div class="user-info">
@@ -255,27 +231,8 @@
         </footer>
     </div>
 
-    <script>
-        // 全局变量
-        let sessionId = "default";
-        let userId = "anonymous";
-        let username = "游客";
-        
-        // DOM元素引用
-        const chatBox = document.getElementById('chatBox');
-        const messageInput = document.getElementById('messageInput');
-        const sendButton = document.getElementById('sendButton');
-        const statusText = document.getElementById('statusText');
-        const loadingIndicator = document.getElementById('loadingIndicator');
-        const loginForm = document.getElementById('login-form');
-        const loginToggle = document.getElementById('loginToggle');
-        const loginButton = document.getElementById('loginButton');
-        const registerButton = document.getElementById('registerButton');
-        const cancelButton = document.getElementById('cancelButton');
-        const newSessionButton = document.getElementById('newSessionButton');
-        const historyButton = document.getElementById('historyButton');
-        const sessionIdElement = document.getElementById('sessionId');
-        const currentUserElement = document.getElementById('currentUser');
+    <!-- 引入脚本 -->
+    <script src="js/chat.js"></script>
         
         // 添加全局错误处理
         window.onerror = function(message, source, lineno, colno, error) {
@@ -630,14 +587,5 @@
                     }
                 })
                 .catch(error => {
-                    console.error('加载历史记录失败:', error);
-                    showError('无法加载历史记录: ' + error.message);
-                    statusText.textContent = '加载历史记录失败';
-                })
-                .finally(() => {
-                    loadingIndicator.style.display = 'none';
-                });
-        }
-    </script>
 </body>
 </html>
