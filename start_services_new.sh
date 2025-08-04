@@ -22,7 +22,9 @@ LOG_DIR="$PROJECT_DIR/logs"
 
 # 服务配置
 HTTP_SERVER="$BIN_DIR/llama_http_server"
+LLAMA_TCP_SERVER="$BIN_DIR/llama_service_tcp"
 HTTP_LOG="$LOG_DIR/llama_http_server.log"
+LLAMA_TCP_LOG="$LOG_DIR/llama_service_tcp.log"
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}🚀 LLaMA WebServer 启动脚本${NC}"
@@ -56,12 +58,29 @@ else
     echo -e "${GREEN}✅ HTTP服务器已就绪${NC}"
 fi
 
+# 检查LLaMA TCP服务器文件
+if [[ ! -f "$LLAMA_TCP_SERVER" ]]; then
+    echo -e "${RED}❌ LLaMA TCP服务器未找到${NC}"
+    exit 1
+else
+    echo -e "${GREEN}✅ LLaMA TCP服务器已就绪${NC}"
+fi
+
 # 检查端口占用
 HTTP_PORT=8080
+LLAMA_TCP_PORT=8899
+
 if lsof -i:$HTTP_PORT > /dev/null 2>&1; then
     echo -e "${RED}❌ 端口 $HTTP_PORT 已被占用${NC}"
     echo "占用进程:"
     lsof -i:$HTTP_PORT
+    exit 1
+fi
+
+if lsof -i:$LLAMA_TCP_PORT > /dev/null 2>&1; then
+    echo -e "${RED}❌ 端口 $LLAMA_TCP_PORT 已被占用${NC}"
+    echo "占用进程:"
+    lsof -i:$LLAMA_TCP_PORT
     exit 1
 fi
 
@@ -77,16 +96,48 @@ echo -e "${GREEN}✅ 环境检查完成${NC}"
 
 # 启动HTTP服务器
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}🚀 启动HTTP服务器${NC}"
+echo -e "${BLUE}🚀 启动服务${NC}"
 echo -e "${BLUE}========================================${NC}"
 
 # 清理旧日志
 > "$HTTP_LOG"
+> "$LLAMA_TCP_LOG"
 
+# 先启动LLaMA TCP服务
+echo -e "${YELLOW}🚀 启动LLaMA TCP服务...${NC}"
+echo -e "${CYAN}   🌐 监听端口: $LLAMA_TCP_PORT${NC}"
+echo -e "${CYAN}   🤖 模型路径: /home/shl203/llama.cpp/models/qwen/Qwen-7B-Chat.Q4_K_M.gguf${NC}"
+
+"$LLAMA_TCP_SERVER" > "$LLAMA_TCP_LOG" 2>&1 &
+LLAMA_TCP_PID=$!
+
+echo -e "${GREEN}✅ LLaMA TCP服务已启动 (PID: $LLAMA_TCP_PID)${NC}"
+
+# 等待LLaMA服务启动
+echo -e "${YELLOW}⏳ 等待LLaMA服务初始化...${NC}"
+sleep 10
+
+# 检查LLaMA服务状态
+if ! ps -p $LLAMA_TCP_PID > /dev/null; then
+    echo -e "${RED}❌ LLaMA TCP服务启动失败${NC}"
+    echo "错误日志:"
+    tail -20 "$LLAMA_TCP_LOG"
+    exit 1
+fi
+
+# 检查LLaMA端口监听
+if netstat -tlnp 2>/dev/null | grep -q ":$LLAMA_TCP_PORT.*LISTEN"; then
+    echo -e "${GREEN}✅ LLaMA TCP服务正在监听端口 $LLAMA_TCP_PORT${NC}"
+else
+    echo -e "${YELLOW}⚠️ LLaMA端口监听检查失败，但进程运行正常${NC}"
+fi
+
+# 启动HTTP服务器
 echo -e "${YELLOW}🚀 启动HTTP服务器...${NC}"
 echo -e "${CYAN}   📁 静态文件目录: ./static${NC}"
 echo -e "${CYAN}   🌐 监听端口: $HTTP_PORT${NC}"
 echo -e "${CYAN}   🗄️ 数据库: MySQL/内存数据库${NC}"
+echo -e "${CYAN}   🔗 LLaMA服务: 127.0.0.1:$LLAMA_TCP_PORT${NC}"
 
 # 启动HTTP服务器
 "$HTTP_SERVER" > "$HTTP_LOG" 2>&1 &
@@ -125,6 +176,7 @@ echo -e "   📊 API状态: ${GREEN}http://localhost:$HTTP_PORT/api/status${NC}"
 
 echo -e "\n${CYAN}📝 日志文件:${NC}"
 echo -e "   📄 HTTP服务器: $HTTP_LOG"
+echo -e "   🤖 LLaMA TCP服务: $LLAMA_TCP_LOG"
 
 echo -e "\n${YELLOW}💡 提示:${NC}"
 echo -e "   • 按 ${CYAN}Ctrl+C${NC} 停止服务"
@@ -146,6 +198,15 @@ cleanup() {
         fi
     fi
     
+    if [[ -n "$LLAMA_TCP_PID" ]] && ps -p $LLAMA_TCP_PID > /dev/null; then
+        echo -e "${YELLOW}   停止LLaMA TCP服务 (PID: $LLAMA_TCP_PID)...${NC}"
+        kill $LLAMA_TCP_PID 2>/dev/null
+        sleep 2
+        if ps -p $LLAMA_TCP_PID > /dev/null; then
+            kill -9 $LLAMA_TCP_PID 2>/dev/null
+        fi
+    fi
+    
     echo -e "${GREEN}✅ 服务已停止${NC}"
     exit 0
 }
@@ -157,6 +218,14 @@ trap cleanup INT TERM
 echo -e "${CYAN}🔄 服务运行中，按Ctrl+C停止...${NC}"
 while true; do
     sleep 10
+    
+    # 检查LLaMA TCP服务
+    if ! ps -p $LLAMA_TCP_PID > /dev/null; then
+        echo -e "${RED}❌ LLaMA TCP服务意外停止！${NC}"
+        echo "最近的错误日志:"
+        tail -10 "$LLAMA_TCP_LOG"
+        break
+    fi
     
     # 检查HTTP服务器
     if ! ps -p $HTTP_PID > /dev/null; then

@@ -1,0 +1,298 @@
+2025/08/04 21:07:408274 DEBUG EventLoop createdtruein thread629861 - EventLoop.cc:53
+2025/08/04 21:07:408333 INFO  func =>fd4events=3index=-1 - EPollPoller.cc:91
+2025/08/04 21:07:408577 INFO  成功加载配置文件: config/config.json - ConfigManager.cc:28
+2025/08/04 21:07:408918 INFO  成功加载配置文件: config/config.json - ConfigManager.cc:28
+2025/08/04 21:07:409329 INFO  配置加载完成: 端口=8080, 线程数=4, LLaMA服务类型=tcp, 数据库类型=mysql, 开发模式=true - main_http_modular.cc:125
+2025/08/04 21:07:409349 INFO  添加中间件: LoggingMiddleware - Middleware.cc:17
+2025/08/04 21:07:409354 INFO  添加中间件: CorsMiddleware - Middleware.cc:17
+2025/08/04 21:07:410768 INFO  尝试连接MySQL - Host: 127.0.0.1, Port: 3306, DB: kama_llm, User: root - DatabaseManager.cpp:86
+2025/08/04 21:07:492424 INFO  MySQL连接成功: 127.0.0.1:3306/kama_llm - DatabaseManager.cpp:120
+2025/08/04 21:07:497165 INFO  数据库表初始化完成 - DatabaseManager.cpp:230
+2025/08/04 21:07:497174 INFO  MySQL数据库初始化成功 - DatabaseManager.cpp:52
+2025/08/04 21:07:497178 INFO  数据库服务初始化成功: 127.0.0.1:3306/kama_llm - DatabaseService.cc:58
+2025/08/04 21:07:497293 ERROR 连接LLaMA服务失败: Connection refused - LlamaService.cc:250
+2025/08/04 21:07:497306 ERROR LLaMA 服务不可用：127.0.0.1:8899 - LlamaService.cc:31
+2025/08/04 21:07:497320 WARN  LLaMA服务不可用，将使用降级回复 - main_http_modular.cc:254
+2025/08/04 21:07:497337 INFO  Added route: GET /basic - HttpServer.cc:60
+2025/08/04 21:07:497342 INFO  Added route: GET /api/models - HttpServer.cc:60
+2025/08/04 21:07:497347 INFO  Added route: POST /api/llama/query - HttpServer.cc:60
+2025/08/04 21:07:497351 INFO  Added route: GET /api/status - HttpServer.cc:60
+2025/08/04 21:07:497355 INFO  Added route: POST /api/admin/clear-cache - HttpServer.cc:60
+2025/08/04 21:07:497360 INFO  Added route: POST /api/admin/clear-database - HttpServer.cc:60
+2025/08/04 21:07:497363 INFO  Added route: GET /api/admin/database-stats - HttpServer.cc:60
+2025/08/04 21:07:497367 INFO  Added route: GET /api/admin/users - HttpServer.cc:60
+2025/08/04 21:07:497371 INFO  Added route: POST /api/admin/clear-users - HttpServer.cc:60
+2025/08/04 21:07:497375 INFO  Added route: GET /api/conversations - HttpServer.cc:60
+2025/08/04 21:07:497386 INFO  启动Kama HTTP服务器, 端口: 8080 - main_http_modular.cc:74
+2025/08/04 21:07:497390 INFO  HTTP Server [KamaHttpServer] started on 0.0.0.0:8080 - HttpServer.cc:41
+2025/08/04 21:07:497515 DEBUG EventLoop createdtruein thread629863 - EventLoop.cc:53
+2025/08/04 21:07:497533 INFO  func =>fd9events=3index=-1 - EPollPoller.cc:91
+2025/08/04 21:07:497555 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/04 21:07:497558 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:07:497670 DEBUG EventLoop createdtruein thread629864 - EventLoop.cc:53
+2025/08/04 21:07:497687 INFO  func =>fd11events=3index=-1 - EPollPoller.cc:91
+2025/08/04 21:07:497704 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/04 21:07:497707 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:07:497798 DEBUG EventLoop createdtruein thread629865 - EventLoop.cc:53
+2025/08/04 21:07:497814 INFO  func =>fd13events=3index=-1 - EPollPoller.cc:91
+2025/08/04 21:07:497830 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/04 21:07:497833 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:07:497926 DEBUG EventLoop createdtruein thread629866 - EventLoop.cc:53
+2025/08/04 21:07:497942 INFO  func =>fd15events=3index=-1 - EPollPoller.cc:91
+2025/08/04 21:07:497958 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/04 21:07:497962 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:07:497973 INFO  func =>fd6events=3index=-1 - EPollPoller.cc:91
+2025/08/04 21:07:498028 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/04 21:07:498033 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:07:498280 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:07:498309 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:07:498332 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 21:07:498339 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#1]from %s127.0.0.1:37484 - TcpServer.cc:96
+2025/08/04 21:07:498361 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#1]at fd=16 - TcpConnection.cc:52
+2025/08/04 21:07:498393 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:07:498408 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:07:498431 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:07:498443 INFO  func =>fd16events=3index=-1 - EPollPoller.cc:91
+2025/08/04 21:07:498467 INFO  New HTTP connection from: 127.0.0.1:37484 - HttpServer.cc:70
+2025/08/04 21:07:498475 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:07:498479 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:07:498482 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:07:498517 INFO  TcpConnection::handleClose fd=16state=2 - TcpConnection.cc:258
+2025/08/04 21:07:498520 INFO  func =>fd16events=0index=1 - EPollPoller.cc:91
+2025/08/04 21:07:498527 INFO  HTTP connection closed: 127.0.0.1:37484 - HttpServer.cc:75
+2025/08/04 21:07:498545 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:07:498552 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:07:498556 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:07:498561 INFO  TcpServer::removeConnectionInLoop [KamaHttpServer] - connection %sKamaHttpServer-0.0.0.0:8080#1 - TcpServer.cc:143
+2025/08/04 21:07:498574 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:07:498580 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:07:498583 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:07:498588 INFO  removeChannel fd=16 - EPollPoller.cc:132
+2025/08/04 21:07:498592 INFO  TcpConnection::dtor[KamaHttpServer-0.0.0.0:8080#1]at fd=16state=0 - TcpConnection.cc:58
+2025/08/04 21:07:498634 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:507750 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:507787 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:507864 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:507890 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:508015 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:508034 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:508612 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:508644 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:08:508695 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:508748 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:517821 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:517855 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:517922 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:517948 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:518098 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:518118 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:515961 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:515992 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:08:518791 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:518818 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:527896 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:527927 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:527978 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:528005 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:528199 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:528248 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:771752 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:08:771777 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:08:771802 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 21:08:771809 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#2]from %s127.0.0.1:37486 - TcpServer.cc:96
+2025/08/04 21:08:771823 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#2]at fd=16 - TcpConnection.cc:52
+2025/08/04 21:08:771854 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:08:771870 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:08:771890 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:08:771901 INFO  func =>fd16events=3index=-1 - EPollPoller.cc:91
+2025/08/04 21:08:771919 INFO  New HTTP connection from: 127.0.0.1:37486 - HttpServer.cc:70
+2025/08/04 21:08:771927 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:08:771931 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:08:771934 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:08:772008 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 21:08:772036 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 21:08:772088 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:08:576854 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:08:576880 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:08:576906 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 21:08:576913 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#3]from %s127.0.0.1:37488 - TcpServer.cc:96
+2025/08/04 21:08:576928 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#3]at fd=17 - TcpConnection.cc:52
+2025/08/04 21:08:576956 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:08:576970 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:08:576991 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:08:577004 INFO  func =>fd17events=3index=-1 - EPollPoller.cc:91
+2025/08/04 21:08:577022 INFO  New HTTP connection from: 127.0.0.1:37488 - HttpServer.cc:70
+2025/08/04 21:08:577031 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/04 21:08:577035 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:08:577038 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:08:577075 INFO  HTTP GET /api/status 从  - Middleware.cc:57
+2025/08/04 21:08:577771 INFO  尝试连接MySQL - Host: 127.0.0.1, Port: 3306, DB: kama_llm, User: root - DatabaseManager.cpp:86
+2025/08/04 21:08:659615 INFO  MySQL连接成功: 127.0.0.1:3306/kama_llm - DatabaseManager.cpp:120
+2025/08/04 21:08:755241 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:08:755299 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:08:755358 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 21:08:755375 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#4]from %s127.0.0.1:37490 - TcpServer.cc:96
+2025/08/04 21:08:755411 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#4]at fd=18 - TcpConnection.cc:52
+2025/08/04 21:08:755459 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:08:530305 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:530337 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:537987 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:538013 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:538314 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:538333 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:762280 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:762305 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:08:540372 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:540412 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:548072 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:548097 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:548390 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:548418 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:770278 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:770305 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:08:550448 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:550479 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:558199 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:558251 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:558457 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:558476 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:08:778281 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:08:778308 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:09:560536 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:560603 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:568366 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:568401 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:568536 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:568555 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:786281 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:786312 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:09:562305 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:562336 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:578439 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:578463 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:578612 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:578631 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:794284 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:794314 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:09:572371 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:572403 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:588500 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:588523 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:588668 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:588687 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:804346 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:804376 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:09:582435 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:582466 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:598596 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:598649 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:598742 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:598761 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:814285 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:814314 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:09:592520 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:592552 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:608722 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:608771 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:608814 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:608833 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:824343 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:824369 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:09:602589 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:602619 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:618817 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:618847 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:618856 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:618872 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:09:834298 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:09:834327 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:10:612695 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:612746 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:628910 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:628925 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:628981 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:629000 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:549141 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 21:10:549175 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 21:10:549207 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 21:10:549216 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#5]from %s127.0.0.1:37492 - TcpServer.cc:96
+2025/08/04 21:10:549231 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#5]at fd=19 - TcpConnection.cc:52
+2025/08/04 21:10:549256 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:10:622820 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:622884 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:639078 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:639112 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:639111 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:639180 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:559284 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:559314 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:10:632932 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:632964 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:649170 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:649193 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:649234 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:649254 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:569355 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:569387 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:10:643035 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:643094 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:659248 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:659273 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:659312 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:659334 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:579426 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:579462 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:10:653154 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:653209 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:669313 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:669346 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:669389 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:669408 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:589487 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:589513 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:10:663248 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:663281 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:679395 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:679421 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:679461 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:679480 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:10:599550 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:10:599580 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:11:673314 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:673354 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:689482 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:689510 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:689530 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:689548 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:609616 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:609651 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:11:683384 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:683419 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:699561 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:699589 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:699601 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:699620 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:613548 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:613580 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:11:693457 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:693488 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:709666 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:709685 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:709735 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:709742 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:623622 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:623651 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:11:703530 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:703561 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:719790 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:719814 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:719809 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:719882 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:633706 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:633738 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 21:11:713596 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:713631 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:729908 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:729931 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 21:11:729960 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 21:11:730009 INFO  fd total count:1 - EPollPoller.cc:34

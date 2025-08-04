@@ -9,7 +9,12 @@ InetAddress::InetAddress(uint16_t port, std::string ip) // 构造函数
     // addr_的成员变量含义：sin_family表示地址族，sin_port表示端口号，sin_addr表示IP地址。
     addr_.sin_family = AF_INET;  // AF_INET表示IPv4地址族
     addr_.sin_port = ::htons(port); // 本地字节序转为网络字节序. htons 代表 "host to network short" (主机转网络短整型)。
-    addr_.sin_addr.s_addr = ::inet_addr(ip.c_str()); // 将字符串形式的IP地址转换为网络字节序的整数形式
+    
+    // 使用 inet_pton 替代 inet_addr，更安全且支持 "0.0.0.0"
+    if (::inet_pton(AF_INET, ip.c_str(), &addr_.sin_addr) <= 0) {
+        // 如果转换失败，使用 INADDR_ANY (0.0.0.0)
+        addr_.sin_addr.s_addr = INADDR_ANY;
+    }
 }
 
 // 二进制的IP地址转换回字符串

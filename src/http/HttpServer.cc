@@ -173,7 +173,7 @@ void HttpServer::handleError(const HttpRequest& req, HttpResponse& resp, const s
 }
 
 void HttpServer::handleStaticFile(const HttpRequest& req, HttpResponse& resp) {
-    // 实现静态文件处理逻辑
+    // 实现静态文件处理逻辑（优化版本，减少阻塞）
     std::string path = req.path();
     
     // 处理根路径，加载index.html
@@ -189,72 +189,74 @@ void HttpServer::handleStaticFile(const HttpRequest& req, HttpResponse& resp) {
         return;
     }
     
-    // 检查文件是否存在
-    std::ifstream file(filePath, std::ios::binary | std::ios::ate);
-    if (!file.is_open()) {
-        handleNotFound(req, resp);
-        return;
-    }
-    
-    // 获取文件大小
-    std::streamsize size = file.tellg();
-    file.seekg(0, std::ios::beg);
-    
-    // 读取文件内容
-    std::string content(size, '\0');
-    if (!file.read(&content[0], size)) {
-        resp.setErrorResponse(HttpStatusCode::INTERNAL_SERVER_ERROR, "Failed to read file");
-        return;
-    }
-    
-    // 设置Content-Type
-    std::string extension = filePath.substr(filePath.find_last_of('.') + 1);
-    std::string contentType = "application/octet-stream"; // 默认
-    
-    if (extension == "html" || extension == "htm") {
-        contentType = "text/html";
-    } else if (extension == "css") {
-        contentType = "text/css";
-    } else if (extension == "js") {
-        contentType = "application/javascript";
-    } else if (extension == "png") {
-        contentType = "image/png";
-    } else if (extension == "jpg" || extension == "jpeg") {
-        contentType = "image/jpeg";
-    } else if (extension == "gif") {
-        contentType = "image/gif";
-    } else if (extension == "svg") {
-        contentType = "image/svg+xml";
-    } else if (extension == "json") {
-        contentType = "application/json";
-    } else if (extension == "txt") {
-        contentType = "text/plain";
-    }
-    
-    resp.setContentType(contentType);
-    resp.enableCORS(); // 添加CORS头，允许跨域访问
-    
-    // 根据开发模式设置缓存控制头
-    if (developmentMode_) {
-        // 开发模式：禁用缓存以便实时更新
+    try {
+        // 使用更高效的文件读取方式
+        std::ifstream file(filePath, std::ios::binary);
+        if (!file.is_open()) {
+            handleNotFound(req, resp);
+            return;
+        }
+        
+        // 获取文件大小
+        file.seekg(0, std::ios::end);
+        std::streamsize size = file.tellg();
+        file.seekg(0, std::ios::beg);
+        
+        // 限制文件大小，防止内存耗尽
+        const std::streamsize MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+        if (size > MAX_FILE_SIZE) {
+            resp.setErrorResponse(HttpStatusCode::BAD_REQUEST, "File too large");
+            return;
+        }
+        
+        // 读取文件内容
+        std::string content;
+        content.reserve(size);
+        content.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+        
+        // 检查读取是否成功
+        if (file.bad()) {
+            resp.setErrorResponse(HttpStatusCode::INTERNAL_SERVER_ERROR, "Failed to read file");
+            return;
+        }
+        
+        // 设置Content-Type
+        std::string extension = path.substr(path.find_last_of('.') + 1);
+        std::string contentType = "application/octet-stream"; // 默认
+        
+        if (extension == "html" || extension == "htm") {
+            contentType = "text/html";
+        } else if (extension == "css") {
+            contentType = "text/css";
+        } else if (extension == "js") {
+            contentType = "application/javascript";
+        } else if (extension == "png") {
+            contentType = "image/png";
+        } else if (extension == "jpg" || extension == "jpeg") {
+            contentType = "image/jpeg";
+        } else if (extension == "gif") {
+            contentType = "image/gif";
+        } else if (extension == "svg") {
+            contentType = "image/svg+xml";
+        } else if (extension == "json") {
+            contentType = "application/json";
+        } else if (extension == "txt") {
+            contentType = "text/plain";
+        }
+        
+        resp.setContentType(contentType);
+        resp.enableCORS(); // 添加CORS头，允许跨域访问
+        
+        // 简化缓存控制（开发模式禁用缓存）
         resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         resp.setHeader("Pragma", "no-cache");
         resp.setHeader("Expires", "0");
-    } else {
-        // 生产模式：启用适度缓存
-        if (extension == "css" || extension == "js") {
-            // CSS和JS文件缓存1小时
-            resp.setHeader("Cache-Control", "public, max-age=3600");
-        } else if (extension == "png" || extension == "jpg" || extension == "jpeg" || extension == "gif" || extension == "svg") {
-            // 图片文件缓存1天
-            resp.setHeader("Cache-Control", "public, max-age=86400");
-        } else {
-            // HTML文件短期缓存
-            resp.setHeader("Cache-Control", "public, max-age=300");
-        }
+        
+        resp.setBody(content);
+        
+    } catch (const std::exception& e) {
+        resp.setErrorResponse(HttpStatusCode::INTERNAL_SERVER_ERROR, "Error processing file");
     }
-    
-    resp.setBody(content);
 }
 
 } // namespace http
