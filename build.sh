@@ -10,7 +10,7 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}=== 开始编译 Kama WebServer ($(date '+%Y-%m-%d %H:%M:%S')) ===${NC}"
+echo -e "${GREEN}=== 开始编译 Llama WebServer ($(date '+%Y-%m-%d %H:%M:%S')) ===${NC}"
 
 # 确保在正确的目录中
 cd "$(dirname "$0")"
@@ -50,12 +50,12 @@ echo -e "${YELLOW}编译所有组件...${NC}"
 cmake --build build --parallel $(nproc)
 
 # 确保二进制文件已生成
-if [ -f "bin/llama_service_tcp" ] && [ -f "bin/KamaWebServer" ] && [ -f "bin/kama_http_server" ] && [ -f "bin/kama_http_server_modular" ]; then
+if [ -f "bin/llama_service_tcp" ] && [ -f "bin/llama_http_server" ]; then
     echo -e "${GREEN}✅ 编译成功! 所有组件已生成${NC}"
     
     # 打印生成的二进制文件信息
     echo -e "\n${YELLOW}生成的二进制文件:${NC}"
-    ls -lh bin/llama_service_tcp bin/KamaWebServer bin/kama_http_server bin/kama_http_server_modular
+    ls -lh bin/llama_service_tcp bin/llama_http_server
 else
     echo -e "${RED}❌ 编译失败! 未生成全部所需的二进制文件${NC}"
     echo -e "${YELLOW}已生成的文件:${NC}"

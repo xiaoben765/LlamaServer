@@ -1,0 +1,370 @@
+2025/08/04 20:34:736710 DEBUG EventLoop createdtruein thread624202 - EventLoop.cc:53
+2025/08/04 20:34:736773 INFO  func =>fd5events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:737021 INFO  成功加载配置文件: config/config.json - ConfigManager.cc:28
+2025/08/04 20:34:737371 INFO  成功加载配置文件: config/config.json - ConfigManager.cc:28
+2025/08/04 20:34:737790 INFO  配置加载完成: 端口=8080, 线程数=4, LLaMA服务类型=tcp, 数据库类型=mysql, 开发模式=true - main_http_modular.cc:122
+2025/08/04 20:34:737803 INFO  添加中间件: LoggingMiddleware - Middleware.cc:17
+2025/08/04 20:34:737808 INFO  添加中间件: CorsMiddleware - Middleware.cc:17
+2025/08/04 20:34:737813 INFO  添加中间件: RateLimitMiddleware - Middleware.cc:17
+2025/08/04 20:34:737816 INFO  添加中间件: CompressionMiddleware - Middleware.cc:17
+2025/08/04 20:34:737821 INFO  添加中间件: AuthMiddleware - Middleware.cc:17
+2025/08/04 20:34:739212 INFO  尝试连接MySQL - Host: 127.0.0.1, Port: 3306, DB: kama_llm, User: root - DatabaseManager.cpp:86
+2025/08/04 20:34:801949 INFO  MySQL连接成功: 127.0.0.1:3306/kama_llm - DatabaseManager.cpp:120
+2025/08/04 20:34:826700 INFO  数据库表初始化完成 - DatabaseManager.cpp:230
+2025/08/04 20:34:826713 INFO  MySQL数据库初始化成功 - DatabaseManager.cpp:52
+2025/08/04 20:34:826718 INFO  数据库服务初始化成功: 127.0.0.1:3306/kama_llm - DatabaseService.cc:58
+2025/08/04 20:34:826845 ERROR 连接LLaMA服务失败: Connection refused - LlamaService.cc:250
+2025/08/04 20:34:826858 ERROR LLaMA 服务不可用：127.0.0.1:8899 - LlamaService.cc:31
+2025/08/04 20:34:826874 WARN  LLaMA服务不可用，将使用降级回复 - main_http_modular.cc:257
+2025/08/04 20:34:826893 INFO  Added route: GET /basic - HttpServer.cc:60
+2025/08/04 20:34:826900 INFO  Added route: GET /api/models - HttpServer.cc:60
+2025/08/04 20:34:826908 INFO  Added route: POST /api/llama/query - HttpServer.cc:60
+2025/08/04 20:34:826914 INFO  Added route: GET /api/status - HttpServer.cc:60
+2025/08/04 20:34:826921 INFO  Added route: POST /api/admin/clear-cache - HttpServer.cc:60
+2025/08/04 20:34:826928 INFO  Added route: POST /api/admin/clear-database - HttpServer.cc:60
+2025/08/04 20:34:826934 INFO  Added route: GET /api/admin/database-stats - HttpServer.cc:60
+2025/08/04 20:34:826941 INFO  Added route: GET /api/admin/users - HttpServer.cc:60
+2025/08/04 20:34:826947 INFO  Added route: POST /api/admin/clear-users - HttpServer.cc:60
+2025/08/04 20:34:826953 INFO  Added route: GET /api/conversations - HttpServer.cc:60
+2025/08/04 20:34:826978 INFO  启动Kama HTTP服务器, 端口: 8080 - main_http_modular.cc:71
+2025/08/04 20:34:826983 INFO  HTTP Server [KamaHttpServer] started on 127.0.0.1:8080 - HttpServer.cc:41
+2025/08/04 20:34:827131 DEBUG EventLoop createdtruein thread624205 - EventLoop.cc:53
+2025/08/04 20:34:827153 INFO  func =>fd9events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:827178 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/04 20:34:827181 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:34:827314 DEBUG EventLoop createdtruein thread624206 - EventLoop.cc:53
+2025/08/04 20:34:827331 INFO  func =>fd11events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:827348 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/04 20:34:827352 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:34:827460 DEBUG EventLoop createdtruein thread624207 - EventLoop.cc:53
+2025/08/04 20:34:827476 INFO  func =>fd13events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:827493 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/04 20:34:827496 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:34:827609 DEBUG EventLoop createdtruein thread624208 - EventLoop.cc:53
+2025/08/04 20:34:827624 INFO  func =>fd15events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:827640 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/04 20:34:827644 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:34:827657 INFO  func =>fd6events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:827688 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/04 20:34:827691 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:34:837232 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:34:837265 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:34:837398 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:34:837427 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:34:837564 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:34:837584 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:34:837690 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:34:837711 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:34:837749 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:34:837768 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:34:840524 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:840530 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:840554 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:34:840561 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#1]from %s127.0.0.1:37196 - TcpServer.cc:96
+2025/08/04 20:34:840576 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#1]at fd=16 - TcpConnection.cc:52
+2025/08/04 20:34:840604 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:34:840612 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:840619 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:840628 INFO  func =>fd16events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:840652 INFO  New HTTP connection from: 127.0.0.1:37196 - HttpServer.cc:70
+2025/08/04 20:34:840660 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:34:847718 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:847731 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:847748 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:34:847753 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#2]from %s127.0.0.1:37198 - TcpServer.cc:96
+2025/08/04 20:34:847764 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#2]at fd=17 - TcpConnection.cc:52
+2025/08/04 20:34:847786 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:34:847803 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:847812 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:847819 INFO  func =>fd17events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:847832 INFO  New HTTP connection from: 127.0.0.1:37198 - HttpServer.cc:70
+2025/08/04 20:34:847838 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/04 20:34:847842 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:847845 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:847941 INFO  HTTP GET / 从  - Middleware.cc:57
+2025/08/04 20:34:848314 INFO  压缩响应从 9841 字节到 2583 字节 - Middleware.cc:207
+2025/08/04 20:34:848349 INFO  HTTP GET / 响应 200 (0ms) - Middleware.cc:68
+2025/08/04 20:34:848419 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/04 20:34:867599 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:867611 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:867657 INFO  HTTP GET /css/openwebui-style.css 从  - Middleware.cc:57
+2025/08/04 20:34:868181 INFO  压缩响应从 19024 字节到 3705 字节 - Middleware.cc:207
+2025/08/04 20:34:868201 INFO  HTTP GET /css/openwebui-style.css 响应 200 (0ms) - Middleware.cc:68
+2025/08/04 20:34:868261 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/04 20:34:868974 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:868978 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:869018 INFO  HTTP GET /js/openwebui-app.js 从  - Middleware.cc:57
+2025/08/04 20:34:869849 INFO  压缩响应从 27712 字节到 6668 字节 - Middleware.cc:207
+2025/08/04 20:34:869866 INFO  HTTP GET /js/openwebui-app.js 响应 200 (0ms) - Middleware.cc:68
+2025/08/04 20:34:869923 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/04 20:34:900345 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:900355 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:900397 INFO  HTTP GET /api/models 从  - Middleware.cc:57
+2025/08/04 20:34:900487 INFO  返回模型列表，共 3 个模型 - main_http_modular.cc:364
+2025/08/04 20:34:900507 INFO  HTTP GET /api/models 响应 200 (0ms) - Middleware.cc:68
+2025/08/04 20:34:900548 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/04 20:34:078235 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:078290 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:078313 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:34:078320 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#3]from %s127.0.0.1:37200 - TcpServer.cc:96
+2025/08/04 20:34:078334 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#3]at fd=18 - TcpConnection.cc:52
+2025/08/04 20:34:078362 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:34:078377 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:078394 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:078406 INFO  func =>fd18events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:078425 INFO  New HTTP connection from: 127.0.0.1:37200 - HttpServer.cc:70
+2025/08/04 20:34:078432 INFO  fd total count:4 - EPollPoller.cc:34
+2025/08/04 20:34:236701 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:236730 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:236757 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:34:236764 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#4]from %s127.0.0.1:37202 - TcpServer.cc:96
+2025/08/04 20:34:236785 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#4]at fd=19 - TcpConnection.cc:52
+2025/08/04 20:34:236832 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:34:236857 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:236878 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:236890 INFO  func =>fd19events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:236909 INFO  New HTTP connection from: 127.0.0.1:37202 - HttpServer.cc:70
+2025/08/04 20:34:236917 INFO  fd total count:5 - EPollPoller.cc:34
+2025/08/04 20:34:236921 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:236924 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:236974 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:34:237008 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:34:237052 INFO  fd total count:5 - EPollPoller.cc:34
+2025/08/04 20:34:770300 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:770329 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:770358 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:34:770365 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#5]from %s127.0.0.1:37204 - TcpServer.cc:96
+2025/08/04 20:34:770381 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#5]at fd=20 - TcpConnection.cc:52
+2025/08/04 20:34:770418 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:34:770443 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:770466 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:770479 INFO  func =>fd20events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:770500 INFO  New HTTP connection from: 127.0.0.1:37204 - HttpServer.cc:70
+2025/08/04 20:34:770509 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/04 20:34:770513 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:770517 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:770572 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:34:770607 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:34:770657 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/04 20:34:793287 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:793316 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:793344 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:34:793351 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#6]from %s127.0.0.1:37206 - TcpServer.cc:96
+2025/08/04 20:34:793366 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#6]at fd=21 - TcpConnection.cc:52
+2025/08/04 20:34:793410 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:34:793435 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:793457 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:793470 INFO  func =>fd21events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:34:793489 INFO  New HTTP connection from: 127.0.0.1:37206 - HttpServer.cc:70
+2025/08/04 20:34:793497 INFO  fd total count:7 - EPollPoller.cc:34
+2025/08/04 20:34:793501 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:34:793504 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:34:793558 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:34:793592 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:34:793639 INFO  fd total count:7 - EPollPoller.cc:34
+2025/08/04 20:34:847477 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:34:847508 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:34:847666 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:34:847719 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:34:847745 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:34:847762 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:769276 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:769306 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:769335 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:769343 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#7]from %s127.0.0.1:37208 - TcpServer.cc:96
+2025/08/04 20:35:769358 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#7]at fd=24 - TcpConnection.cc:52
+2025/08/04 20:35:769401 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:769430 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:769452 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:769465 INFO  func =>fd24events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:769484 INFO  New HTTP connection from: 127.0.0.1:37208 - HttpServer.cc:70
+2025/08/04 20:35:769491 INFO  fd total count:8 - EPollPoller.cc:34
+2025/08/04 20:35:769495 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:769498 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:769567 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:769603 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:769654 INFO  fd total count:8 - EPollPoller.cc:34
+2025/08/04 20:35:790388 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:790418 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:790444 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:790452 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#8]from %s127.0.0.1:37210 - TcpServer.cc:96
+2025/08/04 20:35:790467 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#8]at fd=27 - TcpConnection.cc:52
+2025/08/04 20:35:790509 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:790534 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:790558 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:790573 INFO  func =>fd27events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:790593 INFO  New HTTP connection from: 127.0.0.1:37210 - HttpServer.cc:70
+2025/08/04 20:35:790600 INFO  fd total count:9 - EPollPoller.cc:34
+2025/08/04 20:35:790605 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:790608 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:790662 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:790697 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:790745 INFO  fd total count:9 - EPollPoller.cc:34
+2025/08/04 20:35:794156 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:794183 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:794209 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:794216 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#9]from %s127.0.0.1:37212 - TcpServer.cc:96
+2025/08/04 20:35:794230 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#9]at fd=28 - TcpConnection.cc:52
+2025/08/04 20:35:794284 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:794299 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:794320 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:794332 INFO  func =>fd28events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:794352 INFO  New HTTP connection from: 127.0.0.1:37212 - HttpServer.cc:70
+2025/08/04 20:35:794360 INFO  fd total count:10 - EPollPoller.cc:34
+2025/08/04 20:35:794364 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:794367 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:794421 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:794455 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:794503 INFO  fd total count:10 - EPollPoller.cc:34
+2025/08/04 20:35:857545 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:857566 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:857781 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:857796 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:857801 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:857817 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:785971 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:786027 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:786084 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:786100 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#10]from %s127.0.0.1:37214 - TcpServer.cc:96
+2025/08/04 20:35:786136 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#10]at fd=29 - TcpConnection.cc:52
+2025/08/04 20:35:786244 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:786269 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:786297 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:786313 INFO  func =>fd29events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:786336 INFO  New HTTP connection from: 127.0.0.1:37214 - HttpServer.cc:70
+2025/08/04 20:35:786345 INFO  fd total count:11 - EPollPoller.cc:34
+2025/08/04 20:35:786349 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:786352 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:786408 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:786442 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:786490 INFO  fd total count:11 - EPollPoller.cc:34
+2025/08/04 20:35:784902 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:784964 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:785021 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:785038 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#11]from %s127.0.0.1:37216 - TcpServer.cc:96
+2025/08/04 20:35:785072 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#11]at fd=30 - TcpConnection.cc:52
+2025/08/04 20:35:785181 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:785204 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:785233 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:785250 INFO  func =>fd30events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:785272 INFO  New HTTP connection from: 127.0.0.1:37216 - HttpServer.cc:70
+2025/08/04 20:35:785280 INFO  fd total count:12 - EPollPoller.cc:34
+2025/08/04 20:35:785284 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:785287 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:785340 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:785375 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:785425 INFO  fd total count:12 - EPollPoller.cc:34
+2025/08/04 20:35:867601 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:867635 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:867912 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:867927 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:867993 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:868026 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:781804 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:781833 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:781862 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:781870 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#12]from %s127.0.0.1:37220 - TcpServer.cc:96
+2025/08/04 20:35:781885 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#12]at fd=31 - TcpConnection.cc:52
+2025/08/04 20:35:781917 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:781938 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:781961 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:781973 INFO  func =>fd31events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:781993 INFO  New HTTP connection from: 127.0.0.1:37220 - HttpServer.cc:70
+2025/08/04 20:35:782001 INFO  fd total count:13 - EPollPoller.cc:34
+2025/08/04 20:35:782005 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:782008 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:782064 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:782108 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:782159 INFO  fd total count:13 - EPollPoller.cc:34
+2025/08/04 20:35:795508 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:795542 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:795572 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:795580 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#13]from %s127.0.0.1:37222 - TcpServer.cc:96
+2025/08/04 20:35:795595 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#13]at fd=32 - TcpConnection.cc:52
+2025/08/04 20:35:795637 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:795655 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:795677 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:795692 INFO  func =>fd32events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:795717 INFO  New HTTP connection from: 127.0.0.1:37222 - HttpServer.cc:70
+2025/08/04 20:35:795725 INFO  fd total count:14 - EPollPoller.cc:34
+2025/08/04 20:35:795729 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:795732 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:795785 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:795819 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:795868 INFO  fd total count:14 - EPollPoller.cc:34
+2025/08/04 20:35:793604 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:793633 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:793659 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:793667 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#14]from %s127.0.0.1:37224 - TcpServer.cc:96
+2025/08/04 20:35:793682 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#14]at fd=33 - TcpConnection.cc:52
+2025/08/04 20:35:793728 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:793753 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:793775 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:793787 INFO  func =>fd33events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:793810 INFO  New HTTP connection from: 127.0.0.1:37224 - HttpServer.cc:70
+2025/08/04 20:35:793818 INFO  fd total count:15 - EPollPoller.cc:34
+2025/08/04 20:35:793822 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:793825 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:793878 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:793912 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:793953 INFO  fd total count:15 - EPollPoller.cc:34
+2025/08/04 20:35:873563 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:873581 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:878092 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:878112 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:878133 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:878183 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:840455 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:840482 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:840511 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:840518 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#15]from %s127.0.0.1:37226 - TcpServer.cc:96
+2025/08/04 20:35:840533 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#15]at fd=34 - TcpConnection.cc:52
+2025/08/04 20:35:840576 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:840599 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:840617 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:840629 INFO  func =>fd34events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:840647 INFO  New HTTP connection from: 127.0.0.1:37226 - HttpServer.cc:70
+2025/08/04 20:35:840654 INFO  fd total count:16 - EPollPoller.cc:34
+2025/08/04 20:35:840658 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:840661 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:840716 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:840748 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:840794 INFO  fd total count:16 - EPollPoller.cc:34
+2025/08/04 20:35:111965 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:111993 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:112022 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:112029 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#16]from %s127.0.0.1:37228 - TcpServer.cc:96
+2025/08/04 20:35:112043 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#16]at fd=35 - TcpConnection.cc:52
+2025/08/04 20:35:112087 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:112118 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:112141 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:112155 INFO  func =>fd35events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:112176 INFO  New HTTP connection from: 127.0.0.1:37228 - HttpServer.cc:70
+2025/08/04 20:35:112184 INFO  fd total count:17 - EPollPoller.cc:34
+2025/08/04 20:35:112188 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:112191 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:112246 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:112279 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:112331 INFO  fd total count:17 - EPollPoller.cc:34
+2025/08/04 20:35:883663 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:883692 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:888147 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:888163 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:888261 DEBUG timeout! - EPollPoller.cc:62
+2025/08/04 20:35:888287 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/04 20:35:097119 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:097148 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:097174 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/04 20:35:097181 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-127.0.0.1:8080#17]from %s127.0.0.1:37230 - TcpServer.cc:96
+2025/08/04 20:35:097198 INFO  TcpConnection::ctor:[KamaHttpServer-127.0.0.1:8080#17]at fd=36 - TcpConnection.cc:52
+2025/08/04 20:35:097241 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/04 20:35:097305 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:097356 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:097385 INFO  func =>fd36events=3index=-1 - EPollPoller.cc:91
+2025/08/04 20:35:097428 INFO  New HTTP connection from: 127.0.0.1:37230 - HttpServer.cc:70
+2025/08/04 20:35:097449 INFO  fd total count:18 - EPollPoller.cc:34
+2025/08/04 20:35:097461 INFO  events happend1 - EPollPoller.cc:51
+2025/08/04 20:35:097470 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/04 20:35:097604 INFO  HTTP GET /ws 从  - Middleware.cc:57
+2025/08/04 20:35:097713 INFO  HTTP GET /ws 响应 404 (0ms) - Middleware.cc:68
+2025/08/04 20:35:097837 INFO  fd total count:18 - EPollPoller.cc:34

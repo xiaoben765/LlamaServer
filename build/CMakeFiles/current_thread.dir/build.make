@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/shl203/kama-webserver
+CMAKE_SOURCE_DIR = /home/shl203/llama-webserver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/shl203/kama-webserver/build
+CMAKE_BINARY_DIR = /home/shl203/llama-webserver/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/current_thread.dir/depend.make
@@ -72,16 +72,16 @@ include CMakeFiles/current_thread.dir/flags.make
 CMakeFiles/current_thread.dir/src/CurrentThread.cc.o: CMakeFiles/current_thread.dir/flags.make
 CMakeFiles/current_thread.dir/src/CurrentThread.cc.o: ../src/CurrentThread.cc
 CMakeFiles/current_thread.dir/src/CurrentThread.cc.o: CMakeFiles/current_thread.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/current_thread.dir/src/CurrentThread.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/current_thread.dir/src/CurrentThread.cc.o -MF CMakeFiles/current_thread.dir/src/CurrentThread.cc.o.d -o CMakeFiles/current_thread.dir/src/CurrentThread.cc.o -c /home/shl203/kama-webserver/src/CurrentThread.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shl203/llama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/current_thread.dir/src/CurrentThread.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/current_thread.dir/src/CurrentThread.cc.o -MF CMakeFiles/current_thread.dir/src/CurrentThread.cc.o.d -o CMakeFiles/current_thread.dir/src/CurrentThread.cc.o -c /home/shl203/llama-webserver/src/CurrentThread.cc
 
 CMakeFiles/current_thread.dir/src/CurrentThread.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/current_thread.dir/src/CurrentThread.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shl203/kama-webserver/src/CurrentThread.cc > CMakeFiles/current_thread.dir/src/CurrentThread.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shl203/llama-webserver/src/CurrentThread.cc > CMakeFiles/current_thread.dir/src/CurrentThread.cc.i
 
 CMakeFiles/current_thread.dir/src/CurrentThread.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/current_thread.dir/src/CurrentThread.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shl203/kama-webserver/src/CurrentThread.cc -o CMakeFiles/current_thread.dir/src/CurrentThread.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shl203/llama-webserver/src/CurrentThread.cc -o CMakeFiles/current_thread.dir/src/CurrentThread.cc.s
 
 # Object files for target current_thread
 current_thread_OBJECTS = \
@@ -93,7 +93,7 @@ current_thread_EXTERNAL_OBJECTS =
 libcurrent_thread.a: CMakeFiles/current_thread.dir/src/CurrentThread.cc.o
 libcurrent_thread.a: CMakeFiles/current_thread.dir/build.make
 libcurrent_thread.a: CMakeFiles/current_thread.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shl203/kama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libcurrent_thread.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shl203/llama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libcurrent_thread.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/current_thread.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/current_thread.dir/link.txt --verbose=$(VERBOSE)
 
@@ -106,6 +106,6 @@ CMakeFiles/current_thread.dir/clean:
 .PHONY : CMakeFiles/current_thread.dir/clean
 
 CMakeFiles/current_thread.dir/depend:
-	cd /home/shl203/kama-webserver/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/shl203/kama-webserver /home/shl203/kama-webserver /home/shl203/kama-webserver/build /home/shl203/kama-webserver/build /home/shl203/kama-webserver/build/CMakeFiles/current_thread.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/shl203/llama-webserver/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/shl203/llama-webserver /home/shl203/llama-webserver /home/shl203/llama-webserver/build /home/shl203/llama-webserver/build /home/shl203/llama-webserver/build/CMakeFiles/current_thread.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/current_thread.dir/depend
 

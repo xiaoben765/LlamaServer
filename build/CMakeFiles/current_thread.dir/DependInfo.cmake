@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/shl203/kama-webserver/src/CurrentThread.cc" "CMakeFiles/current_thread.dir/src/CurrentThread.cc.o" "gcc" "CMakeFiles/current_thread.dir/src/CurrentThread.cc.o.d"
+  "/home/shl203/llama-webserver/src/CurrentThread.cc" "CMakeFiles/current_thread.dir/src/CurrentThread.cc.o" "gcc" "CMakeFiles/current_thread.dir/src/CurrentThread.cc.o.d"
   )
 
 # Targets to which this target links.

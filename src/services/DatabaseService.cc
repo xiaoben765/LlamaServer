@@ -75,6 +75,107 @@ void MySqlDatabaseService::cleanup() {
     }
 }
 
+// 管理方法实现
+int MySqlDatabaseService::clearCache() {
+    if (!initialized_) {
+        LOG_ERROR << "数据库未初始化，无法清除缓存";
+        return 0;
+    }
+    
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    LOG_INFO << "清除所有响应缓存...";
+    // 使用DatabaseManager的公有方法清除缓存
+    db::DatabaseManager::instance().cleanupCache(0); // 0表示清除所有缓存
+    
+    // 获取缓存计数
+    int cacheCount = db::DatabaseManager::instance().getCacheCount();
+    if (cacheCount == 0) {
+        LOG_INFO << "缓存已清空";
+        return 1; // 成功清空表
+    } else {
+        LOG_ERROR << "清空缓存失败，仍有 " << cacheCount << " 条记录";
+        return 0;
+    }
+}
+
+bool MySqlDatabaseService::resetDatabase() {
+    if (!initialized_) {
+        LOG_ERROR << "数据库未初始化，无法重置数据库";
+        return false;
+    }
+    
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    LOG_INFO << "正在重置数据库...";
+    
+    // 使用DatabaseManager的公有方法清除各个表的内容
+    // 1. 清除会话和对话记录
+    // 获取所有用户
+    auto users = db::DatabaseManager::instance().getAllUsers();
+    for (const auto& user : users) {
+        // 获取每个用户的会话
+        auto sessions = db::DatabaseManager::instance().getUserSessions(user.user_id);
+        for (const auto& session : sessions) {
+            db::DatabaseManager::instance().deleteConversationHistory(session.session_id);
+            db::DatabaseManager::instance().deleteSession(session.session_id);
+        }
+    }
+    
+    // 2. 清除缓存
+    db::DatabaseManager::instance().cleanupCache(0); // 清除所有缓存
+    
+    LOG_INFO << "数据库已重置";
+    return true;
+}
+
+bool MySqlDatabaseService::clearTables(const std::vector<std::string>& tableNames) {
+    if (!initialized_) {
+        LOG_ERROR << "数据库未初始化，无法清空表";
+        return false;
+    }
+    
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    LOG_INFO << "正在清空指定的表: ";
+    for (const auto& table : tableNames) {
+        LOG_INFO << " - " << table;
+    }
+    
+    bool success = true;
+    for (const auto& table : tableNames) {
+        // 根据表名执行相应的清除操作
+        if (table == "sessions" || table == "conversations") {
+            // 获取所有用户
+            auto users = db::DatabaseManager::instance().getAllUsers();
+            for (const auto& user : users) {
+                // 获取每个用户的会话
+                auto sessions = db::DatabaseManager::instance().getUserSessions(user.user_id);
+                for (const auto& session : sessions) {
+                    if (table == "conversations") {
+                        db::DatabaseManager::instance().deleteConversationHistory(session.session_id);
+                    }
+                    if (table == "sessions") {
+                        db::DatabaseManager::instance().deleteSession(session.session_id);
+                    }
+                }
+            }
+            LOG_INFO << "表 " << table << " 已清空";
+        } else if (table == "response_cache") {
+            db::DatabaseManager::instance().cleanupCache(0);
+            LOG_INFO << "表 " << table << " 已清空";
+        } else if (table == "users") {
+            // 由于没有提供删除用户的方法，这里只记录日志
+            LOG_WARN << "无法清空用户表，需要直接访问数据库";
+        } else {
+            LOG_WARN << "未知的表名或无法清空: " << table;
+            success = false;
+        }
+    }
+    
+    return success;
+}
+
 // 用户管理方法 - 转发到DatabaseManager
 
 bool MySqlDatabaseService::createUser(const std::string& username, const std::string& password, const std::string& email) {
@@ -348,6 +449,58 @@ int MySqlDatabaseService::getCacheCount() {
 
 MemoryDatabaseService::MemoryDatabaseService()
     : initialized_(false), cacheHits_(0), conversationsCount_(0) {
+}
+
+int MemoryDatabaseService::clearCache() {
+    std::lock_guard<std::mutex> lock(mutex_);
+    int count = cache_.size();
+    cache_.clear();
+    LOG_INFO << "已清除内存缓存中的 " << count << " 条记录";
+    return count;
+}
+
+bool MemoryDatabaseService::resetDatabase() {
+    std::lock_guard<std::mutex> lock(mutex_);
+    users_.clear();
+    passwords_.clear();
+    sessions_.clear();
+    conversations_.clear();
+    cache_.clear();
+    cacheHits_ = 0;
+    conversationsCount_ = 0;
+    LOG_INFO << "已重置内存数据库";
+    return true;
+}
+
+bool MemoryDatabaseService::clearTables(const std::vector<std::string>& tableNames) {
+    // 在内存数据库实现中，我们根据表名清除相应的集合
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    for (const auto& table : tableNames) {
+        if (table == "users") {
+            users_.clear();
+            passwords_.clear();
+            LOG_INFO << "已清除用户表";
+        } else if (table == "sessions") {
+            sessions_.clear();
+            LOG_INFO << "已清除会话表";
+        } else if (table == "conversations") {
+            conversations_.clear();
+            conversationsCount_ = 0;
+            LOG_INFO << "已清除对话历史表";
+        } else if (table == "response_cache") {
+            cache_.clear();
+            cacheHits_ = 0;
+            LOG_INFO << "已清除缓存表";
+        } else if (table == "configs") {
+            configs_.clear();
+            LOG_INFO << "已清除配置表";
+        } else {
+            LOG_WARN << "未知的表名: " << table;
+        }
+    }
+    
+    return true;
 }
 
 long MemoryDatabaseService::getCurrentTimestamp() const {

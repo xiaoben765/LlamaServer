@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Kama WebServer 启动脚本
+# 用法:
+#   ./start_services.sh              # 默认GPU模式启动
+#   ./start_services.sh --cpu        # 强制CPU模式启动
+#   ./start_services.sh --gpu-layers=40  # 指定GPU层数（默认32）
+
 # 添加错误处理
 set -o pipefail
 
@@ -10,29 +16,36 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # 确保编译后的可执行文件路径正确
-LLAMA_SERVICE="/home/shl203/kama-webserver/bin/llama_service_tcp"
-KAMA_WEBSERVER="/home/shl203/kama-webserver/bin/KamaWebServer"
-LOG_DIR="/home/shl203/kama-webserver/logs"
+LLAMA_SERVICE="/home/shl203/llama-webserver/bin/llama_service_tcp"
+LOG_DIR="/home/shl203/llama-webserver/logs"
 LLAMA_LOG="$LOG_DIR/llama_service.log"
 WEB_LOG="$LOG_DIR/webserver.log"
 
-# 设置HTTP服务器路径
-HTTP_SERVER="/home/shl203/kama-webserver/bin/kama_http_server"
-HTTP_SERVER_MODULAR="/home/shl203/kama-webserver/bin/kama_http_server_modular"
-HTTP_LOG="$LOG_DIR/http_server.log"
-HTTP_LOG_MODULAR="$LOG_DIR/http_server_modular.log"
+# 设置HTTP服务器路径 - 使用统一的HTTP服务器
+HTTP_SERVER="/home/shl203/llama-webserver/bin/llama_http_server"
+HTTP_LOG="$LOG_DIR/llama_http_server.log"
 
 # 打印启动时间和环境信息
 echo -e "${GREEN}=== 服务启动 ($(date '+%Y-%m-%d %H:%M:%S')) ===${NC}"
 echo "主机: $(hostname)"
 echo "用户: $(whoami)"
+echo ""
+
+# 显示启动配置
+echo -e "${YELLOW}启动配置:${NC}"
+if $USE_GPU; then
+    echo "  🎯 运行模式: GPU加速 (${GPU_LAYERS}层)"
+else
+    echo "  🎯 运行模式: CPU模式"
+fi
+echo "  📁 工作目录: $(pwd)"
 
 # 检查并编译必要的二进制文件
 echo -e "${YELLOW}检查并编译必要组件...${NC}"
-if [[ ! -f "$LLAMA_SERVICE" || ! -f "$KAMA_WEBSERVER" || ! -f "$HTTP_SERVER" || ! -f "$HTTP_SERVER_MODULAR" ]]; then
+if [[ ! -f "$LLAMA_SERVICE" || ! -f "$HTTP_SERVER" ]]; then
     echo "编译必要组件..."
     # 调用专门的编译脚本
-    cd /home/shl203/kama-webserver
+    cd /home/shl203/llama-webserver
     bash ./build.sh
     if [ $? -ne 0 ]; then
         echo -e "${RED}❌ 编译失败，无法启动服务${NC}"
@@ -109,15 +122,15 @@ fi
 mkdir -p $LOG_DIR
 
 # 创建配置目录并确保配置文件存在
-CONFIG_DIR="/home/shl203/kama-webserver/config"
+CONFIG_DIR="/home/shl203/llama-webserver/config"
 CONFIG_FILE="$CONFIG_DIR/config.json"
 mkdir -p $CONFIG_DIR
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
     echo -e "${YELLOW}配置文件不存在，将创建默认配置文件${NC}"
     # 确保bin目录下的配置文件也存在
-    mkdir -p /home/shl203/kama-webserver/bin/config
-    cp -f /home/shl203/kama-webserver/config/config.json /home/shl203/kama-webserver/bin/config/ 2>/dev/null || true
+    mkdir -p /home/shl203/llama-webserver/bin/config
+    cp -f /home/shl203/llama-webserver/config/config.json /home/shl203/llama-webserver/bin/config/ 2>/dev/null || true
 fi
 
 if [[ ! -f "$LLAMA_SERVICE" ]]; then
@@ -125,8 +138,8 @@ if [[ ! -f "$LLAMA_SERVICE" ]]; then
     exit 1
 fi
 
-if [[ ! -f "$KAMA_WEBSERVER" ]]; then
-    echo "WebServer 文件不存在: $KAMA_WEBSERVER"
+if [[ ! -f "$HTTP_SERVER" ]]; then
+    echo "HTTP服务器文件不存在: $HTTP_SERVER"
     exit 1
 fi
 
@@ -136,18 +149,22 @@ if lsof -i:8899 > /dev/null; then
     exit 1
 fi
 
-# GPU 设置（默认为 CPU）
-USE_GPU=false
-GPU_LAYERS=0
+# GPU 设置（默认启用 GPU）
+USE_GPU=true
+GPU_LAYERS=35
 
-# 读取命令行参数（--gpu 表示启用 GPU）
+# 读取命令行参数（--cpu 表示强制使用 CPU，--gpu-layers 设置GPU层数）
 for arg in "$@"; do
     case $arg in
+        --cpu)
+            USE_GPU=false
+            ;;
         --gpu)
             USE_GPU=true
             ;;
         --gpu-layers=*)
             GPU_LAYERS="${arg#*=}"
+            USE_GPU=true
             ;;
         *)
             ;;
@@ -156,14 +173,17 @@ done
 
 # 检查 GPU 是否可用（增强版）
 if $USE_GPU; then
-    echo "检查GPU可用性..."
+    echo "🔍 检查GPU可用性..."
     if ! nvidia-smi > /dev/null 2>&1; then
         echo "⚠️ GPU 模式启用，但无法检测到 GPU。请确保 NVIDIA 驱动和 CUDA 已正确安装。"
         echo "⚠️ 将回退到 CPU 模式运行。"
+        echo "💡 提示: 如果要强制使用CPU模式，请使用 --cpu 参数"
         USE_GPU=false
+        GPU_LAYERS=0
     else
         nvidia_output=$(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader)
         echo "✅ 检测到可用GPU: $nvidia_output"
+        echo "🚀 GPU模式已启用，将使用 $GPU_LAYERS 层进行GPU加速"
         
         # 设置环境变量确保其他服务能访问GPU
         export CUDA_VISIBLE_DEVICES=0
@@ -171,15 +191,18 @@ if $USE_GPU; then
         export USE_CUDA=1
         export CUDA_DEVICE=0
     fi
+else
+    echo "💻 使用CPU模式运行"
+    echo "💡 提示: 如果要启用GPU加速，请使用 --gpu 参数"
 fi
 
 # 启动 LLaMA TCP 服务（直接调用 C++ 服务）
-echo "启动 LLaMA TCP 服务..."
+echo "🚀 启动 LLaMA TCP 服务..."
 if [[ "$USE_GPU" == true ]]; then
-    echo "🚀 启用 GPU 模式，层数: $GPU_LAYERS"
+    echo "   ⚡ GPU 加速模式 - 使用 $GPU_LAYERS 层GPU加速"
     $LLAMA_SERVICE --gpu --gpu-layers=$GPU_LAYERS > $LLAMA_LOG 2>&1 &
 else
-    echo "🚀 使用 CPU 模式"
+    echo "   � CPU 模式运行"
     $LLAMA_SERVICE > $LLAMA_LOG 2>&1 &
 fi
 
@@ -206,19 +229,19 @@ echo "启动 HTTP 服务器..."
 # 已在上方处理了配置文件的创建
 
 # 更新配置文件中的数据库密码
-if [[ -f "/home/shl203/kama-webserver/config/config.json" ]]; then
+if [[ -f "/home/shl203/llama-webserver/config/config.json" ]]; then
     echo "更新配置文件中的数据库连接信息..."
     # 使用临时文件更新配置
     TMP_CONFIG=$(mktemp)
-    cat /home/shl203/kama-webserver/config/config.json | \
+    cat /home/shl203/llama-webserver/config/config.json | \
     sed "s/\"db_name\": \"[^\"]*\"/\"db_name\": \"$DB_NAME\"/" | \
     sed "s/\"user\": \"[^\"]*\"/\"user\": \"$DB_USER\"/" | \
     sed "s/\"password\": \"[^\"]*\"/\"password\": \"$DB_PASSWORD\"/" > $TMP_CONFIG
-    mv $TMP_CONFIG /home/shl203/kama-webserver/config/config.json
+    mv $TMP_CONFIG /home/shl203/llama-webserver/config/config.json
     
     # 确保bin目录下的配置文件也被更新
-    if [[ -d "/home/shl203/kama-webserver/bin/config" ]]; then
-        cp -f /home/shl203/kama-webserver/config/config.json /home/shl203/kama-webserver/bin/config/
+    if [[ -d "/home/shl203/llama-webserver/bin/config" ]]; then
+        cp -f /home/shl203/llama-webserver/config/config.json /home/shl203/llama-webserver/bin/config/
         echo "✅ 同时更新了bin目录下的配置文件"
     fi
     
@@ -227,17 +250,6 @@ fi
 
 # 清空之前的日志
 > $HTTP_LOG
-> $HTTP_LOG_MODULAR
-
-# 选择是否使用模块化版本的HTTP服务器
-USE_MODULAR=false
-for arg in "$@"; do
-    case $arg in
-        --modular)
-            USE_MODULAR=true
-            ;;
-    esac
-done
 
 # 检查LLaMA服务是否在运行
 if ps -p $LLAMA_PID > /dev/null; then
@@ -258,60 +270,45 @@ if ps -p $LLAMA_PID > /dev/null; then
         echo "✅ 数据库连接成功"
     fi
     
-    if $USE_MODULAR; then
-        echo "🚀 启动模块化HTTP服务器..."
-        cd /home/shl203/kama-webserver && $HTTP_SERVER_MODULAR > $HTTP_LOG_MODULAR 2>&1 &
-        HTTP_PID=$!
-        echo "模块化HTTP服务器 (PID: $HTTP_PID) 已启动，等待确认..."
-    else
-        echo "启动命令: $HTTP_SERVER ./config/config.json"
-        echo "使用数据库: $DB_NAME, 用户: $DB_USER"
-        cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json > $HTTP_LOG 2>&1 &
-        HTTP_PID=$!
-        echo "HTTP 服务器 (PID: $HTTP_PID) 已启动，等待确认..."
-    fi
-else
-    echo "⚠️ LLaMA服务未运行，HTTP服务器将在没有聊天功能的情况下启动"
-    if $USE_MODULAR; then
-        echo "⚠️ 警告: 模块化HTTP服务器需要LLaMA服务，将降级使用传统HTTP服务器"
-        echo "启动命令: $HTTP_SERVER ./config/config.json --disable-llama"
-        cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json --disable-llama > $HTTP_LOG 2>&1 &
-    else
-        echo "启动命令: $HTTP_SERVER ./config/config.json --disable-llama"
-        cd /home/shl203/kama-webserver && $HTTP_SERVER ./config/config.json --disable-llama > $HTTP_LOG 2>&1 &
-    fi
+    echo "🚀 启动HTTP服务器..."
+    echo "启动命令: $HTTP_SERVER"
+    echo "使用数据库: $DB_NAME, 用户: $DB_USER"
+    cd /home/shl203/llama-webserver && $HTTP_SERVER > $HTTP_LOG 2>&1 &
     HTTP_PID=$!
-    echo "HTTP 服务器 (PID: $HTTP_PID) 已启动，等待确认..."
+    echo "HTTP服务器 (PID: $HTTP_PID) 已启动，等待确认..."
+else
+    echo "⚠️ LLaMA服务未运行，HTTP服务器将以模拟模式启动"
+    echo "🚀 启动HTTP服务器（模拟LLaMA模式）..."
+    echo "启动命令: $HTTP_SERVER"
+    cd /home/shl203/llama-webserver && $HTTP_SERVER > $HTTP_LOG 2>&1 &
+    HTTP_PID=$!
+    echo "HTTP服务器 (PID: $HTTP_PID) 已启动，等待确认..."
 fi
 
 # 增加等待时间并检查端口是否正在监听
 sleep 5
 if ! ps -p $HTTP_PID > /dev/null; then
-    echo "❌ 无法启动 HTTP 服务器，进程已退出，检查日志："
-    if $USE_MODULAR; then
-        cat $HTTP_LOG_MODULAR
-    else
-        cat $HTTP_LOG
-    fi
+    echo "❌ 无法启动HTTP服务器，进程已退出，检查日志："
+    cat $HTTP_LOG
     exit 1
-elif $USE_MODULAR && netstat -tulpn 2>/dev/null | grep -q ":8080"; then
-    echo "✅ 模块化 HTTP 服务器成功启动并监听在端口 8080"
+elif netstat -tulpn 2>/dev/null | grep -q ":8080"; then
+    echo "✅ HTTP服务器成功启动并监听在端口 8080"
 elif netstat -tulpn 2>/dev/null | grep -q ":8081"; then
     echo "✅ HTTP 服务器成功启动并监听在端口 8081"
 else
     echo "⚠️ HTTP 服务器进程存在，但未检测到端口监听，检查日志："
-    if $USE_MODULAR; then
-        tail -10 $HTTP_LOG_MODULAR
-    else
-        tail -10 $HTTP_LOG
-    fi
+    tail -10 $HTTP_LOG
     # 不退出，继续运行
 fi
 
 # 记录启动状态并显示访问信息
 echo -e "${GREEN}==============================================${NC}"
 echo -e "${GREEN}✅ 所有服务启动完成${NC}"
-echo -e "🔗 LLaMA TCP 服务（端口8899）- 日志：$LLAMA_LOG"
+if $USE_GPU; then
+    echo -e "🔗 LLaMA TCP 服务（端口8899，GPU加速${GPU_LAYERS}层）- 日志：$LLAMA_LOG"
+else
+    echo -e "🔗 LLaMA TCP 服务（端口8899，CPU模式）- 日志：$LLAMA_LOG"
+fi
 
 if ps -p $WEBSERVER_PID > /dev/null; then
     echo -e "🌐 WebServer（端口8080）- 日志：$WEB_LOG"
@@ -319,22 +316,13 @@ else
     echo -e "${YELLOW}⚠️ WebServer未运行${NC}"
 fi
 
-if ps -p $HTTP_PID > /dev/null; then
-    if $USE_MODULAR; then
-        echo -e "${GREEN}🌍 模块化 HTTP 服务器正在运行（端口8080）${NC}"
-        echo -e "   访问界面: http://localhost:8080/"
-        echo -e "   聊天界面: http://localhost:8080/chat.html"
-        echo -e "   API状态: http://localhost:8080/api/status"
-        echo -e "   模块化示例: http://localhost:8080/basic.html"
-        echo -e "   日志: $HTTP_LOG_MODULAR"
-    else
-        echo -e "${GREEN}🌍 HTTP 服务器正在运行（端口8081）${NC}"
-        echo -e "   访问界面: http://localhost:8081/"
-        echo -e "   聊天界面: http://localhost:8081/chat.html (全新界面设计!)"
-        echo -e "   API状态: http://localhost:8081/api/status"
-        echo -e "   日志: $HTTP_LOG"
-    fi
-    
+if ps -p $HTTP_PID > /dev/null 2>&1; then
+    echo -e "${GREEN}🌍 HTTP服务器正在运行（端口8080）${NC}"
+    echo -e "   访问界面: http://localhost:8080/"
+    echo -e "   状态页面: http://localhost:8080/status.html (管理工具)"
+    echo -e "   API状态: http://localhost:8080/api/status"
+    echo -e "   管理API: 清理缓存、数据库管理"
+    echo -e "   日志: $HTTP_LOG"
     echo -e "\n${GREEN}✨ 提示: 已更新聊天界面! 现代化设计和更好的用户体验${NC}"
 else
     echo -e "${YELLOW}⚠️ HTTP 服务器未正常运行${NC}"

@@ -1,5 +1,5 @@
 CMakeFiles/llama_service_tcp.dir/src/llama_service_tcp.cc.o: \
- /home/shl203/kama-webserver/src/llama_service_tcp.cc \
+ /home/shl203/llama-webserver/src/llama_service_tcp.cc \
  /usr/include/stdc-predef.h /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

@@ -94,6 +94,9 @@ public:
     virtual void updateCacheStats(const std::string& query) = 0;
     virtual void cleanupCache(int maxAgeHours = 24 * 7) = 0;
     virtual std::vector<CacheRecord> getCacheStats(int limit = 100) = 0;
+    virtual int clearCache() = 0; // 清除所有缓存条目，返回被清除的条目数
+    virtual bool resetDatabase() = 0; // 重置整个数据库（清除所有表）
+    virtual bool clearTables(const std::vector<std::string>& tableNames) = 0; // 清除指定表
     
     // 配置管理
     virtual std::string getConfig(const std::string& key, const std::string& defaultValue = "") = 0;

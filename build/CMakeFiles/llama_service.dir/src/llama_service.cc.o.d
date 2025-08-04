@@ -1,5 +1,5 @@
 CMakeFiles/llama_service.dir/src/llama_service.cc.o: \
- /home/shl203/kama-webserver/src/llama_service.cc \
+ /home/shl203/llama-webserver/src/llama_service.cc \
  /usr/include/stdc-predef.h /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -221,7 +221,7 @@ CMakeFiles/llama_service.dir/src/llama_service.cc.o: \
  /usr/include/c++/11/bits/stl_tempbuf.h \
  /usr/include/c++/11/bits/uniform_int_dist.h /usr/include/c++/11/cstring \
  /usr/include/string.h /usr/include/strings.h \
- /home/shl203/kama-webserver/include/Thread.h /usr/include/c++/11/memory \
+ /home/shl203/llama-webserver/include/Thread.h /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
  /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
  /usr/include/c++/11/bits/shared_ptr.h \
@@ -232,5 +232,5 @@ CMakeFiles/llama_service.dir/src/llama_service.cc.o: \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
  /usr/include/c++/11/pstl/execution_defs.h \
- /home/shl203/kama-webserver/include/noncopyable.h \
- /home/shl203/kama-webserver/include/CurrentThread.h
+ /home/shl203/llama-webserver/include/noncopyable.h \
+ /home/shl203/llama-webserver/include/CurrentThread.h

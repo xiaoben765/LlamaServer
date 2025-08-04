@@ -115,11 +115,16 @@ private:
             dbType_ = config.get<std::string>("db.type", "memory"); // 默认使用内存数据库，更安全
             std::cout << "db.type = " << dbType_ << std::endl;
             
+            std::cout << "读取server.development_mode配置项..." << std::endl;
+            developmentMode_ = config.get<bool>("server.development_mode", true);
+            std::cout << "server.development_mode = " << developmentMode_ << std::endl;
+            
             LOG_INFO << "配置加载完成: " 
                      << "端口=" << port_ 
                      << ", 线程数=" << threadNum_
                      << ", LLaMA服务类型=" << llamaServiceType_
-                     << ", 数据库类型=" << dbType_;
+                     << ", 数据库类型=" << dbType_
+                     << ", 开发模式=" << developmentMode_;
         } catch (const std::exception& e) {
             std::cerr << "加载配置异常: " << e.what() << std::endl;
             LOG_ERROR << "加载配置失败: " << e.what() << "，使用默认配置";
@@ -133,12 +138,16 @@ private:
             llamaServerIp_ = "127.0.0.1";
             llamaServerPort_ = 8899;
             dbType_ = "memory";
+            developmentMode_ = true;  // 默认开启开发模式
             std::cout << "默认配置设置完成" << std::endl;
         }
     }
     
     // 设置中间件
     void setupMiddleware() {
+        // 设置开发模式
+        server_.setDevelopmentMode(developmentMode_);
+        
         // 启用日志中间件
         server_.enableLogging();
         
@@ -264,16 +273,18 @@ private:
     
     // 设置路由
     void setupRoutes() {
-        // 主页重定向
-        server_.get("/", [](const HttpRequest& req, HttpResponse& resp) {
-            resp.setStatusCode(HttpStatusCode::MOVED_PERMANENTLY);
-            resp.addHeader("Location", "/index.html");
-        });
+        // 主页现在使用 Open WebUI 风格界面
+        // 静态文件处理器会自动处理根路径，返回 index.html
         
         // 样例页面重定向
         server_.get("/basic", [](const HttpRequest& req, HttpResponse& resp) {
             resp.setStatusCode(HttpStatusCode::MOVED_PERMANENTLY);
             resp.addHeader("Location", "/basic.html");
+        });
+        
+        // 模型列表API
+        server_.get("/api/models", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleModelsRequest(req, resp);
         });
         
         // LLaMA查询API
@@ -285,6 +296,301 @@ private:
         server_.get("/api/status", [this](const HttpRequest& req, HttpResponse& resp) {
             handleStatusRequest(req, resp);
         });
+        
+        // 清理缓存API
+        server_.post("/api/admin/clear-cache", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleClearCacheRequest(req, resp);
+        });
+        
+        // 清理数据库API
+        server_.post("/api/admin/clear-database", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleClearDatabaseRequest(req, resp);
+        });
+        
+        // 数据库统计信息API
+        server_.get("/api/admin/database-stats", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleDatabaseStatsRequest(req, resp);
+        });
+        
+        // 用户信息API
+        server_.get("/api/admin/users", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleUsersRequest(req, resp);
+        });
+        
+        // 清除用户注册表API
+        server_.post("/api/admin/clear-users", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleClearUsersRequest(req, resp);
+        });
+        
+        // 获取对话历史API
+        server_.get("/api/conversations", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleConversationsRequest(req, resp);
+        });
+    }
+    
+    // 处理模型列表请求
+    void handleModelsRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            // 构建模型列表响应
+            json modelsJson = {
+                {"success", true},
+                {"models", json::array({
+                    {
+                        {"id", "llama-7b"},
+                        {"name", "LLaMA 7B"},
+                        {"description", "7B参数的LLaMA模型"},
+                        {"type", "text-generation"}
+                    },
+                    {
+                        {"id", "llama-13b"},
+                        {"name", "LLaMA 13B"},
+                        {"description", "13B参数的LLaMA模型"},
+                        {"type", "text-generation"}
+                    },
+                    {
+                        {"id", "llama-30b"},
+                        {"name", "LLaMA 30B"},
+                        {"description", "30B参数的LLaMA模型"},
+                        {"type", "text-generation"}
+                    }
+                })}
+            };
+            
+            resp.setStatusCode(HttpStatusCode::OK);
+            resp.setContentType("application/json");
+            resp.enableCORS();
+            resp.setBody(modelsJson.dump());
+            
+            LOG_INFO << "返回模型列表，共 " << modelsJson["models"].size() << " 个模型";
+            
+        } catch (const std::exception& e) {
+            LOG_ERROR << "获取模型列表异常: " << e.what();
+            json errorJson = {
+                {"success", false},
+                {"error", "获取模型列表失败"},
+                {"message", e.what()}
+            };
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.enableCORS();
+            resp.setBody(errorJson.dump());
+        }
+    }
+    
+    // 处理清理缓存请求
+    void handleClearCacheRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            if (dbService_ && dbService_->isInitialized()) {
+                // 清理缓存
+                int clearedCount = dbService_->clearCache();
+                
+                // 返回结果
+                json responseJson = {
+                    {"success", true},
+                    {"message", "缓存清理成功"},
+                    {"cleared_count", clearedCount}
+                };
+                
+                resp.setStatusCode(HttpStatusCode::OK);
+                resp.setContentType("application/json");
+                resp.setBody(responseJson.dump());
+                
+                LOG_INFO << "缓存清理完成，共清理 " << clearedCount << " 项";
+            } else {
+                resp.setStatusCode(HttpStatusCode::SERVICE_UNAVAILABLE);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"数据库服务不可用\"}");
+                LOG_ERROR << "清理缓存失败：数据库服务不可用";
+            }
+        } catch (const std::exception& e) {
+            LOG_ERROR << "清理缓存异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"error\": \"清理缓存时发生错误\"}");
+        }
+    }
+    
+    // 处理清理数据库请求
+    void handleClearDatabaseRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            if (dbService_ && dbService_->isInitialized()) {
+                // 获取要清理的表名列表
+                std::vector<std::string> tables;
+                
+                // 尝试从请求体中解析表名
+                try {
+                    std::string body = req.body();
+                    if (!body.empty()) {
+                        json requestJson = json::parse(body);
+                        if (requestJson.contains("tables") && requestJson["tables"].is_array()) {
+                            for (const auto& table : requestJson["tables"]) {
+                                if (table.is_string()) {
+                                    tables.push_back(table.get<std::string>());
+                                }
+                            }
+                        }
+                    }
+                } catch (const json::parse_error& e) {
+                    // 解析错误，忽略
+                }
+                
+                // 如果没有指定表，默认清理所有表
+                bool success = false;
+                std::string message;
+                
+                if (tables.empty()) {
+                    success = dbService_->resetDatabase();
+                    message = "数据库已完全重置";
+                    LOG_INFO << "重置数据库完成";
+                } else {
+                    success = dbService_->clearTables(tables);
+                    message = "指定表已清理";
+                    LOG_INFO << "清理指定表完成: " << tables.size() << " 张表";
+                }
+                
+                // 返回结果
+                json responseJson = {
+                    {"success", success},
+                    {"message", message}
+                };
+                
+                resp.setStatusCode(HttpStatusCode::OK);
+                resp.setContentType("application/json");
+                resp.setBody(responseJson.dump());
+            } else {
+                resp.setStatusCode(HttpStatusCode::SERVICE_UNAVAILABLE);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"数据库服务不可用\"}");
+                LOG_ERROR << "清理数据库失败：数据库服务不可用";
+            }
+        } catch (const std::exception& e) {
+            LOG_ERROR << "清理数据库异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"error\": \"清理数据库时发生错误\"}");
+        }
+    }
+    
+    // 处理数据库统计信息请求
+    void handleDatabaseStatsRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            if (dbService_ && dbService_->isInitialized()) {
+                json stats = dbService_->getSystemStats();
+                
+                resp.setStatusCode(HttpStatusCode::OK);
+                resp.setContentType("application/json");
+                resp.setBody(stats.dump());
+                LOG_INFO << "返回数据库统计信息";
+            } else {
+                resp.setStatusCode(HttpStatusCode::SERVICE_UNAVAILABLE);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"数据库服务不可用\"}");
+                LOG_ERROR << "获取数据库统计信息失败：数据库服务不可用";
+            }
+        } catch (const std::exception& e) {
+            LOG_ERROR << "获取数据库统计信息异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"error\": \"获取数据库统计信息时发生错误\"}");
+        }
+    }
+    
+    // 处理用户信息请求
+    void handleUsersRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            if (dbService_ && dbService_->isInitialized()) {
+                auto users = dbService_->getAllUsers();
+                
+                json responseJson = {
+                    {"users", json::array()},
+                    {"total", users.size()}
+                };
+                
+                for (const auto& user : users) {
+                    json userJson = {
+                        {"username", user.username},
+                        {"email", user.email},
+                        {"created_at", user.created_at},
+                        {"last_login", user.last_login}
+                    };
+                    responseJson["users"].push_back(userJson);
+                }
+                
+                resp.setStatusCode(HttpStatusCode::OK);
+                resp.setContentType("application/json");
+                resp.setBody(responseJson.dump());
+                LOG_INFO << "返回用户信息，共 " << users.size() << " 个用户";
+            } else {
+                resp.setStatusCode(HttpStatusCode::SERVICE_UNAVAILABLE);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"数据库服务不可用\"}");
+                LOG_ERROR << "获取用户信息失败：数据库服务不可用";
+            }
+        } catch (const std::exception& e) {
+            LOG_ERROR << "获取用户信息异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"error\": \"获取用户信息时发生错误\"}");
+        }
+    }
+    
+    // 处理清除用户注册表请求
+    void handleClearUsersRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            if (dbService_ && dbService_->isInitialized()) {
+                // 清除用户相关的表
+                std::vector<std::string> userTables = {"users"};
+                bool success = dbService_->clearTables(userTables);
+                
+                json responseJson = {
+                    {"success", success},
+                    {"message", success ? "用户注册表已清除" : "清除用户注册表失败"}
+                };
+                
+                resp.setStatusCode(HttpStatusCode::OK);
+                resp.setContentType("application/json");
+                resp.setBody(responseJson.dump());
+                
+                if (success) {
+                    LOG_INFO << "用户注册表清除成功";
+                } else {
+                    LOG_ERROR << "用户注册表清除失败";
+                }
+            } else {
+                resp.setStatusCode(HttpStatusCode::SERVICE_UNAVAILABLE);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"数据库服务不可用\"}");
+                LOG_ERROR << "清除用户注册表失败：数据库服务不可用";
+            }
+        } catch (const std::exception& e) {
+            LOG_ERROR << "清除用户注册表异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"error\": \"清除用户注册表时发生错误\"}");
+        }
+    }
+    
+    // 处理对话历史请求
+    void handleConversationsRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            // 目前返回空的对话列表，因为我们没有实现对话历史存储
+            // 在实际实现中，这里应该从数据库获取用户的对话历史
+            json responseJson = {
+                {"success", true},
+                {"conversations", json::array()},
+                {"total", 0}
+            };
+            
+            resp.setStatusCode(HttpStatusCode::OK);
+            resp.setContentType("application/json");
+            resp.setBody(responseJson.dump());
+            LOG_INFO << "返回对话历史信息";
+        } catch (const std::exception& e) {
+            LOG_ERROR << "获取对话历史异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"success\": false, \"error\": \"获取对话历史时发生错误\"}");
+        }
     }
     
     // 处理LLaMA查询请求
@@ -423,6 +729,7 @@ private:
     std::string llamaServerIp_;
     int llamaServerPort_;
     std::string dbType_;
+    bool developmentMode_;  // 开发模式标识
     
     // 服务组件
     services::IDatabaseService* dbService_;
@@ -444,7 +751,7 @@ int main(int argc, char* argv[]) {
         
         // 设置日志
         std::cout << "初始化日志系统..." << std::endl;
-        AsyncLogging log("kama_http_server_modular", 1000 * 1000);
+        AsyncLogging log("logs/llama_http_server", 1000 * 1000);
         log.start();
         g_asyncLog = &log;
         Logger::setOutput(asyncOutput);

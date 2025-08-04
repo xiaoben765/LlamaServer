@@ -1,7 +1,7 @@
 CMakeFiles/llama_service.dir/memory/memoryPool.cc.o: \
- /home/shl203/kama-webserver/memory/memoryPool.cc \
+ /home/shl203/llama-webserver/memory/memoryPool.cc \
  /usr/include/stdc-predef.h \
- /home/shl203/kama-webserver/include/memoryPool.h \
+ /home/shl203/llama-webserver/include/memoryPool.h \
  /usr/include/c++/11/cassert \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

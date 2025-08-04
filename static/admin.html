@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLaMA AI - 管理控制台</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="/css/openwebui-style.css">
+    <style>
+        /* 管理页面特定样式 */
+        body {
+            background: var(--background-color);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--surface-color);
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .admin-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .admin-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin: 0 0 1.5rem 0;
+        }
+        
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-icon {
+            font-size: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .card-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .status-grid {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--hover-color);
+            border-radius: 0.5rem;
+        }
+        
+        .status-label {
+            font-weight: 500;
+        }
+        
+        .status-value {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-online { background: #10b981; }
+        .status-warning { background: #f59e0b; }
+        .status-offline { background: #ef4444; }
+        
+        .admin-button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 0.25rem;
+            font-size: 0.9rem;
+        }
+        
+        .admin-button.primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .admin-button.primary:hover {
+            background: var(--primary-hover);
+        }
+        
+        .admin-button.warning {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .admin-button.warning:hover {
+            background: #d97706;
+        }
+        
+        .admin-button.danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .admin-button.danger:hover {
+            background: #dc2626;
+        }
+        
+        .result-area {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--hover-color);
+            border-radius: 0.5rem;
+            display: none;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .result-area.show {
+            display: block;
+        }
+        
+        .result-area.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .result-area.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--surface-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            min-width: 400px;
+            max-width: 90vw;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-title {
+            margin: 0 0 1rem 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 1rem;
+            }
+            
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                min-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1 class="admin-title">⚙️ LLaMA WebServer</h1>
+            <p class="admin-subtitle">管理控制台</p>
+            <a href="/" class="nav-link">
+                🏠 返回聊天界面
+            </a>
+        </div>
+        
+        <div class="admin-grid">
+            <!-- 系统状态卡片 -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <span class="card-icon">📊</span>
+                    <h3 class="card-title">系统状态</h3>
+                </div>
+                <p class="card-description">实时监控各项服务的健康状况</p>
+                
+                <div class="status-grid" id="statusInfo">
+                    <div class="status-item">
+                        <span class="status-label">HTTP服务器</span>
+                        <div class="status-value">
+                            <span class="status-indicator status-online" id="httpStatus"></span>
+                            <span id="httpStatusText">检查中...</span>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">LLaMA服务</span>
+                        <div class="status-value">
+                            <span class="status-indicator status-warning" id="llamaStatus"></span>
+                            <span id="llamaStatusText">检查中...</span>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">数据库</span>
+                        <div class="status-value">
+                            <span class="status-indicator status-online" id="dbStatus"></span>
+                            <span id="dbStatusText">检查中...</span>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">运行时间</span>
+                        <div class="status-value" id="uptime">--</div>
+                    </div>
+                </div>
+                
+                <button class="admin-button primary" onclick="refreshStatus()">🔄 刷新状态</button>
+            </div>
+
+            <!-- 缓存管理卡片 -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <span class="card-icon">🗄️</span>
+                    <h3 class="card-title">缓存管理</h3>
+                </div>
+                <p class="card-description">管理系统缓存，清理临时数据以释放内存空间</p>
+                
+                <button class="admin-button warning" onclick="confirmAction('clearCache')">清理缓存</button>
+                <div id="cacheResult" class="result-area"></div>
+            </div>
+            
+            <!-- 数据库管理卡片 -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <span class="card-icon">🗃️</span>
+                    <h3 class="card-title">数据库管理</h3>
+                </div>
+                <p class="card-description">管理数据库，包括查看统计信息和清理数据</p>
+                
+                <button class="admin-button primary" onclick="getDatabaseStats()">数据库统计</button>
+                <button class="admin-button danger" onclick="confirmAction('clearDatabase')">清除数据库</button>
+                <div id="databaseResult" class="result-area"></div>
+            </div>
+            
+            <!-- 用户管理卡片 -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <span class="card-icon">👥</span>
+                    <h3 class="card-title">用户管理</h3>
+                </div>
+                <p class="card-description">查看用户统计及管理用户数据</p>
+                
+                <button class="admin-button primary" onclick="viewUsers()">查看用户注册表</button>
+                <button class="admin-button danger" onclick="confirmAction('clearUsers')">清除用户注册表</button>
+                <div id="userResult" class="result-area"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 信息模态框 -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title" id="infoTitle">信息</h3>
+            <div id="infoContent" class="result-area show"></div>
+            <div class="modal-buttons">
+                <button class="admin-button primary" onclick="closeInfoModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 确认模态框 -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title" id="confirmTitle">确认操作</h3>
+            <p id="confirmMessage">您确定要执行此操作吗？</p>
+            <div class="modal-buttons">
+                <button class="admin-button danger" id="confirmBtn">确认</button>
+                <button class="admin-button" onclick="closeConfirmModal()">取消</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 管理控制台 JavaScript
+        class AdminPanel {
+            constructor() {
+                this.init();
+            }
+            
+            init() {
+                this.refreshStatus();
+                // 每30秒自动刷新状态
+                setInterval(() => this.refreshStatus(), 30000);
+            }
+            
+            async refreshStatus() {
+                try {
+                    const response = await fetch('/api/status');
+                    const data = await response.json();
+                    
+                    // 更新HTTP服务器状态
+                    document.getElementById('httpStatus').className = 'status-indicator status-online';
+                    document.getElementById('httpStatusText').textContent = '运行正常';
+                    
+                    // 更新LLaMA服务状态
+                    const llamaStatus = document.getElementById('llamaStatus');
+                    const llamaText = document.getElementById('llamaStatusText');
+                    if (data.llama_available) {
+                        llamaStatus.className = 'status-indicator status-online';
+                        llamaText.textContent = '连接正常';
+                    } else {
+                        llamaStatus.className = 'status-indicator status-warning';
+                        llamaText.textContent = '服务不可用';
+                    }
+                    
+                    // 更新数据库状态
+                    const dbStatus = document.getElementById('dbStatus');
+                    const dbText = document.getElementById('dbStatusText');
+                    if (data.db_available) {
+                        dbStatus.className = 'status-indicator status-online';
+                        dbText.textContent = '连接正常';
+                    } else {
+                        dbStatus.className = 'status-indicator status-offline';
+                        dbText.textContent = '连接失败';
+                    }
+                    
+                    // 更新运行时间
+                    if (data.timestamp) {
+                        const uptime = this.formatUptime(data.timestamp);
+                        document.getElementById('uptime').textContent = uptime;
+                    }
+                    
+                } catch (error) {
+                    console.error('获取状态失败:', error);
+                    document.getElementById('httpStatusText').textContent = '连接失败';
+                }
+            }
+            
+            formatUptime(timestamp) {
+                const now = Math.floor(Date.now() / 1000);
+                const diff = now - timestamp;
+                const hours = Math.floor(diff / 3600);
+                const minutes = Math.floor((diff % 3600) / 60);
+                return `${hours}小时 ${minutes}分钟`;
+            }
+            
+            async makeRequest(url, options = {}) {
+                try {
+                    const response = await fetch(url, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        ...options
+                    });
+                    return await response.json();
+                } catch (error) {
+                    throw new Error(`请求失败: ${error.message}`);
+                }
+            }
+            
+            showResult(elementId, message, isSuccess = true) {
+                const element = document.getElementById(elementId);
+                element.textContent = message;
+                element.className = `result-area show ${isSuccess ? 'success' : 'error'}`;
+            }
+            
+            showModal(modalId) {
+                document.getElementById(modalId).style.display = 'block';
+            }
+            
+            hideModal(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
+        }
+        
+        // 全局实例
+        let adminPanel;
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            adminPanel = new AdminPanel();
+        });
+        
+        // 全局函数
+        function refreshStatus() {
+            adminPanel.refreshStatus();
+        }
+        
+        async function clearCache() {
+            try {
+                const result = await adminPanel.makeRequest('/api/admin/clear-cache', {
+                    method: 'POST'
+                });
+                adminPanel.showResult('cacheResult', 
+                    result.success ? `缓存清理成功，清理了 ${result.cleared_count || 0} 项` : '缓存清理失败',
+                    result.success
+                );
+            } catch (error) {
+                adminPanel.showResult('cacheResult', error.message, false);
+            }
+        }
+        
+        async function clearDatabase() {
+            try {
+                const result = await adminPanel.makeRequest('/api/admin/clear-database', {
+                    method: 'POST'
+                });
+                adminPanel.showResult('databaseResult', 
+                    result.success ? result.message : '数据库清理失败',
+                    result.success
+                );
+            } catch (error) {
+                adminPanel.showResult('databaseResult', error.message, false);
+            }
+        }
+        
+        async function getDatabaseStats() {
+            try {
+                const stats = await adminPanel.makeRequest('/api/admin/database-stats');
+                const statsText = Object.entries(stats)
+                    .map(([key, value]) => `${key}: ${value}`)
+                    .join('\\n');
+                adminPanel.showResult('databaseResult', statsText, true);
+            } catch (error) {
+                adminPanel.showResult('databaseResult', error.message, false);
+            }
+        }
+        
+        async function viewUsers() {
+            try {
+                const result = await adminPanel.makeRequest('/api/admin/users');
+                const userInfo = `用户总数: ${result.total}\\n` + 
+                    result.users.map(user => 
+                        `用户名: ${user.username}, 邮箱: ${user.email}, 注册时间: ${user.created_at}`
+                    ).join('\\n');
+                
+                document.getElementById('infoTitle').textContent = '用户信息';
+                document.getElementById('infoContent').textContent = userInfo || '暂无用户数据';
+                adminPanel.showModal('infoModal');
+            } catch (error) {
+                adminPanel.showResult('userResult', error.message, false);
+            }
+        }
+        
+        async function clearUsers() {
+            try {
+                const result = await adminPanel.makeRequest('/api/admin/clear-users', {
+                    method: 'POST'
+                });
+                adminPanel.showResult('userResult', 
+                    result.success ? result.message : '清除用户数据失败',
+                    result.success
+                );
+            } catch (error) {
+                adminPanel.showResult('userResult', error.message, false);
+            }
+        }
+        
+        function confirmAction(action) {
+            const actions = {
+                clearCache: { title: '清理缓存', message: '确定要清理所有缓存数据吗？', func: clearCache },
+                clearDatabase: { title: '清除数据库', message: '警告：此操作将清除所有数据库数据，且不可恢复！', func: clearDatabase },
+                clearUsers: { title: '清除用户数据', message: '确定要清除所有用户注册数据吗？', func: clearUsers }
+            };
+            
+            const actionData = actions[action];
+            if (actionData) {
+                document.getElementById('confirmTitle').textContent = actionData.title;
+                document.getElementById('confirmMessage').textContent = actionData.message;
+                document.getElementById('confirmBtn').onclick = () => {
+                    actionData.func();
+                    closeConfirmModal();
+                };
+                adminPanel.showModal('confirmModal');
+            }
+        }
+        
+        function closeConfirmModal() {
+            adminPanel.hideModal('confirmModal');
+        }
+        
+        function closeInfoModal() {
+            adminPanel.hideModal('infoModal');
+        }
+        
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

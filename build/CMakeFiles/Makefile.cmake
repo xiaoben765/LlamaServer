@@ -55,6 +55,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/current_thread.dir/DependInfo.cmake"
   "CMakeFiles/llama_service.dir/DependInfo.cmake"
   "CMakeFiles/llama_service_tcp.dir/DependInfo.cmake"
-  "CMakeFiles/KamaWebServer.dir/DependInfo.cmake"
-  "CMakeFiles/kama_http_server.dir/DependInfo.cmake"
+  "CMakeFiles/db_lib.dir/DependInfo.cmake"
+  "CMakeFiles/concurrency_lib.dir/DependInfo.cmake"
+  "CMakeFiles/llama_http_server.dir/DependInfo.cmake"
+  "CMakeFiles/test_concurrency.dir/DependInfo.cmake"
   )

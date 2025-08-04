@@ -38,6 +38,11 @@ public:
     bool isInitialized() const override { return initialized_; }
     void cleanup() override;
     
+    // 新增的管理方法
+    int clearCache() override;
+    bool resetDatabase() override;
+    bool clearTables(const std::vector<std::string>& tableNames) override;
+    
     // 用户管理
     bool createUser(const std::string& username, const std::string& password, const std::string& email) override;
     bool authenticateUser(const std::string& username, const std::string& password) override;
@@ -126,6 +131,11 @@ public:
     bool initialize() override { initialized_ = true; return true; }
     bool isInitialized() const override { return initialized_; }
     void cleanup() override { /* 清空内存数据 */ }
+    
+    // 新增的管理方法
+    int clearCache() override;
+    bool resetDatabase() override;
+    bool clearTables(const std::vector<std::string>& tableNames) override;
     
     // 用户管理
     bool createUser(const std::string& username, const std::string& password, const std::string& email) override;

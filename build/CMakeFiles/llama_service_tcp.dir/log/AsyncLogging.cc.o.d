@@ -1,9 +1,9 @@
 CMakeFiles/llama_service_tcp.dir/log/AsyncLogging.cc.o: \
- /home/shl203/kama-webserver/log/AsyncLogging.cc \
+ /home/shl203/llama-webserver/log/AsyncLogging.cc \
  /usr/include/stdc-predef.h \
- /home/shl203/kama-webserver/include/AsyncLogging.h \
- /home/shl203/kama-webserver/include/noncopyable.h \
- /home/shl203/kama-webserver/include/Thread.h \
+ /home/shl203/llama-webserver/include/AsyncLogging.h \
+ /home/shl203/llama-webserver/include/noncopyable.h \
+ /home/shl203/llama-webserver/include/Thread.h \
  /usr/include/c++/11/functional \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -176,11 +176,11 @@ CMakeFiles/llama_service_tcp.dir/log/AsyncLogging.cc.o: \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/c++/11/bits/charconv.h \
  /usr/include/c++/11/bits/basic_string.tcc /usr/include/c++/11/atomic \
- /home/shl203/kama-webserver/include/FixedBuffer.h /usr/include/string.h \
- /usr/include/strings.h /home/shl203/kama-webserver/include/LogStream.h \
- /home/shl203/kama-webserver/include/LogFile.h \
- /home/shl203/kama-webserver/include/FileUtil.h /usr/include/c++/11/mutex \
- /usr/include/c++/11/system_error \
+ /home/shl203/llama-webserver/include/FixedBuffer.h /usr/include/string.h \
+ /usr/include/strings.h /home/shl203/llama-webserver/include/LogStream.h \
+ /home/shl203/llama-webserver/include/LogFile.h \
+ /home/shl203/llama-webserver/include/FileUtil.h \
+ /usr/include/c++/11/mutex /usr/include/c++/11/system_error \
  /usr/include/x86_64-linux-gnu/c++/11/bits/error_constants.h \
  /usr/include/c++/11/stdexcept /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \

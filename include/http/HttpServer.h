@@ -32,6 +32,7 @@ public:
     // 静态文件服务
     void setStaticFileRoot(const std::string& root) { staticFileRoot_ = root; }
     void enableStaticFiles(bool enable = true) { enableStaticFiles_ = enable; }
+    void setDevelopmentMode(bool devMode = true) { developmentMode_ = devMode; }
 
     // 中间件支持
     void use(std::shared_ptr<IMiddleware> middleware) {
@@ -78,6 +79,7 @@ private:
     TcpServer server_;
     std::string staticFileRoot_;
     bool enableStaticFiles_;
+    bool developmentMode_;  // 开发模式标识
     std::string serverName_; // 存储服务器名称
     std::string ipPortStr_; // 保存IP和端口信息
     

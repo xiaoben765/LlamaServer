@@ -1,7 +1,7 @@
 CMakeFiles/llama_service_tcp.dir/log/LogFile.cc.o: \
- /home/shl203/kama-webserver/log/LogFile.cc /usr/include/stdc-predef.h \
- /home/shl203/kama-webserver/include/LogFile.h \
- /home/shl203/kama-webserver/include/FileUtil.h \
+ /home/shl203/llama-webserver/log/LogFile.cc /usr/include/stdc-predef.h \
+ /home/shl203/llama-webserver/include/LogFile.h \
+ /home/shl203/llama-webserver/include/FileUtil.h \
  /usr/include/c++/11/string \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

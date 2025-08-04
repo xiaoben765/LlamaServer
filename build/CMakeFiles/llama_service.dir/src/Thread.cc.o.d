@@ -1,6 +1,6 @@
 CMakeFiles/llama_service.dir/src/Thread.cc.o: \
- /home/shl203/kama-webserver/src/Thread.cc /usr/include/stdc-predef.h \
- /home/shl203/kama-webserver/include/Thread.h \
+ /home/shl203/llama-webserver/src/Thread.cc /usr/include/stdc-predef.h \
+ /home/shl203/llama-webserver/include/Thread.h \
  /usr/include/c++/11/functional \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -173,6 +173,6 @@ CMakeFiles/llama_service.dir/src/Thread.cc.o: \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/c++/11/bits/charconv.h \
  /usr/include/c++/11/bits/basic_string.tcc /usr/include/c++/11/atomic \
- /home/shl203/kama-webserver/include/noncopyable.h \
- /home/shl203/kama-webserver/include/CurrentThread.h \
+ /home/shl203/llama-webserver/include/noncopyable.h \
+ /home/shl203/llama-webserver/include/CurrentThread.h \
  /usr/include/semaphore.h /usr/include/x86_64-linux-gnu/bits/semaphore.h

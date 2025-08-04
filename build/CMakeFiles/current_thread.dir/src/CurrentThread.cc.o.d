@@ -1,7 +1,7 @@
 CMakeFiles/current_thread.dir/src/CurrentThread.cc.o: \
- /home/shl203/kama-webserver/src/CurrentThread.cc \
+ /home/shl203/llama-webserver/src/CurrentThread.cc \
  /usr/include/stdc-predef.h \
- /home/shl203/kama-webserver/include/CurrentThread.h \
+ /home/shl203/llama-webserver/include/CurrentThread.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
  /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \

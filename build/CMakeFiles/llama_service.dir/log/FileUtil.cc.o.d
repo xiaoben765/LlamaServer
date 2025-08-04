@@ -1,5 +1,5 @@
 CMakeFiles/llama_service.dir/log/FileUtil.cc.o: \
- /home/shl203/kama-webserver/log/FileUtil.cc /usr/include/stdc-predef.h \
+ /home/shl203/llama-webserver/log/FileUtil.cc /usr/include/stdc-predef.h \
  /usr/include/c++/11/cstring \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -16,7 +16,7 @@ CMakeFiles/llama_service.dir/log/FileUtil.cc.o: \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /usr/include/strings.h /home/shl203/kama-webserver/include/FileUtil.h \
+ /usr/include/strings.h /home/shl203/llama-webserver/include/FileUtil.h \
  /usr/include/c++/11/string /usr/include/c++/11/bits/stringfwd.h \
  /usr/include/c++/11/bits/memoryfwd.h \
  /usr/include/c++/11/bits/char_traits.h \

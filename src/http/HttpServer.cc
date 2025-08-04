@@ -26,6 +26,7 @@ static std::mutex g_connectionMutex;
 HttpServer::HttpServer(EventLoop* loop, const InetAddress& addr, const std::string& name)
     : server_(loop, addr, name)
     , enableStaticFiles_(false)
+    , developmentMode_(true)  // 默认开启开发模式
     , serverName_(name)
     , ipPortStr_(addr.toIpPort()) // 在构造时保存IP:端口信息
 {
@@ -232,6 +233,27 @@ void HttpServer::handleStaticFile(const HttpRequest& req, HttpResponse& resp) {
     
     resp.setContentType(contentType);
     resp.enableCORS(); // 添加CORS头，允许跨域访问
+    
+    // 根据开发模式设置缓存控制头
+    if (developmentMode_) {
+        // 开发模式：禁用缓存以便实时更新
+        resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        resp.setHeader("Pragma", "no-cache");
+        resp.setHeader("Expires", "0");
+    } else {
+        // 生产模式：启用适度缓存
+        if (extension == "css" || extension == "js") {
+            // CSS和JS文件缓存1小时
+            resp.setHeader("Cache-Control", "public, max-age=3600");
+        } else if (extension == "png" || extension == "jpg" || extension == "jpeg" || extension == "gif" || extension == "svg") {
+            // 图片文件缓存1天
+            resp.setHeader("Cache-Control", "public, max-age=86400");
+        } else {
+            // HTML文件短期缓存
+            resp.setHeader("Cache-Control", "public, max-age=300");
+        }
+    }
+    
     resp.setBody(content);
 }
 

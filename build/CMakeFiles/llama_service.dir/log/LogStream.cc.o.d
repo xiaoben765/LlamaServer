@@ -1,6 +1,6 @@
 CMakeFiles/llama_service.dir/log/LogStream.cc.o: \
- /home/shl203/kama-webserver/log/LogStream.cc /usr/include/stdc-predef.h \
- /home/shl203/kama-webserver/include/LogStream.h /usr/include/string.h \
+ /home/shl203/llama-webserver/log/LogStream.cc /usr/include/stdc-predef.h \
+ /home/shl203/llama-webserver/include/LogStream.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -128,8 +128,8 @@ CMakeFiles/llama_service.dir/log/LogStream.cc.o: \
  /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
  /usr/include/c++/11/bits/charconv.h \
  /usr/include/c++/11/bits/basic_string.tcc \
- /home/shl203/kama-webserver/include/noncopyable.h \
- /home/shl203/kama-webserver/include/FixedBuffer.h \
+ /home/shl203/llama-webserver/include/noncopyable.h \
+ /home/shl203/llama-webserver/include/FixedBuffer.h \
  /usr/include/c++/11/algorithm /usr/include/c++/11/utility \
  /usr/include/c++/11/bits/stl_relops.h \
  /usr/include/c++/11/bits/stl_algo.h \
