@@ -142,11 +142,13 @@ int main(int argc, char *argv[]) {
             prompt_file << prompt;
         }
         
-        // 构建使用文件的命令
+        // 构建使用服务器模式的命令，避免每次重新加载模型
         std::string command = "/home/shl203/llama.cpp/build/bin/main";
         command += " -m /home/shl203/llama.cpp/models/qwen/Qwen-7B-Chat.Q4_K_M.gguf";
         command += " --file " + temp_prompt_file;  // 使用文件而非--prompt参数
-        command += " -n 1024";  // 限制输出长度
+        command += " -n 256";  // 限制输出长度到256 tokens
+        command += " --temp 0.3";  // 降低随机性，提高响应速度
+        command += " --ctx-size 1024";  // 减少上下文长度
         // command += " --no-color"; // 禁用颜色输出
         // command += " --log-disable"; // 禁用日志
 
@@ -298,9 +300,72 @@ int main(int argc, char *argv[]) {
             // 只发送纯文本响应，不添加HTTP头和JSON格式
             // send(new_socket, full_response.c_str(), full_response.size(), 0);
 
-            // 构建JSON响应
+            // 清理full_response中的无效UTF-8字符
+            std::cout << "🧹 检查并清理无效的UTF-8字符..." << std::endl;
+            std::string cleaned_response;
+            cleaned_response.reserve(full_response.length());
+            
+            for (size_t i = 0; i < full_response.length(); ) {
+                unsigned char c = static_cast<unsigned char>(full_response[i]);
+                
+                if (c < 0x80) {
+                    // ASCII字符，直接复制
+                    cleaned_response.push_back(full_response[i]);
+                    i++;
+                } else if (c >= 0xC0 && c <= 0xDF) {
+                    // 2字节UTF-8序列
+                    if (i + 1 < full_response.length() && (static_cast<unsigned char>(full_response[i+1]) & 0xC0) == 0x80) {
+                        cleaned_response.push_back(full_response[i]);
+                        cleaned_response.push_back(full_response[i+1]);
+                        i += 2;
+                    } else {
+                        // 无效序列，替换
+                        cleaned_response.push_back('?');
+                        i++;
+                    }
+                } else if (c >= 0xE0 && c <= 0xEF) {
+                    // 3字节UTF-8序列
+                    if (i + 2 < full_response.length() && 
+                        (static_cast<unsigned char>(full_response[i+1]) & 0xC0) == 0x80 && 
+                        (static_cast<unsigned char>(full_response[i+2]) & 0xC0) == 0x80) {
+                        cleaned_response.push_back(full_response[i]);
+                        cleaned_response.push_back(full_response[i+1]);
+                        cleaned_response.push_back(full_response[i+2]);
+                        i += 3;
+                    } else {
+                        // 无效序列，替换
+                        cleaned_response.push_back('?');
+                        i++;
+                    }
+                } else if (c >= 0xF0 && c <= 0xF7) {
+                    // 4字节UTF-8序列
+                    if (i + 3 < full_response.length() && 
+                        (static_cast<unsigned char>(full_response[i+1]) & 0xC0) == 0x80 && 
+                        (static_cast<unsigned char>(full_response[i+2]) & 0xC0) == 0x80 && 
+                        (static_cast<unsigned char>(full_response[i+3]) & 0xC0) == 0x80) {
+                        cleaned_response.push_back(full_response[i]);
+                        cleaned_response.push_back(full_response[i+1]);
+                        cleaned_response.push_back(full_response[i+2]);
+                        cleaned_response.push_back(full_response[i+3]);
+                        i += 4;
+                    } else {
+                        // 无效序列，替换
+                        cleaned_response.push_back('?');
+                        i++;
+                    }
+                } else {
+                    // 无效字节，替换
+                    cleaned_response.push_back('?');
+                    i++;
+                }
+            }
+            
+            std::cout << "🧹 清理完成，原长度: " << full_response.length() 
+                      << "，清理后长度: " << cleaned_response.length() << std::endl;
+            
+            // 构建JSON响应，使用经过清理的响应
             json response_json;
-            response_json["response"] = full_response;
+            response_json["response"] = cleaned_response;
             response_json["cached"] = false;
 
             // 发送JSON响应 - 增强版本

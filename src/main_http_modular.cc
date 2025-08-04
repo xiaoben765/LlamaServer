@@ -620,7 +620,9 @@ private:
                 
                 try {
                     // 调用LLaMA服务
+                    LOG_INFO << "准备调用LLaMA服务，查询: " << query;
                     response = llamaService_->query(query);
+                    LOG_INFO << "LLaMA服务调用成功，响应长度: " << response.length();
                     
                     // 保存到缓存
                     if (dbService_->isInitialized() && !response.empty()) {
@@ -638,15 +640,42 @@ private:
                 dbService_->updateCacheStats(query);
             }
             
-            // 构建响应
-            json responseJson = {
-                {"response", response},
-                {"cached", cached}
-            };
+            // 在构建响应前检查是否包含无效UTF-8字符
+            LOG_INFO << "准备构建JSON响应，response长度: " << response.length();
+            LOG_INFO << "response内容预览: " << (response.length() > 100 ? response.substr(0, 100) + "..." : response);
             
-            resp.setStatusCode(HttpStatusCode::OK);
-            resp.setContentType("application/json");
-            resp.setBody(responseJson.dump());
+            // 检查response是否包含"解析错误"前缀，表示上游服务返回了错误
+            bool is_error_response = response.find("解析错误") == 0;
+            
+            try {
+                json responseJson = {
+                    {"response", is_error_response ? "LLaMA服务返回无效响应，请重试" : response},
+                    {"cached", cached}
+                };
+                
+                // 添加错误标志
+                if (is_error_response) {
+                    responseJson["error"] = true;
+                    responseJson["raw_error"] = response;
+                }
+                
+                LOG_INFO << "JSON对象构建成功，准备序列化";
+                std::string jsonString = responseJson.dump();
+                LOG_INFO << "JSON序列化成功，长度: " << jsonString.length();
+                
+                resp.setStatusCode(HttpStatusCode::OK); // 即使有错误也返回200，但在JSON中标记错误
+                resp.setContentType("application/json");
+                resp.setBody(jsonString);
+            } catch (const std::exception& e) {
+                // 如果序列化失败，尝试使用安全的方式构建响应
+                LOG_ERROR << "构建响应时出错: " << e.what();
+                
+                // 使用直接字符串构建作为回退方案
+                std::string safeResponse = "{\"response\":\"服务处理请求时出错，请重试\",\"cached\":false,\"error\":true}";
+                resp.setStatusCode(HttpStatusCode::OK);
+                resp.setContentType("application/json");
+                resp.setBody(safeResponse);
+            }
             
         } catch (const json::parse_error& e) {
             LOG_ERROR << "解析JSON失败: " << e.what();

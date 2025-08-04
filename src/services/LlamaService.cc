@@ -67,7 +67,7 @@ std::string LlamaTcpService::query(const std::string& message) {
         
         // 设置接收超时
         struct timeval tv;
-        tv.tv_sec = 30; // 30秒超时
+        tv.tv_sec = 120; // 120秒超时，适应LLaMA推理时间
         tv.tv_usec = 0;
         setsockopt(persistent_sock_, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(tv));
         
@@ -99,7 +99,7 @@ std::string LlamaTcpService::query(const std::string& message) {
                     auto now = std::chrono::steady_clock::now();
                     auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - start_time).count();
                     
-                    if (elapsed > 20) { // 20秒无数据则超时
+                    if (elapsed > 60) { // 60秒无数据则超时
                         LOG_WARN << "接收数据超时";
                         break;
                     }
@@ -115,44 +115,119 @@ std::string LlamaTcpService::query(const std::string& message) {
             LOG_INFO << "响应前100字符: " << response.substr(0, 100);
             LOG_INFO << "响应最后100字符: " << (response.length() > 100 ? 
                         response.substr(response.length() - 100) : response);
+            // 检查JSON格式
+            LOG_INFO << "检查JSON开始字符: " << (response[0] == '{' ? "正确" : "错误");
+            LOG_INFO << "检查JSON结束字符: " << (response[response.length()-1] == '}' ? "正确" : "错误");
         }
         
         // 尝试解析JSON
         try {
-            // 处理可能的编码问题
+            // 深度处理可能的编码问题
             cleanInvalidUtf8(response);
             
-            nlohmann::json parsed = nlohmann::json::parse(response);
-            if (parsed.contains("response")) {
-                std::string ai_response = parsed["response"].get<std::string>();
-                LOG_INFO << "成功解析JSON，获取到response字段";
-                return ai_response;
-            } else {
-                LOG_ERROR << "JSON中缺少response字段";
-                return "响应格式错误，请重试";
-            }
-        } catch (const nlohmann::json::parse_error& e) {
-            LOG_ERROR << "JSON解析失败: " << e.what();
-            
-            // 失败后尝试正则表达式提取
-            std::regex responseRegex("\"response\"\\s*:\\s*\"(.*?)\"\\s*,");
-            std::smatch match;
-            if (std::regex_search(response, match, responseRegex) && match.size() > 1) {
-                LOG_INFO << "通过正则提取到response内容";
-                std::string extracted = match[1].str();
-                // 处理转义字符
-                replaceAll(extracted, "\\n", "\n");
-                replaceAll(extracted, "\\\"", "\"");
-                replaceAll(extracted, "\\\\", "\\");
-                return extracted;
+            // 重新检查JSON格式
+            LOG_INFO << "清理后的JSON格式检查";
+            LOG_INFO << "清理后的响应长度: " << response.length();
+            if (!response.empty()) {
+                LOG_INFO << "清理后响应前100字符: " << response.substr(0, 100);
+                LOG_INFO << "清理后响应最后100字符: " << (response.length() > 100 ? 
+                            response.substr(response.length() - 100) : response);
             }
             
-            // 如果完全无法解析，返回可能有用的内容
-            if (response.length() > 20) {
-                LOG_INFO << "返回未解析的响应内容";
-                return "解析错误，原始内容：" + response.substr(0, 1000);
+            // 确保JSON格式正确
+            if (response[0] != '{' || response[response.length()-1] != '}') {
+                LOG_WARN << "JSON格式不正确，尝试修复";
+                // 确保以{开始，以}结束
+                if (response[0] != '{') {
+                    size_t pos = response.find('{');
+                    if (pos != std::string::npos) {
+                        response = response.substr(pos);
+                    } else {
+                        response = "{" + response;
+                    }
+                }
+                
+                if (response[response.length()-1] != '}') {
+                    size_t pos = response.rfind('}');
+                    if (pos != std::string::npos) {
+                        response = response.substr(0, pos+1);
+                    } else {
+                        response = response + "}";
+                    }
+                }
             }
-            return "无法解析服务器响应，请重试";
+            
+            try {
+                nlohmann::json parsed = nlohmann::json::parse(response);
+                if (parsed.contains("response")) {
+                    std::string ai_response = parsed["response"].get<std::string>();
+                    // 处理响应中的无效UTF-8字符
+                    cleanInvalidUtf8(ai_response);
+                    LOG_INFO << "成功解析JSON，获取到response字段";
+                    return ai_response;
+                } else {
+                    LOG_ERROR << "JSON中缺少response字段";
+                    return "响应格式错误，请重试";
+                }
+            } catch (const nlohmann::json::parse_error& e) {
+                LOG_ERROR << "JSON解析失败: " << e.what();
+                LOG_ERROR << "解析失败的原始数据长度: " << response.length();
+                LOG_ERROR << "原始数据前200字符: " << response.substr(0, 200);
+                LOG_ERROR << "原始数据最后200字符: " << (response.length() > 200 ? 
+                            response.substr(response.length() - 200) : response);
+                
+                // 尝试手动解析JSON
+                LOG_INFO << "尝试手动提取JSON内容";
+                std::regex responseRegex("\"response\"\\s*:\\s*\"(.*?)\"");
+                std::smatch match;
+                std::string resp_copy = response;
+                
+                // 替换所有转义双引号，以便正则表达式能正确匹配
+                replaceAll(resp_copy, "\\\"", "__QUOTE__");
+                
+                if (std::regex_search(resp_copy, match, responseRegex) && match.size() > 1) {
+                    LOG_INFO << "通过正则提取到response内容";
+                    std::string extracted = match[1].str();
+                    // 还原转义字符
+                    replaceAll(extracted, "__QUOTE__", "\"");
+                    replaceAll(extracted, "\\n", "\n");
+                    replaceAll(extracted, "\\\\", "\\");
+                    
+                    // 清理提取的内容
+                    cleanInvalidUtf8(extracted);
+                    return extracted;
+                }
+                
+                // 如果完全无法解析，尝试提取任何有用的内容
+                std::string fallback_response;
+                bool in_ascii_segment = false;
+                int ascii_count = 0;
+                
+                for (size_t i = 0; i < response.length(); i++) {
+                    char c = response[i];
+                    if (c >= 32 && c <= 126) { // ASCII可打印字符
+                        if (!in_ascii_segment) {
+                            in_ascii_segment = true;
+                        }
+                        fallback_response += c;
+                        ascii_count++;
+                    } else if (in_ascii_segment) {
+                        fallback_response += ' ';
+                        in_ascii_segment = false;
+                    }
+                }
+                
+                if (ascii_count > 20) {
+                    LOG_INFO << "从响应中提取了ASCII文本内容";
+                    return fallback_response;
+                }
+                
+                // 最后的回退选项
+                return "无法解析LLaMA响应。请稍后再试。";
+            }
+        } catch (const std::exception& e) {
+            LOG_ERROR << "JSON处理异常: " << e.what();
+            return "处理响应时发生错误，请重试";
         }
     } catch (const std::exception& e) {
         LOG_ERROR << "处理请求异常: " << e.what();
@@ -311,7 +386,7 @@ bool LlamaTcpService::ensureConnection() {
         
         // 设置超时
         struct timeval tv;
-        tv.tv_sec = 5;  // 5秒超时
+        tv.tv_sec = 120;  // 120秒超时，适应LLaMA推理时间
         tv.tv_usec = 0;
         setsockopt(persistent_sock_, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(tv));
         setsockopt(persistent_sock_, SOL_SOCKET, SO_SNDTIMEO, (const char*)&tv, sizeof(tv));
@@ -367,13 +442,66 @@ void LlamaTcpService::closeConnection() {
 }
 
 void LlamaTcpService::cleanInvalidUtf8(std::string& str) {
-    // 简单替换无效UTF-8字符
-    for (size_t i = 0; i < str.length(); ++i) {
-        if ((str[i] & 0x80) && !(str[i] & 0x40)) {
-            // 非法UTF-8序列
-            str[i] = '?';
+    // 更彻底地清理无效的UTF-8字符
+    std::string result;
+    result.reserve(str.length());
+    
+    for (size_t i = 0; i < str.length(); ) {
+        unsigned char c = static_cast<unsigned char>(str[i]);
+        
+        if (c < 0x80) {
+            // ASCII字符，直接复制
+            result.push_back(str[i]);
+            i++;
+        } else if (c >= 0xC0 && c <= 0xDF) {
+            // 2字节UTF-8序列
+            if (i + 1 < str.length() && (static_cast<unsigned char>(str[i+1]) & 0xC0) == 0x80) {
+                result.push_back(str[i]);
+                result.push_back(str[i+1]);
+                i += 2;
+            } else {
+                // 无效序列，替换
+                result.push_back('?');
+                i++;
+            }
+        } else if (c >= 0xE0 && c <= 0xEF) {
+            // 3字节UTF-8序列
+            if (i + 2 < str.length() && 
+                (static_cast<unsigned char>(str[i+1]) & 0xC0) == 0x80 && 
+                (static_cast<unsigned char>(str[i+2]) & 0xC0) == 0x80) {
+                result.push_back(str[i]);
+                result.push_back(str[i+1]);
+                result.push_back(str[i+2]);
+                i += 3;
+            } else {
+                // 无效序列，替换
+                result.push_back('?');
+                i++;
+            }
+        } else if (c >= 0xF0 && c <= 0xF7) {
+            // 4字节UTF-8序列
+            if (i + 3 < str.length() && 
+                (static_cast<unsigned char>(str[i+1]) & 0xC0) == 0x80 && 
+                (static_cast<unsigned char>(str[i+2]) & 0xC0) == 0x80 && 
+                (static_cast<unsigned char>(str[i+3]) & 0xC0) == 0x80) {
+                result.push_back(str[i]);
+                result.push_back(str[i+1]);
+                result.push_back(str[i+2]);
+                result.push_back(str[i+3]);
+                i += 4;
+            } else {
+                // 无效序列，替换
+                result.push_back('?');
+                i++;
+            }
+        } else {
+            // 无效字节，替换
+            result.push_back('?');
+            i++;
         }
     }
+    
+    str = result;
 }
 
 void LlamaTcpService::replaceAll(std::string& str, const std::string& from, const std::string& to) {

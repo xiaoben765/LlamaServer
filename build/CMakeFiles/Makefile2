@@ -220,8 +220,8 @@ CMakeFiles/concurrency_lib.dir/clean:
 # Target rules for target CMakeFiles/llama_http_server.dir
 
 # All Build rule for target.
-CMakeFiles/llama_http_server.dir/all: CMakeFiles/db_lib.dir/all
 CMakeFiles/llama_http_server.dir/all: CMakeFiles/current_thread.dir/all
+CMakeFiles/llama_http_server.dir/all: CMakeFiles/db_lib.dir/all
 CMakeFiles/llama_http_server.dir/all: CMakeFiles/concurrency_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_http_server.dir/build.make CMakeFiles/llama_http_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_http_server.dir/build.make CMakeFiles/llama_http_server.dir/build

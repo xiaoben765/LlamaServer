@@ -18,7 +18,7 @@ class KamaAI {
         this.loadChatHistory();
         this.loadModels();
         this.initTheme();
-        this.connectWebSocket();
+        this.checkServerConnection(); // 使用HTTP检查替代WebSocket
         this.setupResizeHandler();
         this.setupKeyboardShortcuts();
     }
@@ -196,8 +196,37 @@ class KamaAI {
         input.style.height = Math.min(input.scrollHeight, 160) + 'px';
     }
     
-    // WebSocket 连接
+    // 检查服务器连接状态
+    async checkServerConnection() {
+        try {
+            const response = await fetch('/api/status');
+            if (response.ok) {
+                console.log('服务器连接正常');
+                this.updateConnectionStatus('connected', '已连接');
+                this.isConnected = true;
+            } else {
+                throw new Error('服务器响应异常');
+            }
+        } catch (error) {
+            console.error('服务器连接检查失败:', error);
+            this.updateConnectionStatus('disconnected', '连接失败');
+            this.isConnected = false;
+            
+            // 重试连接
+            setTimeout(() => {
+                this.checkServerConnection();
+            }, 5000);
+        }
+    }
+
+    // WebSocket 连接 (暂时禁用，使用REST API)
     connectWebSocket() {
+        // 暂时禁用WebSocket，直接标记为已连接
+        console.log('使用REST API模式，跳过WebSocket连接');
+        this.updateConnectionStatus('connected', '已连接 (REST)');
+        this.isConnected = true;
+        
+        /* 原WebSocket代码保留备用
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const wsUrl = `${protocol}//${window.location.host}/ws`;
         
@@ -236,6 +265,7 @@ class KamaAI {
             console.error('WebSocket 连接失败:', error);
             this.updateConnectionStatus('disconnected', '连接失败');
         }
+        */
     }
     
     // 处理 WebSocket 消息
@@ -411,8 +441,8 @@ class KamaAI {
         this.sendMessage();
     }
     
-    sendToServer(message) {
-        if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+    async sendToServer(message) {
+        if (!this.isConnected) {
             this.showError('连接断开，无法发送消息');
             return;
         }
@@ -420,14 +450,47 @@ class KamaAI {
         this.isLoading = true;
         this.showTypingIndicator();
         
-        const requestData = {
-            message: message,
-            model: this.selectedModel,
-            chatId: this.currentChatId,
-            stream: true
-        };
-        
-        this.socket.send(JSON.stringify(requestData));
+        try {
+            const response = await fetch('/api/llama/query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: message,
+                    model: this.selectedModel || 'llama-7b',
+                    stream: false // 暂时使用非流式响应
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP错误: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            // 隐藏加载指示器
+            this.hideTypingIndicator();
+            this.isLoading = false;
+            
+            // 添加AI回复
+            if (data.response) {
+                this.addMessage('assistant', data.response, true);
+                
+                // 如果是缓存响应，显示提示
+                if (data.cached) {
+                    console.log('回复来自缓存');
+                }
+            } else {
+                this.showError('服务器返回空响应');
+            }
+            
+        } catch (error) {
+            console.error('发送消息失败:', error);
+            this.hideTypingIndicator();
+            this.isLoading = false;
+            this.showError('发送消息失败: ' + error.message);
+        }
     }
     
     addMessage(role, content, save = true) {
