@@ -586,8 +586,8 @@ private:
                     json userJson = {
                         {"username", user.username},
                         {"email", user.email},
-                        {"created_at", user.created_at},
-                        {"last_login", user.last_login}
+                        {"created_at", formatTimestamp(user.created_at)},
+                        {"last_login", formatTimestamp(user.last_login)}
                     };
                     responseJson["users"].push_back(userJson);
                 }
@@ -1098,6 +1098,18 @@ private:
     // 服务组件
     services::IDatabaseService* dbService_;
     std::unique_ptr<services::ILlamaService> llamaService_;
+    
+    // 时间格式化辅助函数
+    std::string formatTimestamp(time_t timestamp) {
+        if (timestamp <= 0) {
+            return "未知";
+        }
+        
+        char timeStr[32];
+        struct tm* tm_info = localtime(&timestamp);
+        strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S", tm_info);
+        return std::string(timeStr);
+    }
 };
 
 // 异步日志

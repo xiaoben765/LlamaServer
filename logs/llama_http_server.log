@@ -112,11 +112,18 @@ DEBUG: 处理静态文件请求: /js/auth-manager.js
 DEBUG: 静态文件路径: ./static/js/auth-manager.js
 DEBUG: 文件打开成功: ./static/js/auth-manager.js
 DEBUG: 设置响应体，内容长度: 17179, Content-Type: application/javascript
+DEBUG: 处理请求: GET /api/auth/validate
+DEBUG: 使用静态文件处理器, enableStaticFiles_=1
+DEBUG: 处理静态文件请求: /api/auth/validate
+DEBUG: 静态文件路径: ./static/api/auth/validate
+DEBUG: 无法打开文件: ./static/api/auth/validate
 DEBUG: 处理请求: GET /api/status
 DEBUG: 找到路由处理器
 DEBUG: 处理请求: GET /api/models
 DEBUG: 找到路由处理器
-DEBUG: 处理请求: POST /api/llama/query
+DEBUG: 处理请求: GET /api/status
 DEBUG: 找到路由处理器
-DEBUG: 处理请求: POST /api/llama/query
+DEBUG: 处理请求: GET /api/status
+DEBUG: 找到路由处理器
+DEBUG: 处理请求: GET /api/admin/users
 DEBUG: 找到路由处理器

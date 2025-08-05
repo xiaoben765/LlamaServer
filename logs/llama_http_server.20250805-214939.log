@@ -1,0 +1,76 @@
+2025/08/05 21:49:571521 DEBUG EventLoop createdtruein thread724732 - EventLoop.cc:53
+2025/08/05 21:49:571588 INFO  func =>fd4events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:49:571851 INFO  成功加载配置文件: config/config.json - ConfigManager.cc:28
+2025/08/05 21:49:572207 INFO  成功加载配置文件: config/config.json - ConfigManager.cc:28
+2025/08/05 21:49:572630 INFO  配置加载完成: 端口=8080, 线程数=4, LLaMA服务类型=tcp, 数据库类型=mysql, 开发模式=true - main_http_modular.cc:126
+2025/08/05 21:49:572644 INFO  添加中间件: LoggingMiddleware - Middleware.cc:17
+2025/08/05 21:49:572649 INFO  添加中间件: CorsMiddleware - Middleware.cc:17
+2025/08/05 21:49:574126 INFO  尝试连接MySQL - Host: 127.0.0.1, Port: 3306, DB: kama_llm, User: root - DatabaseManager.cpp:86
+2025/08/05 21:49:635236 INFO  MySQL连接成功: 127.0.0.1:3306/kama_llm - DatabaseManager.cpp:120
+2025/08/05 21:49:648987 INFO  数据库表初始化完成 - DatabaseManager.cpp:230
+2025/08/05 21:49:649005 INFO  MySQL数据库初始化成功 - DatabaseManager.cpp:52
+2025/08/05 21:49:649009 INFO  数据库服务初始化成功: 127.0.0.1:3306/kama_llm - DatabaseService.cc:58
+2025/08/05 21:49:649168 INFO  LLaMA 服务连接成功：127.0.0.1:8899 - LlamaService.cc:29
+2025/08/05 21:49:649183 INFO  LLaMA服务连接成功 - main_http_modular.cc:253
+2025/08/05 21:49:649199 INFO  Added route: GET /basic - HttpServer.cc:60
+2025/08/05 21:49:649204 INFO  Added route: GET /api/models - HttpServer.cc:60
+2025/08/05 21:49:649209 INFO  Added route: POST /api/llama/query - HttpServer.cc:60
+2025/08/05 21:49:649213 INFO  Added route: GET /api/status - HttpServer.cc:60
+2025/08/05 21:49:649218 INFO  Added route: POST /api/admin/clear-cache - HttpServer.cc:60
+2025/08/05 21:49:649222 INFO  Added route: GET /api/admin/cache-content - HttpServer.cc:60
+2025/08/05 21:49:649227 INFO  Added route: POST /api/admin/clear-database - HttpServer.cc:60
+2025/08/05 21:49:649231 INFO  Added route: GET /api/admin/database-stats - HttpServer.cc:60
+2025/08/05 21:49:649235 INFO  Added route: GET /api/admin/users - HttpServer.cc:60
+2025/08/05 21:49:649239 INFO  Added route: POST /api/admin/clear-users - HttpServer.cc:60
+2025/08/05 21:49:649244 INFO  Added route: POST /api/admin/delete-user - HttpServer.cc:60
+2025/08/05 21:49:649248 INFO  Added route: POST /api/auth/register - HttpServer.cc:60
+2025/08/05 21:49:649252 INFO  Added route: POST /api/auth/login - HttpServer.cc:60
+2025/08/05 21:49:649258 INFO  Added route: POST /api/auth/logout - HttpServer.cc:60
+2025/08/05 21:49:649262 INFO  Added route: GET /api/conversations - HttpServer.cc:60
+2025/08/05 21:49:649272 INFO  启动Kama HTTP服务器, 端口: 8080 - main_http_modular.cc:75
+2025/08/05 21:49:649276 INFO  HTTP Server [KamaHttpServer] started on 0.0.0.0:8080 - HttpServer.cc:41
+2025/08/05 21:49:649538 DEBUG EventLoop createdtruein thread724735 - EventLoop.cc:53
+2025/08/05 21:49:649559 INFO  func =>fd9events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:49:649582 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/05 21:49:649585 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:49:649698 DEBUG EventLoop createdtruein thread724736 - EventLoop.cc:53
+2025/08/05 21:49:649714 INFO  func =>fd11events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:49:649731 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/05 21:49:649734 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:49:649851 DEBUG EventLoop createdtruein thread724737 - EventLoop.cc:53
+2025/08/05 21:49:649869 INFO  func =>fd13events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:49:649887 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/05 21:49:649891 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:49:650006 DEBUG EventLoop createdtruein thread724738 - EventLoop.cc:53
+2025/08/05 21:49:650023 INFO  func =>fd15events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:49:650040 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/05 21:49:650044 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:49:650059 INFO  func =>fd6events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:49:650132 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/05 21:49:650140 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:49:650605 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:49:650638 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:49:650666 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/05 21:49:650673 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#1]from %s127.0.0.1:39056 - TcpServer.cc:96
+2025/08/05 21:49:650688 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#1]at fd=16 - TcpConnection.cc:52
+2025/08/05 21:49:650723 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:49:650740 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:49:650765 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:49:650781 INFO  func =>fd16events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:49:650812 INFO  New HTTP connection from: 127.0.0.1:39056 - HttpServer.cc:70
+2025/08/05 21:49:650821 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:49:650825 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:49:650829 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:49:650870 INFO  TcpConnection::handleClose fd=16state=2 - TcpConnection.cc:258
+2025/08/05 21:49:650874 INFO  func =>fd16events=0index=1 - EPollPoller.cc:91
+2025/08/05 21:49:650881 INFO  HTTP connection closed: 127.0.0.1:39056 - HttpServer.cc:75
+2025/08/05 21:49:650901 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:49:650909 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:49:650913 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:49:650919 INFO  TcpServer::removeConnectionInLoop [KamaHttpServer] - connection %sKamaHttpServer-0.0.0.0:8080#1 - TcpServer.cc:143
+2025/08/05 21:49:650932 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:49:650939 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:49:650942 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:49:650948 INFO  removeChannel fd=16 - EPollPoller.cc:132
+2025/08/05 21:49:650951 INFO  TcpConnection::dtor[KamaHttpServer-0.0.0.0:8080#1]at fd=16state=0 - TcpConnection.cc:58
+2025/08/05 21:49:651012 INFO  fd total count:1 - EPollPoller.cc:34
