@@ -320,6 +320,21 @@ private:
             handleClearUsersRequest(req, resp);
         });
         
+        // 用户注册API
+        server_.post("/api/auth/register", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleUserRegisterRequest(req, resp);
+        });
+        
+        // 用户登录API
+        server_.post("/api/auth/login", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleUserLoginRequest(req, resp);
+        });
+        
+        // 用户注销API
+        server_.post("/api/auth/logout", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleUserLogoutRequest(req, resp);
+        });
+        
         // 获取对话历史API
         server_.get("/api/conversations", [this](const HttpRequest& req, HttpResponse& resp) {
             handleConversationsRequest(req, resp);
@@ -563,6 +578,196 @@ private:
             resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
             resp.setContentType("application/json");
             resp.setBody("{\"error\": \"清除用户注册表时发生错误\"}");
+        }
+    }
+    
+    // 处理用户注册请求
+    void handleUserRegisterRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            // 解析请求体JSON
+            auto bodyStr = req.body();
+            if (bodyStr.empty()) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"请求体不能为空\", \"success\": false}");
+                return;
+            }
+            
+            json requestData;
+            try {
+                requestData = json::parse(bodyStr);
+            } catch (const json::parse_error& e) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"无效的JSON格式\", \"success\": false}");
+                return;
+            }
+            
+            // 验证必需字段
+            if (!requestData.contains("username") || !requestData.contains("password") || !requestData.contains("email")) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"缺少必需字段: username, password, email\", \"success\": false}");
+                return;
+            }
+            
+            std::string username = requestData["username"];
+            std::string password = requestData["password"];
+            std::string email = requestData["email"];
+            
+            // 验证输入长度
+            if (username.length() < 3 || username.length() > 50) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"用户名长度必须在3-50字符之间\", \"success\": false}");
+                return;
+            }
+            
+            if (password.length() < 6) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"密码长度至少6个字符\", \"success\": false}");
+                return;
+            }
+            
+            if (dbService_) {
+                // 检查用户是否已存在
+                auto existingUser = dbService_->getUserInfo(username);
+                if (!existingUser.username.empty()) {
+                    resp.setStatusCode(HttpStatusCode::CONFLICT);
+                    resp.setContentType("application/json");
+                    resp.setBody("{\"error\": \"用户名已存在\", \"success\": false}");
+                    return;
+                }
+                
+                // 创建新用户
+                bool success = dbService_->createUser(username, password, email);
+                if (success) {
+                    json responseJson = {
+                        {"success", true},
+                        {"message", "用户注册成功"},
+                        {"username", username}
+                    };
+                    
+                    resp.setStatusCode(HttpStatusCode::CREATED);
+                    resp.setContentType("application/json");
+                    resp.setBody(responseJson.dump());
+                    LOG_INFO << "用户注册成功: " << username;
+                } else {
+                    resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+                    resp.setContentType("application/json");
+                    resp.setBody("{\"error\": \"注册失败，请稍后重试\", \"success\": false}");
+                    LOG_ERROR << "用户注册失败: " << username;
+                }
+            } else {
+                resp.setStatusCode(HttpStatusCode::SERVICE_UNAVAILABLE);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"数据库服务不可用\", \"success\": false}");
+                LOG_ERROR << "注册失败：数据库服务不可用";
+            }
+        } catch (const std::exception& e) {
+            LOG_ERROR << "用户注册异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"error\": \"注册时发生错误\", \"success\": false}");
+        }
+    }
+    
+    // 处理用户登录请求
+    void handleUserLoginRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            // 解析请求体JSON
+            auto bodyStr = req.body();
+            if (bodyStr.empty()) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"请求体不能为空\", \"success\": false}");
+                return;
+            }
+            
+            json requestData;
+            try {
+                requestData = json::parse(bodyStr);
+            } catch (const json::parse_error& e) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"无效的JSON格式\", \"success\": false}");
+                return;
+            }
+            
+            // 验证必需字段
+            if (!requestData.contains("username") || !requestData.contains("password")) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"缺少必需字段: username, password\", \"success\": false}");
+                return;
+            }
+            
+            std::string username = requestData["username"];
+            std::string password = requestData["password"];
+            
+            if (dbService_) {
+                // 验证用户凭据
+                bool authenticated = dbService_->authenticateUser(username, password);
+                if (authenticated) {
+                    // 更新最后登录时间
+                    dbService_->updateUserLastLogin(username);
+                    
+                    // 获取用户信息
+                    auto userInfo = dbService_->getUserInfo(username);
+                    
+                    json responseJson = {
+                        {"success", true},
+                        {"message", "登录成功"},
+                        {"user", {
+                            {"username", userInfo.username},
+                            {"email", userInfo.email},
+                            {"user_id", userInfo.user_id}
+                        }}
+                    };
+                    
+                    resp.setStatusCode(HttpStatusCode::OK);
+                    resp.setContentType("application/json");
+                    resp.setBody(responseJson.dump());
+                    LOG_INFO << "用户登录成功: " << username;
+                } else {
+                    resp.setStatusCode(HttpStatusCode::UNAUTHORIZED);
+                    resp.setContentType("application/json");
+                    resp.setBody("{\"error\": \"用户名或密码错误\", \"success\": false}");
+                    LOG_WARN << "登录失败，用户名或密码错误: " << username;
+                }
+            } else {
+                resp.setStatusCode(HttpStatusCode::SERVICE_UNAVAILABLE);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"数据库服务不可用\", \"success\": false}");
+                LOG_ERROR << "登录失败：数据库服务不可用";
+            }
+        } catch (const std::exception& e) {
+            LOG_ERROR << "用户登录异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"error\": \"登录时发生错误\", \"success\": false}");
+        }
+    }
+    
+    // 处理用户注销请求
+    void handleUserLogoutRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            // 简单的注销处理，主要是在客户端清除会话信息
+            json responseJson = {
+                {"success", true},
+                {"message", "注销成功"}
+            };
+            
+            resp.setStatusCode(HttpStatusCode::OK);
+            resp.setContentType("application/json");
+            resp.setBody(responseJson.dump());
+            LOG_INFO << "用户注销成功";
+        } catch (const std::exception& e) {
+            LOG_ERROR << "用户注销异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"error\": \"注销时发生错误\", \"success\": false}");
         }
     }
     

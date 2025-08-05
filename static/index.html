@@ -96,6 +96,23 @@
                     </div>
                     
                     <div class="navbar-right">
+                        <!-- 用户状态显示 -->
+                        <div class="user-status" id="user-status" style="display: none;">
+                            <span class="user-name" id="current-user-name">用户</span>
+                            <button class="navbar-action" id="user-menu-btn" title="用户菜单">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- 登录按钮 -->
+                        <button class="navbar-action" id="login-btn" title="用户登录">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                            </svg>
+                        </button>
+                        
                         <button class="navbar-action" id="theme-toggle" title="切换主题">
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
@@ -158,6 +175,75 @@
 
     <!-- 移动端侧边栏遮罩 -->
     <div class="sidebar-overlay" id="sidebar-overlay" style="display: none;"></div>
+
+    <!-- 用户登录弹窗 -->
+    <div class="user-modal" id="auth-modal" style="display: none;">
+        <div class="user-modal-overlay"></div>
+        <div class="user-modal-content">
+            <div class="user-modal-header">
+                <h2 class="user-modal-title" id="auth-modal-title">🔑 用户登录</h2>
+                <button class="user-modal-close">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="user-modal-body">
+                <!-- 登录表单 -->
+                <div class="auth-form" id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">用户名</label>
+                        <input type="text" id="login-username" placeholder="请输入用户名" autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">密码</label>
+                        <input type="password" id="login-password" placeholder="请输入密码" autocomplete="current-password">
+                    </div>
+                    <div class="form-actions">
+                        <button class="primary-btn" id="login-submit-btn">登录</button>
+                        <button class="secondary-btn" id="switch-to-register">注册新账户</button>
+                    </div>
+                </div>
+                
+                <!-- 注册表单 -->
+                <div class="auth-form" id="register-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="register-username">用户名</label>
+                        <input type="text" id="register-username" placeholder="请输入用户名（3-20字符）" autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">密码</label>
+                        <input type="password" id="register-password" placeholder="请输入密码（至少6位）" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm-password">确认密码</label>
+                        <input type="password" id="register-confirm-password" placeholder="请再次输入密码" autocomplete="new-password">
+                    </div>
+                    <div class="form-actions">
+                        <button class="primary-btn" id="register-submit-btn">注册</button>
+                        <button class="secondary-btn" id="switch-to-login">已有账户？登录</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用户菜单弹窗 -->
+    <div class="user-menu-dropdown" id="user-menu-dropdown" style="display: none;">
+        <div class="user-menu-item" id="user-profile">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            个人信息
+        </div>
+        <div class="user-menu-item" id="user-logout">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+            </svg>
+            退出登录
+        </div>
+    </div>
 
     <!-- 管理控制台弹窗 -->
     <div class="admin-modal" id="admin-modal" style="display: none;">
@@ -347,5 +433,23 @@
 
     <script src="/js/openwebui-app.js"></script>
     <script src="/js/admin-console.js"></script>
+    <script src="/js/auth-manager.js"></script>
+    <script>
+        // 初始化认证管理器
+        const authManager = new AuthManager();
+        
+        // 初始化管理控制台
+        const adminConsole = new AdminConsole();
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('页面初始化完成');
+            console.log('认证状态:', authManager.isLoggedIn() ? '已登录' : '未登录');
+            
+            if (authManager.isLoggedIn()) {
+                console.log('当前用户:', authManager.getCurrentUser()?.username);
+            }
+        });
+    </script>
 </body>
 </html>
