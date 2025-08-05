@@ -273,11 +273,12 @@ target_link_libraries(llama_http_server
 message(STATUS "✅ Configuring HTTP Server build with MySQL support.")
 
 # ==================== 高并发测试程序 ====================
-add_executable(test_concurrency src/test_concurrency.cc)
-target_link_libraries(test_concurrency 
-    ${LIBS}
-    concurrency_lib
-    db_lib
-    ${MYSQL_LIBRARY}
-)
-message(STATUS "✅ 构建高并发测试程序")
+# 注释掉高并发测试程序构建，因为源文件不存在
+#add_executable(test_concurrency src/test_concurrency.cc)
+#target_link_libraries(test_concurrency 
+#    ${LIBS}
+#    concurrency_lib
+#    db_lib
+#    ${MYSQL_LIBRARY}
+#)
+#message(STATUS "✅ 构建高并发测试程序")

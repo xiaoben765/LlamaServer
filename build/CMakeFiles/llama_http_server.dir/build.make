@@ -641,13 +641,14 @@ llama_http_server_EXTERNAL_OBJECTS =
 ../bin/llama_http_server: libcurrent_thread.a
 ../bin/llama_http_server: libdb_lib.a
 ../bin/llama_http_server: libconcurrency_lib.a
-../bin/llama_http_server: /usr/lib/x86_64-linux-gnu/libmysqlclient.so
 ../bin/llama_http_server: /usr/local/cuda-12.8/lib64/libcudart_static.a
 ../bin/llama_http_server: /usr/lib/x86_64-linux-gnu/librt.a
 ../bin/llama_http_server: /usr/local/cuda-12.8/lib64/libcudart_static.a
 ../bin/llama_http_server: /usr/lib/x86_64-linux-gnu/librt.a
 ../bin/llama_http_server: libcurrent_thread.a
 ../bin/llama_http_server: /usr/lib/x86_64-linux-gnu/libmysqlclient.so
+../bin/llama_http_server: /usr/local/cuda-12.8/lib64/libcudart_static.a
+../bin/llama_http_server: /usr/lib/x86_64-linux-gnu/librt.a
 ../bin/llama_http_server: /usr/lib/x86_64-linux-gnu/libmysqlclient.so
 ../bin/llama_http_server: CMakeFiles/llama_http_server.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shl203/llama-webserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Linking CXX executable ../bin/llama_http_server"

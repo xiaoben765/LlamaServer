@@ -357,9 +357,6 @@ MYSQL_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libmysqlclient.so
 //Dependencies for the target
 concurrency_lib_LIB_DEPENDS:STATIC=general;pthread;
 
-//Dependencies for the target
-db_lib_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libmysqlclient.so;
-
 //Value Computed by CMake
 kama-webserver_BINARY_DIR:STATIC=/home/shl203/llama-webserver/build
 

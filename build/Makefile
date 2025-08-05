@@ -194,19 +194,6 @@ llama_http_server/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/llama_http_server.dir/build.make CMakeFiles/llama_http_server.dir/build
 .PHONY : llama_http_server/fast
 
-#=============================================================================
-# Target rules for targets named test_concurrency
-
-# Build rule for target.
-test_concurrency: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_concurrency
-.PHONY : test_concurrency
-
-# fast build rule for target.
-test_concurrency/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_concurrency.dir/build.make CMakeFiles/test_concurrency.dir/build
-.PHONY : test_concurrency/fast
-
 log/AsyncLogging.o: log/AsyncLogging.cc.o
 .PHONY : log/AsyncLogging.o
 
@@ -1419,30 +1406,6 @@ src/services/ModelInstancePool.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/concurrency_lib.dir/build.make CMakeFiles/concurrency_lib.dir/src/services/ModelInstancePool.cc.s
 .PHONY : src/services/ModelInstancePool.cc.s
 
-src/test_concurrency.o: src/test_concurrency.cc.o
-.PHONY : src/test_concurrency.o
-
-# target to build an object file
-src/test_concurrency.cc.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_concurrency.dir/build.make CMakeFiles/test_concurrency.dir/src/test_concurrency.cc.o
-.PHONY : src/test_concurrency.cc.o
-
-src/test_concurrency.i: src/test_concurrency.cc.i
-.PHONY : src/test_concurrency.i
-
-# target to preprocess a source file
-src/test_concurrency.cc.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_concurrency.dir/build.make CMakeFiles/test_concurrency.dir/src/test_concurrency.cc.i
-.PHONY : src/test_concurrency.cc.i
-
-src/test_concurrency.s: src/test_concurrency.cc.s
-.PHONY : src/test_concurrency.s
-
-# target to generate assembly for a file
-src/test_concurrency.cc.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_concurrency.dir/build.make CMakeFiles/test_concurrency.dir/src/test_concurrency.cc.s
-.PHONY : src/test_concurrency.cc.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1457,7 +1420,6 @@ help:
 	@echo "... llama_http_server"
 	@echo "... llama_service"
 	@echo "... llama_service_tcp"
-	@echo "... test_concurrency"
 	@echo "... log/AsyncLogging.o"
 	@echo "... log/AsyncLogging.i"
 	@echo "... log/AsyncLogging.s"
@@ -1593,9 +1555,6 @@ help:
 	@echo "... src/services/ModelInstancePool.o"
 	@echo "... src/services/ModelInstancePool.i"
 	@echo "... src/services/ModelInstancePool.s"
-	@echo "... src/test_concurrency.o"
-	@echo "... src/test_concurrency.i"
-	@echo "... src/test_concurrency.s"
 .PHONY : help
 
 
