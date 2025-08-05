@@ -36,7 +36,14 @@ fi
 # 检查是否需要完全重新构建
 if [ "$1" == "--clean" ]; then
     echo -e "${YELLOW}执行完全重新构建...${NC}"
-    rm -rf build/*
+    rm -rf build/* lib/ CMakeFiles/
+    cmake -S . -B build
+elif [ "$1" == "--deep-clean" ]; then
+    echo -e "${YELLOW}执行深度清理（删除所有构建产物）...${NC}"
+    rm -rf build/ lib/ CMakeFiles/
+    echo -e "${GREEN}✅ 已清理 build/, lib/, CMakeFiles/ 目录${NC}"
+    echo -e "${YELLOW}重新初始化构建...${NC}"
+    mkdir -p build
     cmake -S . -B build
 else
     # 由于修复了CMakeLists.txt，我们需要清除CMakeCache.txt
