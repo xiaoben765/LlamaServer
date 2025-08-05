@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .test-box {
+            background-color: #e6f3ff;
+            border: 2px solid #007acc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>LLaMA 服务测试页面</h1>
+    
+    <div class="test-box">
+        <h2>服务状态测试</h2>
+        <p>如果您能看到这个页面，说明：</p>
+        <ul>
+            <li class="success">✅ HTTP 服务器正常运行</li>
+            <li class="success">✅ 静态文件服务正常</li>
+            <li class="success">✅ CSS 样式正常加载</li>
+        </ul>
+    </div>
+    
+    <div class="test-box">
+        <h2>JavaScript 测试</h2>
+        <p>JavaScript 状态: <span id="js-status">检测中...</span></p>
+        <button onclick="testFunction()">点击测试 JavaScript</button>
+        <p id="js-result"></p>
+    </div>
+    
+    <div class="test-box">
+        <h2>外部资源测试</h2>
+        <p>CSS 加载状态: <span id="css-status">检测中...</span></p>
+        <p>JS 加载状态: <span id="js-load-status">检测中...</span></p>
+    </div>
+    
+    <script>
+        // JavaScript 功能测试
+        document.getElementById('js-status').textContent = '✅ JavaScript 正常工作';
+        document.getElementById('js-status').style.color = '#28a745';
+        document.getElementById('js-status').style.fontWeight = 'bold';
+        
+        function testFunction() {
+            document.getElementById('js-result').innerHTML = '<span style="color: #28a745; font-weight: bold;">✅ JavaScript 函数调用成功！时间: ' + new Date().toLocaleTimeString() + '</span>';
+        }
+        
+        // 检测外部资源加载
+        window.addEventListener('load', function() {
+            // 检测 CSS
+            const cssStatus = document.getElementById('css-status');
+            const testEl = document.createElement('div');
+            testEl.className = 'test-box';
+            document.body.appendChild(testEl);
+            const styles = getComputedStyle(testEl);
+            if (styles.backgroundColor === 'rgb(230, 243, 255)') {
+                cssStatus.textContent = '✅ CSS 样式正常加载';
+                cssStatus.style.color = '#28a745';
+                cssStatus.style.fontWeight = 'bold';
+            } else {
+                cssStatus.textContent = '❌ CSS 样式加载失败';
+                cssStatus.style.color = '#dc3545';
+                cssStatus.style.fontWeight = 'bold';
+            }
+            document.body.removeChild(testEl);
+            
+            // 检测 JS 加载
+            document.getElementById('js-load-status').textContent = '✅ JavaScript 正常加载';
+            document.getElementById('js-load-status').style.color = '#28a745';
+            document.getElementById('js-load-status').style.fontWeight = 'bold';
+        });
+        
+        // 尝试加载原始 CSS 文件进行测试
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/css/openwebui-style.css';
+        link.onload = function() {
+            console.log('✅ openwebui-style.css 加载成功');
+        };
+        link.onerror = function() {
+            console.log('❌ openwebui-style.css 加载失败');
+        };
+        document.head.appendChild(link);
+        
+        // 尝试加载原始 JS 文件进行测试
+        const script = document.createElement('script');
+        script.src = '/js/openwebui-app.js';
+        script.onload = function() {
+            console.log('✅ openwebui-app.js 加载成功');
+        };
+        script.onerror = function() {
+            console.log('❌ openwebui-app.js 加载失败');
+        };
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>

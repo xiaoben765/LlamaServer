@@ -49,6 +49,7 @@ public:
     UserInfo getUserInfo(const std::string& username) override;
     bool updateUserLastLogin(const std::string& username) override;
     std::vector<UserInfo> getAllUsers() override;
+    bool deleteUser(const std::string& username) override;
     
     // 会话管理
     std::string createSession(const std::string& userId, const std::string& sessionName = "") override;
@@ -143,6 +144,7 @@ public:
     UserInfo getUserInfo(const std::string& username) override;
     bool updateUserLastLogin(const std::string& username) override;
     std::vector<UserInfo> getAllUsers() override;
+    bool deleteUser(const std::string& username) override;
     
     // 会话管理
     std::string createSession(const std::string& userId, const std::string& sessionName = "") override;

@@ -300,6 +300,11 @@ private:
             handleClearCacheRequest(req, resp);
         });
         
+        // 查看缓存内容API
+        server_.get("/api/admin/cache-content", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleCacheContentRequest(req, resp);
+        });
+        
         // 清理数据库API
         server_.post("/api/admin/clear-database", [this](const HttpRequest& req, HttpResponse& resp) {
             handleClearDatabaseRequest(req, resp);
@@ -318,6 +323,11 @@ private:
         // 清除用户注册表API
         server_.post("/api/admin/clear-users", [this](const HttpRequest& req, HttpResponse& resp) {
             handleClearUsersRequest(req, resp);
+        });
+        
+        // 删除指定用户API
+        server_.post("/api/admin/delete-user", [this](const HttpRequest& req, HttpResponse& resp) {
+            handleDeleteUserRequest(req, resp);
         });
         
         // 用户注册API
@@ -400,6 +410,61 @@ private:
             resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
             resp.setContentType("application/json");
             resp.setBody("{\"error\": \"清理缓存时发生错误\"}");
+        }
+    }
+    
+    // 处理查看缓存内容请求
+    void handleCacheContentRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            if (dbService_ && dbService_->isInitialized()) {
+                // 获取缓存内容
+                auto cacheData = dbService_->getCacheStats(50); // 获取最多50条缓存记录
+                
+                json responseJson = {
+                    {"success", true},
+                    {"cache_count", cacheData.size()},
+                    {"cache_items", json::array()}
+                };
+                
+                // 将缓存数据转换为JSON格式
+                for (const auto& item : cacheData) {
+                    // 安全截取response_text，避免在UTF-8字符中间切断
+                    std::string trimmed_response = item.response_text;
+                    if (trimmed_response.length() > 200) {
+                        // 确保在有效的UTF-8字符边界处截断
+                        size_t cutoff = 200;
+                        while (cutoff > 0 && (trimmed_response[cutoff] & 0x80) && !(trimmed_response[cutoff] & 0x40)) {
+                            cutoff--;
+                        }
+                        trimmed_response = trimmed_response.substr(0, cutoff) + "...";
+                    }
+                    
+                    json cacheItem = {
+                        {"query", item.query_text},
+                        {"response", trimmed_response},
+                        {"timestamp", item.created_at},
+                        {"access_count", item.hit_count},
+                        {"last_accessed", item.last_accessed}
+                    };
+                    responseJson["cache_items"].push_back(cacheItem);
+                }
+                
+                resp.setStatusCode(HttpStatusCode::OK);
+                resp.setContentType("application/json");
+                resp.setBody(responseJson.dump());
+                
+                LOG_INFO << "返回缓存内容，共 " << cacheData.size() << " 项";
+            } else {
+                resp.setStatusCode(HttpStatusCode::SERVICE_UNAVAILABLE);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"数据库服务不可用\"}");
+                LOG_ERROR << "获取缓存内容失败：数据库服务不可用";
+            }
+        } catch (const std::exception& e) {
+            LOG_ERROR << "获取缓存内容异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"error\": \"获取缓存内容时发生错误\"}");
         }
     }
     
@@ -578,6 +643,80 @@ private:
             resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
             resp.setContentType("application/json");
             resp.setBody("{\"error\": \"清除用户注册表时发生错误\"}");
+        }
+    }
+    
+    // 处理删除指定用户请求
+    void handleDeleteUserRequest(const HttpRequest& req, HttpResponse& resp) {
+        try {
+            // 解析请求体JSON
+            auto bodyStr = req.body();
+            if (bodyStr.empty()) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"请求体不能为空\", \"success\": false}");
+                return;
+            }
+            
+            json requestData;
+            try {
+                requestData = json::parse(bodyStr);
+            } catch (const json::parse_error& e) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"无效的JSON格式\", \"success\": false}");
+                return;
+            }
+            
+            // 验证必需字段
+            if (!requestData.contains("username")) {
+                resp.setStatusCode(HttpStatusCode::BAD_REQUEST);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"缺少必需字段: username\", \"success\": false}");
+                return;
+            }
+            
+            std::string username = requestData["username"];
+            
+            if (dbService_ && dbService_->isInitialized()) {
+                // 检查用户是否存在
+                auto userInfo = dbService_->getUserInfo(username);
+                if (userInfo.username.empty()) {
+                    resp.setStatusCode(HttpStatusCode::NOT_FOUND);
+                    resp.setContentType("application/json");
+                    resp.setBody("{\"error\": \"用户不存在\", \"success\": false}");
+                    return;
+                }
+                
+                // 删除用户
+                bool success = dbService_->deleteUser(username);
+                
+                json responseJson = {
+                    {"success", success},
+                    {"message", success ? "用户删除成功" : "用户删除失败"},
+                    {"username", username}
+                };
+                
+                resp.setStatusCode(HttpStatusCode::OK);
+                resp.setContentType("application/json");
+                resp.setBody(responseJson.dump());
+                
+                if (success) {
+                    LOG_INFO << "用户删除成功: " << username;
+                } else {
+                    LOG_ERROR << "用户删除失败: " << username;
+                }
+            } else {
+                resp.setStatusCode(HttpStatusCode::SERVICE_UNAVAILABLE);
+                resp.setContentType("application/json");
+                resp.setBody("{\"error\": \"数据库服务不可用\", \"success\": false}");
+                LOG_ERROR << "删除用户失败：数据库服务不可用";
+            }
+        } catch (const std::exception& e) {
+            LOG_ERROR << "删除用户异常: " << e.what();
+            resp.setStatusCode(HttpStatusCode::INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.setBody("{\"error\": \"删除用户时发生错误\", \"success\": false}");
         }
     }
     

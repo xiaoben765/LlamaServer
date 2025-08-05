@@ -447,25 +447,43 @@ bool DatabaseManager::deleteUser(const std::string& username) {
         return false;
     }
     
-    // 首先获取用户ID，以便删除相关的会话和对话记录
-    UserInfo userInfo = getUserInfo(username);
-    if (userInfo.user_id.empty()) {
+    // 直接在这里删除用户，不调用其他会获取锁的方法
+    // 首先检查用户是否存在
+    std::stringstream checkSS;
+    checkSS << "SELECT user_id FROM users WHERE username = '" << escapeString(username) << "'";
+    
+    MYSQL_RES* result = executeSelectQuery(checkSS.str());
+    if (!result) {
+        return false;
+    }
+    
+    MYSQL_ROW row = mysql_fetch_row(result);
+    if (!row || !row[0]) {
+        mysql_free_result(result);
         LOG_WARN << "用户不存在: " << username;
         return false;
     }
     
-    // 删除用户的所有会话（会自动删除相关的对话记录，因为有外键约束）
-    auto sessions = getUserSessions(userInfo.user_id);
-    for (const auto& session : sessions) {
-        deleteConversationHistory(session.session_id);
-        deleteSession(session.session_id);
-    }
+    std::string userId = row[0];
+    mysql_free_result(result);
+    
+    // 删除用户的对话记录（通过会话ID）
+    std::stringstream deleteConvSS;
+    deleteConvSS << "DELETE conversations FROM conversations "
+                 << "INNER JOIN sessions ON conversations.session_id = sessions.session_id "
+                 << "WHERE sessions.user_id = '" << escapeString(userId) << "'";
+    executeQuery(deleteConvSS.str());
+    
+    // 删除用户的会话记录
+    std::stringstream deleteSessionsSS;
+    deleteSessionsSS << "DELETE FROM sessions WHERE user_id = '" << escapeString(userId) << "'";
+    executeQuery(deleteSessionsSS.str());
     
     // 删除用户记录
-    std::stringstream ss;
-    ss << "DELETE FROM users WHERE username = '" << escapeString(username) << "'";
+    std::stringstream deleteUserSS;
+    deleteUserSS << "DELETE FROM users WHERE username = '" << escapeString(username) << "'";
     
-    bool success = executeQuery(ss.str());
+    bool success = executeQuery(deleteUserSS.str());
     if (success) {
         LOG_INFO << "用户已删除: " << username;
     } else {
@@ -1059,8 +1077,7 @@ int DatabaseManager::getUserCount() {
     }
     
     const char* query = "SELECT COUNT(*) FROM users";
-    MYSQL_RES* result = executeSelectQuery(query);
-    
+    MYSQL_RES* result = executeSelectQuery(query);    
     if (!result) {
         return 0;
     }
@@ -1102,7 +1119,7 @@ int DatabaseManager::getMessageCount() {
         return 0;
     }
     
-    const char* query = "SELECT COUNT(*) FROM conversation_history";
+    const char* query = "SELECT COUNT(*) FROM conversations";
     MYSQL_RES* result = executeSelectQuery(query);
     
     if (!result) {
@@ -1124,7 +1141,7 @@ int DatabaseManager::getCacheCount() {
         return 0;
     }
     
-    const char* query = "SELECT COUNT(*) FROM llm_cache";
+    const char* query = "SELECT COUNT(*) FROM cache";
     MYSQL_RES* result = executeSelectQuery(query);
     
     if (!result) {
@@ -1148,7 +1165,7 @@ void DatabaseManager::cleanupCache(int maxAgeHours) {
     long cutoffTime = getCurrentTimestamp() - (maxAgeHours * 3600);
     
     std::stringstream ss;
-    ss << "DELETE FROM llm_cache WHERE last_accessed < " << cutoffTime;
+    ss << "DELETE FROM cache WHERE last_accessed < " << cutoffTime;
     
     executeQuery(ss.str());
 }
@@ -1163,7 +1180,7 @@ std::vector<CacheRecord> DatabaseManager::getCacheStats(int limit) {
     
     std::stringstream ss;
     ss << "SELECT query_hash, query_text, response_text, created_at, hit_count, last_accessed "
-       << "FROM llm_cache ORDER BY hit_count DESC LIMIT " << limit;
+       << "FROM cache ORDER BY hit_count DESC LIMIT " << limit;
     
     MYSQL_RES* result = executeSelectQuery(ss.str());
     if (!result) {
@@ -1173,12 +1190,12 @@ std::vector<CacheRecord> DatabaseManager::getCacheStats(int limit) {
     MYSQL_ROW row;
     while ((row = mysql_fetch_row(result))) {
         CacheRecord record;
-        record.query_hash = row[0];
-        record.query_text = row[1];
-        record.response_text = row[2];
-        record.created_at = atol(row[3]);
-        record.hit_count = atoi(row[4]);
-        record.last_accessed = atol(row[5]);
+        record.query_hash = row[0] ? row[0] : "";
+        record.query_text = row[1] ? row[1] : "";
+        record.response_text = row[2] ? row[2] : "";
+        record.created_at = row[3] ? atol(row[3]) : 0;
+        record.hit_count = row[4] ? atoi(row[4]) : 0;
+        record.last_accessed = row[5] ? atol(row[5]) : 0;
         records.push_back(record);
     }
     
@@ -1194,7 +1211,7 @@ std::string DatabaseManager::getConfig(const std::string& key, const std::string
     }
     
     std::stringstream ss;
-    ss << "SELECT config_value FROM system_config WHERE config_key = '" << escapeString(key) << "'";
+    ss << "SELECT config_value FROM config WHERE config_key = '" << escapeString(key) << "'";
     
     MYSQL_RES* result = executeSelectQuery(ss.str());
     if (!result) {
@@ -1217,7 +1234,7 @@ bool DatabaseManager::setConfig(const std::string& key, const std::string& value
     
     // 先检查是否存在
     std::stringstream checkSS;
-    checkSS << "SELECT COUNT(*) FROM system_config WHERE config_key = '" << escapeString(key) << "'";
+    checkSS << "SELECT COUNT(*) FROM config WHERE config_key = '" << escapeString(key) << "'";
     
     MYSQL_RES* result = executeSelectQuery(checkSS.str());
     if (!result) {
@@ -1230,14 +1247,13 @@ bool DatabaseManager::setConfig(const std::string& key, const std::string& value
     
     std::stringstream ss;
     if (exists) {
-        ss << "UPDATE system_config SET config_value = '" << escapeString(value) 
-           << "', last_updated = " << getCurrentTimestamp()
+        ss << "UPDATE config SET config_value = '" << escapeString(value) 
+           << "', updated_at = " << getCurrentTimestamp()
            << " WHERE config_key = '" << escapeString(key) << "'";
     } else {
-        ss << "INSERT INTO system_config (config_key, config_value, created_at, last_updated) VALUES ("
+        ss << "INSERT INTO config (config_key, config_value, updated_at) VALUES ("
            << "'" << escapeString(key) << "', "
            << "'" << escapeString(value) << "', "
-           << getCurrentTimestamp() << ", "
            << getCurrentTimestamp() << ")";
     }
     
@@ -1252,7 +1268,7 @@ std::vector<std::pair<std::string, std::string>> DatabaseManager::getAllConfigs(
         return configs;
     }
     
-    const char* query = "SELECT config_key, config_value FROM system_config";
+    const char* query = "SELECT config_key, config_value FROM config";
     MYSQL_RES* result = executeSelectQuery(query);
     if (!result) {
         return configs;

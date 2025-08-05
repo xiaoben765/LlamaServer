@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>简单测试</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1 style="color: red; font-size: 48px;">如果你能看到这个红色标题，说明页面正在工作！</h1>
+    
+    <div style="background: yellow; padding: 20px; margin: 20px; border: 3px solid black;">
+        <h2>服务器时间测试</h2>
+        <p>当前时间: <span id="time"></span></p>
+    </div>
+    
+    <div style="background: lightblue; padding: 20px; margin: 20px; border: 3px solid blue;">
+        <h2>CSS 加载测试</h2>
+        <p>如果下面的文字是绿色的，说明外部 CSS 加载成功:</p>
+        <link rel="stylesheet" href="/css/openwebui-style.css">
+        <p class="success">这段文字应该是绿色的</p>
+    </div>
+    
+    <div style="background: lightgreen; padding: 20px; margin: 20px; border: 3px solid green;">
+        <h2>JavaScript 测试</h2>
+        <button onclick="alert('JavaScript 工作正常!')">点击测试 JS</button>
+        <p id="js-test">JavaScript 状态: 等待中</p>
+    </div>
+    
+    <script>
+        // 更新时间
+        document.getElementById('time').textContent = new Date().toLocaleString();
+        
+        // 测试 JavaScript
+        document.getElementById('js-test').textContent = 'JavaScript 状态: 正常工作!';
+        document.getElementById('js-test').style.color = 'green';
+        document.getElementById('js-test').style.fontWeight = 'bold';
+        
+        // 检查外部 CSS
+        setTimeout(() => {
+            const testElement = document.querySelector('.success');
+            if (testElement) {
+                const styles = getComputedStyle(testElement);
+                console.log('CSS 颜色:', styles.color);
+                if (styles.color === 'rgb(40, 167, 69)' || styles.color === '#28a745') {
+                    console.log('✅ 外部 CSS 加载成功');
+                } else {
+                    console.log('❌ 外部 CSS 未加载或样式不匹配');
+                }
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -120,14 +120,18 @@ void HttpServer::handleHttpRequest(const TcpConnectionPtr& conn, const HttpReque
     // 创建最终处理函数，在中间件链执行完毕后调用
     auto finalHandler = [this, &conn](const HttpRequest& request, HttpResponse& resp) {
         try {
+            std::cout << "DEBUG: 处理请求: " << request.methodString() << " " << request.path() << std::endl;
             // 查找路由
             RouteHandler handler = findRoute(request.methodString(), request.path());
             
             if (handler) {
+                std::cout << "DEBUG: 找到路由处理器" << std::endl;
                 handler(request, resp);
             } else if (enableStaticFiles_) {
+                std::cout << "DEBUG: 使用静态文件处理器, enableStaticFiles_=" << enableStaticFiles_ << std::endl;
                 handleStaticFile(request, resp);
             } else {
+                std::cout << "DEBUG: 未找到路由，返回404" << std::endl;
                 handleNotFound(request, resp);
             }
         } catch (const std::exception& e) {
@@ -175,6 +179,7 @@ void HttpServer::handleError(const HttpRequest& req, HttpResponse& resp, const s
 void HttpServer::handleStaticFile(const HttpRequest& req, HttpResponse& resp) {
     // 实现静态文件处理逻辑（优化版本，减少阻塞）
     std::string path = req.path();
+    std::cout << "DEBUG: 处理静态文件请求: " << path << std::endl;
     
     // 处理根路径，加载index.html
     if (path == "/" || path.empty()) {
@@ -182,6 +187,7 @@ void HttpServer::handleStaticFile(const HttpRequest& req, HttpResponse& resp) {
     }
     
     std::string filePath = staticFileRoot_ + path;
+    std::cout << "DEBUG: 静态文件路径: " << filePath << std::endl;
     
     // 安全检查: 防止目录遍历攻击
     if (path.find("..") != std::string::npos) {
@@ -193,9 +199,11 @@ void HttpServer::handleStaticFile(const HttpRequest& req, HttpResponse& resp) {
         // 使用更高效的文件读取方式
         std::ifstream file(filePath, std::ios::binary);
         if (!file.is_open()) {
+            std::cout << "DEBUG: 无法打开文件: " << filePath << std::endl;
             handleNotFound(req, resp);
             return;
         }
+        std::cout << "DEBUG: 文件打开成功: " << filePath << std::endl;
         
         // 获取文件大小
         file.seekg(0, std::ios::end);
@@ -253,6 +261,7 @@ void HttpServer::handleStaticFile(const HttpRequest& req, HttpResponse& resp) {
         resp.setHeader("Expires", "0");
         
         resp.setBody(content);
+        std::cout << "DEBUG: 设置响应体，内容长度: " << content.length() << ", Content-Type: " << contentType << std::endl;
         
     } catch (const std::exception& e) {
         resp.setErrorResponse(HttpStatusCode::INTERNAL_SERVER_ERROR, "Error processing file");

@@ -71,6 +71,7 @@ public:
     virtual UserInfo getUserInfo(const std::string& username) = 0;
     virtual bool updateUserLastLogin(const std::string& username) = 0;
     virtual std::vector<UserInfo> getAllUsers() = 0;
+    virtual bool deleteUser(const std::string& username) = 0;
     
     // 会话管理
     virtual std::string createSession(const std::string& userId, const std::string& sessionName = "") = 0;

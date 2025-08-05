@@ -236,6 +236,11 @@ std::vector<UserInfo> MySqlDatabaseService::getAllUsers() {
     return users;
 }
 
+bool MySqlDatabaseService::deleteUser(const std::string& username) {
+    if (!initialized_) return false;
+    return db::DatabaseManager::instance().deleteUser(username);
+}
+
 // 会话管理 - 转发到DatabaseManager
 
 std::string MySqlDatabaseService::createSession(const std::string& userId, const std::string& sessionName) {
@@ -624,6 +629,22 @@ std::vector<UserInfo> MemoryDatabaseService::getAllUsers() {
     }
     
     return result;
+}
+
+bool MemoryDatabaseService::deleteUser(const std::string& username) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    // 检查用户是否存在
+    auto userIt = users_.find(username);
+    if (userIt == users_.end()) {
+        return false; // 用户不存在
+    }
+    
+    // 删除用户信息和密码
+    users_.erase(userIt);
+    passwords_.erase(username);
+    
+    return true;
 }
 
 // 会话管理的简单实现
