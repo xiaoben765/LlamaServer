@@ -156,7 +156,7 @@ main_stop() {
     # 2. 停止 LLaMA TCP 服务（端口 8899）
     echo -e "\n${BLUE}--- 停止 LLaMA TCP 服务 ---${NC}"
     stop_service_by_port 8899 "LLaMA TCP服务"
-    stop_service_by_name "llama_service" "LLaMA服务"
+    stop_service_by_name "llama_service_tcp" "LLaMA TCP服务"
     
     # 3. 停止测试和调试进程
     echo -e "\n${BLUE}--- 停止测试和调试进程 ---${NC}"
@@ -202,7 +202,7 @@ show_running_services() {
     fi
     
     # 查找特定的项目可执行文件
-    local executables=("llama_http_server" "llama_service")
+    local executables=("llama_http_server" "llama_service_tcp")
     for executable in "${executables[@]}"; do
         local exe_processes=$(ps aux | grep "$executable" | grep -v grep || true)
         if [[ -n "$exe_processes" ]]; then

@@ -53,22 +53,6 @@ add_library(current_thread STATIC src/CurrentThread.cc)
 target_include_directories(current_thread PRIVATE ${CMAKE_SOURCE_DIR}/include)
 message(STATUS "✅ Compiling CurrentThread as a static library.")
 
-# ==================== 构建 LLaMA Service 可执行文件 ====================
-file(GLOB LlamaService_SRC src/llama_service.cc memory/*.cc log/*.cc src/Thread.cc)
-list(FILTER LlamaService_SRC EXCLUDE REGEX ".*main\\.cc$")
-add_executable(llama_service ${LlamaService_SRC})
-target_link_libraries(llama_service ${LIBS} current_thread)
-target_include_directories(llama_service PRIVATE 
-    ${CMAKE_SOURCE_DIR}/include 
-    ${CMAKE_SOURCE_DIR}/memory 
-    ${CMAKE_SOURCE_DIR}/log
-)
-if (USE_CUDA)
-    target_compile_definitions(llama_service PRIVATE USE_CUDA)
-    target_link_libraries(llama_service ${CUDA_LIBRARIES})
-    message(STATUS "✅ Compiling LLaMA Service with CUDA support.")
-endif()
-
 # ==================== 构建 LLaMA TCP 服务可执行文件 ====================
 file(GLOB LlamaServiceTCP_SRC src/llama_service_tcp.cc memory/*.cc log/*.cc src/Thread.cc)
 list(FILTER LlamaServiceTCP_SRC EXCLUDE REGEX ".*main\\.cc$")
