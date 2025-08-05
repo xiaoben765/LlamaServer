@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcurrent_thread.a CMakeFiles/current_thread.dir/src/CurrentThread.cc.o
+/usr/bin/ranlib libcurrent_thread.a

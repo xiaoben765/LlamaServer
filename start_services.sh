@@ -7,6 +7,34 @@
 
 set -e
 
+# 解析命令行参数
+FORCE_CPU=false
+CUSTOM_GPU_LAYERS=""
+
+for arg in "$@"; do
+    case $arg in
+        --cpu)
+            FORCE_CPU=true
+            shift
+            ;;
+        --gpu-layers=*)
+            CUSTOM_GPU_LAYERS="${arg#*=}"
+            shift
+            ;;
+        --help|-h)
+            echo "用法: $0 [选项]"
+            echo "选项:"
+            echo "  --cpu              强制使用 CPU 模式"
+            echo "  --gpu-layers=N     设置 GPU 层数 (默认: 32)"
+            echo "  --help, -h         显示此帮助信息"
+            exit 0
+            ;;
+        *)
+            # 未知参数
+            ;;
+    esac
+done
+
 # 显示彩色输出
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -84,6 +112,35 @@ if lsof -i:$LLAMA_TCP_PORT > /dev/null 2>&1; then
     exit 1
 fi
 
+# 检查GPU状态
+echo -e "${YELLOW}🔍 检查GPU状态...${NC}"
+GPU_AVAILABLE=false
+GPU_LAYERS=32
+LLAMA_GPU_ARGS=""
+
+# 如果用户指定了自定义 GPU 层数，使用它
+if [[ -n "$CUSTOM_GPU_LAYERS" ]]; then
+    GPU_LAYERS="$CUSTOM_GPU_LAYERS"
+fi
+
+# 如果用户强制使用 CPU 模式
+if [[ "$FORCE_CPU" == "true" ]]; then
+    echo -e "${YELLOW}⚠️ 用户指定使用 CPU 模式${NC}"
+elif command -v nvidia-smi &> /dev/null; then
+    if nvidia-smi &> /dev/null; then
+        GPU_AVAILABLE=true
+        LLAMA_GPU_ARGS="--gpu --gpu-layers=$GPU_LAYERS"
+        echo -e "${GREEN}✅ NVIDIA GPU 可用，将使用 GPU 加速${NC}"
+        nvidia-smi --query-gpu=name,memory.total --format=csv,noheader | while read line; do
+            echo -e "${CYAN}   🎮 GPU: $line${NC}"
+        done
+    else
+        echo -e "${YELLOW}⚠️ 检测到 nvidia-smi 但 GPU 不可用，使用 CPU 模式${NC}"
+    fi
+else
+    echo -e "${YELLOW}⚠️ 未检测到 NVIDIA GPU，使用 CPU 模式${NC}"
+fi
+
 # 检查MySQL服务
 echo -e "${YELLOW}🔍 检查MySQL服务...${NC}"
 if systemctl is-active --quiet mysql; then
@@ -107,8 +164,13 @@ echo -e "${BLUE}========================================${NC}"
 echo -e "${YELLOW}🚀 启动LLaMA TCP服务...${NC}"
 echo -e "${CYAN}   🌐 监听端口: $LLAMA_TCP_PORT${NC}"
 echo -e "${CYAN}   🤖 模型路径: /home/shl203/llama.cpp/models/qwen/Qwen-7B-Chat.Q4_K_M.gguf${NC}"
+if [[ "$GPU_AVAILABLE" == "true" ]]; then
+    echo -e "${CYAN}   🎮 GPU模式: 启用 (层数: $GPU_LAYERS)${NC}"
+else
+    echo -e "${CYAN}   🖥️  CPU模式: 启用${NC}"
+fi
 
-"$LLAMA_TCP_SERVER" > "$LLAMA_TCP_LOG" 2>&1 &
+"$LLAMA_TCP_SERVER" $LLAMA_GPU_ARGS > "$LLAMA_TCP_LOG" 2>&1 &
 LLAMA_TCP_PID=$!
 
 echo -e "${GREEN}✅ LLaMA TCP服务已启动 (PID: $LLAMA_TCP_PID)${NC}"

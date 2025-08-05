@@ -1,0 +1,320 @@
+2025/08/05 21:34:047029 DEBUG EventLoop createdtruein thread722775 - EventLoop.cc:53
+2025/08/05 21:34:047090 INFO  func =>fd4events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:047366 INFO  成功加载配置文件: config/config.json - ConfigManager.cc:28
+2025/08/05 21:34:047735 INFO  成功加载配置文件: config/config.json - ConfigManager.cc:28
+2025/08/05 21:34:048204 INFO  配置加载完成: 端口=8080, 线程数=4, LLaMA服务类型=tcp, 数据库类型=mysql, 开发模式=true - main_http_modular.cc:126
+2025/08/05 21:34:048219 INFO  添加中间件: LoggingMiddleware - Middleware.cc:17
+2025/08/05 21:34:048225 INFO  添加中间件: CorsMiddleware - Middleware.cc:17
+2025/08/05 21:34:049718 INFO  尝试连接MySQL - Host: 127.0.0.1, Port: 3306, DB: kama_llm, User: root - DatabaseManager.cpp:86
+2025/08/05 21:34:115481 INFO  MySQL连接成功: 127.0.0.1:3306/kama_llm - DatabaseManager.cpp:120
+2025/08/05 21:34:144566 INFO  数据库表初始化完成 - DatabaseManager.cpp:230
+2025/08/05 21:34:144591 INFO  MySQL数据库初始化成功 - DatabaseManager.cpp:52
+2025/08/05 21:34:144596 INFO  数据库服务初始化成功: 127.0.0.1:3306/kama_llm - DatabaseService.cc:58
+2025/08/05 21:34:144763 INFO  LLaMA 服务连接成功：127.0.0.1:8899 - LlamaService.cc:29
+2025/08/05 21:34:144778 INFO  LLaMA服务连接成功 - main_http_modular.cc:253
+2025/08/05 21:34:144793 INFO  Added route: GET /basic - HttpServer.cc:60
+2025/08/05 21:34:144798 INFO  Added route: GET /api/models - HttpServer.cc:60
+2025/08/05 21:34:144803 INFO  Added route: POST /api/llama/query - HttpServer.cc:60
+2025/08/05 21:34:144807 INFO  Added route: GET /api/status - HttpServer.cc:60
+2025/08/05 21:34:144811 INFO  Added route: POST /api/admin/clear-cache - HttpServer.cc:60
+2025/08/05 21:34:144816 INFO  Added route: GET /api/admin/cache-content - HttpServer.cc:60
+2025/08/05 21:34:144820 INFO  Added route: POST /api/admin/clear-database - HttpServer.cc:60
+2025/08/05 21:34:144824 INFO  Added route: GET /api/admin/database-stats - HttpServer.cc:60
+2025/08/05 21:34:144828 INFO  Added route: GET /api/admin/users - HttpServer.cc:60
+2025/08/05 21:34:144832 INFO  Added route: POST /api/admin/clear-users - HttpServer.cc:60
+2025/08/05 21:34:144836 INFO  Added route: POST /api/admin/delete-user - HttpServer.cc:60
+2025/08/05 21:34:144840 INFO  Added route: POST /api/auth/register - HttpServer.cc:60
+2025/08/05 21:34:144844 INFO  Added route: POST /api/auth/login - HttpServer.cc:60
+2025/08/05 21:34:144849 INFO  Added route: POST /api/auth/logout - HttpServer.cc:60
+2025/08/05 21:34:144853 INFO  Added route: GET /api/conversations - HttpServer.cc:60
+2025/08/05 21:34:144862 INFO  启动Kama HTTP服务器, 端口: 8080 - main_http_modular.cc:75
+2025/08/05 21:34:144866 INFO  HTTP Server [KamaHttpServer] started on 0.0.0.0:8080 - HttpServer.cc:41
+2025/08/05 21:34:145030 DEBUG EventLoop createdtruein thread722778 - EventLoop.cc:53
+2025/08/05 21:34:145051 INFO  func =>fd9events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:145075 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/05 21:34:145079 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:34:145194 DEBUG EventLoop createdtruein thread722779 - EventLoop.cc:53
+2025/08/05 21:34:145210 INFO  func =>fd11events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:145227 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/05 21:34:145230 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:34:145465 DEBUG EventLoop createdtruein thread722780 - EventLoop.cc:53
+2025/08/05 21:34:145508 INFO  func =>fd13events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:145555 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/05 21:34:145566 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:34:145666 DEBUG EventLoop createdtruein thread722781 - EventLoop.cc:53
+2025/08/05 21:34:145682 INFO  func =>fd15events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:145699 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/05 21:34:145703 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:34:145716 INFO  func =>fd5events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:145798 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/05 21:34:145803 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:146069 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:146104 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:146133 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/05 21:34:146141 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#1]from %s127.0.0.1:39012 - TcpServer.cc:96
+2025/08/05 21:34:146155 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#1]at fd=16 - TcpConnection.cc:52
+2025/08/05 21:34:146188 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:146201 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:146224 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:146237 INFO  func =>fd16events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:146288 INFO  New HTTP connection from: 127.0.0.1:39012 - HttpServer.cc:70
+2025/08/05 21:34:146297 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:146301 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:146304 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:146342 INFO  TcpConnection::handleClose fd=16state=2 - TcpConnection.cc:258
+2025/08/05 21:34:146345 INFO  func =>fd16events=0index=1 - EPollPoller.cc:91
+2025/08/05 21:34:146352 INFO  HTTP connection closed: 127.0.0.1:39012 - HttpServer.cc:75
+2025/08/05 21:34:146370 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:146378 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:146382 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:146388 INFO  TcpServer::removeConnectionInLoop [KamaHttpServer] - connection %sKamaHttpServer-0.0.0.0:8080#1 - TcpServer.cc:143
+2025/08/05 21:34:146402 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:146406 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:146410 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:146415 INFO  removeChannel fd=16 - EPollPoller.cc:132
+2025/08/05 21:34:146418 INFO  TcpConnection::dtor[KamaHttpServer-0.0.0.0:8080#1]at fd=16state=0 - TcpConnection.cc:58
+2025/08/05 21:34:146467 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:34:409048 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:409077 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:409109 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/05 21:34:409119 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#2]from %s127.0.0.1:39014 - TcpServer.cc:96
+2025/08/05 21:34:409135 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#2]at fd=16 - TcpConnection.cc:52
+2025/08/05 21:34:409187 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:409218 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:409242 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:409256 INFO  func =>fd16events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:409274 INFO  New HTTP connection from: 127.0.0.1:39014 - HttpServer.cc:70
+2025/08/05 21:34:409283 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:416539 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:416553 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:416570 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/05 21:34:416575 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#3]from %s127.0.0.1:39018 - TcpServer.cc:96
+2025/08/05 21:34:416586 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#3]at fd=17 - TcpConnection.cc:52
+2025/08/05 21:34:416610 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:416631 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:416643 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:416651 INFO  func =>fd17events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:416664 INFO  New HTTP connection from: 127.0.0.1:39018 - HttpServer.cc:70
+2025/08/05 21:34:416670 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/05 21:34:416674 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:416677 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:416754 INFO  HTTP GET / 从  - Middleware.cc:57
+2025/08/05 21:34:418793 INFO  HTTP GET / 响应 200 (2ms) - Middleware.cc:68
+2025/08/05 21:34:418860 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/05 21:34:440301 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:440323 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:440382 INFO  HTTP GET /css/openwebui-style.css 从  - Middleware.cc:57
+2025/08/05 21:34:441865 INFO  HTTP GET /css/openwebui-style.css 响应 200 (1ms) - Middleware.cc:68
+2025/08/05 21:34:441927 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/05 21:34:448698 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:448709 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:448759 INFO  HTTP GET /css/admin-modal.css 从  - Middleware.cc:57
+2025/08/05 21:34:450286 INFO  HTTP GET /css/admin-modal.css 响应 200 (1ms) - Middleware.cc:68
+2025/08/05 21:34:450350 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/05 21:34:455532 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:455541 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:455579 INFO  HTTP GET /js/openwebui-app.js 从  - Middleware.cc:57
+2025/08/05 21:34:457831 INFO  HTTP GET /js/openwebui-app.js 响应 200 (2ms) - Middleware.cc:68
+2025/08/05 21:34:457885 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/05 21:34:457891 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:457894 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:457921 INFO  HTTP GET /js/admin-console.js 从  - Middleware.cc:57
+2025/08/05 21:34:459988 INFO  HTTP GET /js/admin-console.js 响应 200 (2ms) - Middleware.cc:68
+2025/08/05 21:34:460039 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/05 21:34:468687 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:468702 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:468744 INFO  HTTP GET /js/auth-manager.js 从  - Middleware.cc:57
+2025/08/05 21:34:470091 INFO  HTTP GET /js/auth-manager.js 响应 200 (1ms) - Middleware.cc:68
+2025/08/05 21:34:470140 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/05 21:34:522623 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:522650 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:522712 INFO  HTTP GET /api/status 从  - Middleware.cc:57
+2025/08/05 21:34:522774 INFO  HTTP GET /api/status 响应 200 (0ms) - Middleware.cc:68
+2025/08/05 21:34:522813 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/05 21:34:522819 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:522822 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:522848 INFO  HTTP GET /api/models 从  - Middleware.cc:57
+2025/08/05 21:34:522873 INFO  HTTP GET /api/models 响应 200 (0ms) - Middleware.cc:68
+2025/08/05 21:34:522903 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/05 21:34:652982 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:653013 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:653043 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/05 21:34:653050 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#4]from %s127.0.0.1:39020 - TcpServer.cc:96
+2025/08/05 21:34:653072 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#4]at fd=18 - TcpConnection.cc:52
+2025/08/05 21:34:653108 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:653138 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:653156 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:653167 INFO  func =>fd18events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:653186 INFO  New HTTP connection from: 127.0.0.1:39020 - HttpServer.cc:70
+2025/08/05 21:34:653194 INFO  fd total count:4 - EPollPoller.cc:34
+2025/08/05 21:34:806538 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:806569 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:806596 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/05 21:34:806603 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#5]from %s127.0.0.1:39022 - TcpServer.cc:96
+2025/08/05 21:34:806624 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#5]at fd=19 - TcpConnection.cc:52
+2025/08/05 21:34:806656 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:806681 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:806704 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:806718 INFO  func =>fd19events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:806742 INFO  New HTTP connection from: 127.0.0.1:39022 - HttpServer.cc:70
+2025/08/05 21:34:806751 INFO  fd total count:5 - EPollPoller.cc:34
+2025/08/05 21:34:812303 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:812316 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:812332 INFO  使用一致性哈希选择线程，索引=0 - EventLoopThreadPool.cc:114
+2025/08/05 21:34:812337 INFO  TcpServer::newConnection [KamaHttpServer]- new connection [KamaHttpServer-0.0.0.0:8080#6]from %s127.0.0.1:39024 - TcpServer.cc:96
+2025/08/05 21:34:812349 INFO  TcpConnection::ctor:[KamaHttpServer-0.0.0.0:8080#6]at fd=20 - TcpConnection.cc:52
+2025/08/05 21:34:812373 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:34:812389 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:34:812401 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:34:812410 INFO  func =>fd20events=3index=-1 - EPollPoller.cc:91
+2025/08/05 21:34:812424 INFO  New HTTP connection from: 127.0.0.1:39024 - HttpServer.cc:70
+2025/08/05 21:34:812431 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/05 21:34:155292 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:34:155331 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:34:155648 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:34:155706 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:34:155787 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:34:155836 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:822473 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:822481 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:822570 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/05 21:35:822537 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:35:165400 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:165441 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:165757 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:165814 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:165916 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:165962 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:832648 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:832649 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:832692 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:35:832720 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/05 21:35:175479 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:175519 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:175911 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:175970 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:176003 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:176022 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:842350 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:842387 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:35:842772 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:842799 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/05 21:35:185609 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:185676 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:186025 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:186061 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:186076 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:186094 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:852427 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:852461 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:35:852874 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:852930 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/05 21:35:195720 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:195762 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:196101 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:196130 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:196152 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:196173 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:037294 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:35:037360 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:35:037536 INFO  HTTP POST /api/llama/query 从  - Middleware.cc:57
+2025/08/05 21:35:037767 INFO  接收到LLaMA查询请求: 介绍中南大学 - main_http_modular.cc:957
+2025/08/05 21:35:038698 INFO  准备调用LLaMA服务，查询: 介绍中南大学 - main_http_modular.cc:986
+2025/08/05 21:35:038910 INFO  已连接到LLaMA服务 - LlamaService.cc:416
+2025/08/05 21:35:862505 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:862541 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:35:202279 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:202280 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:202280 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:202374 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:202351 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:202324 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:584201 INFO  接收到原始响应，长度: 828 - LlamaService.cc:113
+2025/08/05 21:35:584230 INFO  响应前100字符: {"cached":false,"response":"介绍中南大学的特色和优势。中南大学是一所历史悠久 - LlamaService.cc:115
+2025/08/05 21:35:584236 INFO  响应最后100字符: ��您对中南大学感兴趣，可以进一步了解其详细情况，以便做出最佳选择。"} - LlamaService.cc:116
+2025/08/05 21:35:584239 INFO  检查JSON开始字符: 正确 - LlamaService.cc:119
+2025/08/05 21:35:584242 INFO  检查JSON结束字符: 正确 - LlamaService.cc:120
+2025/08/05 21:35:584256 INFO  清理后的JSON格式检查 - LlamaService.cc:129
+2025/08/05 21:35:584259 INFO  清理后的响应长度: 828 - LlamaService.cc:130
+2025/08/05 21:35:584261 INFO  清理后响应前100字符: {"cached":false,"response":"介绍中南大学的特色和优势。中南大学是一所历史悠久 - LlamaService.cc:132
+2025/08/05 21:35:584264 INFO  清理后响应最后100字符: ��您对中南大学感兴趣，可以进一步了解其详细情况，以便做出最佳选择。"} - LlamaService.cc:133
+2025/08/05 21:35:584398 INFO  成功解析JSON，获取到response字段 - LlamaService.cc:166
+2025/08/05 21:35:584407 INFO  LLaMA服务调用成功，响应长度: 798 - main_http_modular.cc:988
+2025/08/05 21:35:587315 INFO  准备构建JSON响应，response长度: 798 - main_http_modular.cc:1007
+2025/08/05 21:35:587323 INFO  response内容预览: 介绍中南大学的特色和优势。中南大学是一所历史悠久、学科齐全、特色鲜�... - main_http_modular.cc:1008
+2025/08/05 21:35:587343 INFO  JSON对象构建成功，准备序列化 - main_http_modular.cc:1025
+2025/08/05 21:35:587374 INFO  JSON序列化成功，长度: 828 - main_http_modular.cc:1027
+2025/08/05 21:35:587391 INFO  HTTP POST /api/llama/query 响应 200 (4549ms) - Middleware.cc:68
+2025/08/05 21:35:587444 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/05 21:35:872586 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:872622 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:35:212433 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:212457 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:212461 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:212521 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:212498 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:212474 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:35:597505 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:35:597545 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/05 21:36:882705 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:882757 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:36:976627 INFO  events happend1 - EPollPoller.cc:51
+2025/08/05 21:36:976663 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/05 21:36:976750 INFO  HTTP POST /api/llama/query 从  - Middleware.cc:57
+2025/08/05 21:36:976863 INFO  接收到LLaMA查询请求: 那再介绍下湘潭大学 - main_http_modular.cc:957
+2025/08/05 21:36:977431 INFO  准备调用LLaMA服务，查询: 那再介绍下湘潭大学 - main_http_modular.cc:986
+2025/08/05 21:36:977442 WARN  LLaMA服务连接已关闭，尝试重新连接 - LlamaService.cc:358
+2025/08/05 21:36:977538 INFO  已连接到LLaMA服务 - LlamaService.cc:416
+2025/08/05 21:36:222285 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:222319 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:222571 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:222598 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:222617 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:222637 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:395029 INFO  接收到原始响应，长度: 1271 - LlamaService.cc:113
+2025/08/05 21:36:395058 INFO  响应前100字符: {"cached":false,"response":"那再介绍下湘潭大学的特色专业吧！湘潭大学的特色专 - LlamaService.cc:115
+2025/08/05 21:36:395065 INFO  响应最后100字符: 共管理、社会工作、教育学、体育学、音乐学、美术学、设计学、新闻学\n"} - LlamaService.cc:116
+2025/08/05 21:36:395068 INFO  检查JSON开始字符: 正确 - LlamaService.cc:119
+2025/08/05 21:36:395071 INFO  检查JSON结束字符: 正确 - LlamaService.cc:120
+2025/08/05 21:36:395091 INFO  清理后的JSON格式检查 - LlamaService.cc:129
+2025/08/05 21:36:395094 INFO  清理后的响应长度: 1271 - LlamaService.cc:130
+2025/08/05 21:36:395096 INFO  清理后响应前100字符: {"cached":false,"response":"那再介绍下湘潭大学的特色专业吧！湘潭大学的特色专 - LlamaService.cc:132
+2025/08/05 21:36:395099 INFO  清理后响应最后100字符: 共管理、社会工作、教育学、体育学、音乐学、美术学、设计学、新闻学\n"} - LlamaService.cc:133
+2025/08/05 21:36:395278 INFO  成功解析JSON，获取到response字段 - LlamaService.cc:166
+2025/08/05 21:36:395286 INFO  LLaMA服务调用成功，响应长度: 1240 - main_http_modular.cc:988
+2025/08/05 21:36:412365 INFO  准备构建JSON响应，response长度: 1240 - main_http_modular.cc:1007
+2025/08/05 21:36:412384 INFO  response内容预览: 那再介绍下湘潭大学的特色专业吧！湘潭大学的特色专业有：数学与应用数�... - main_http_modular.cc:1008
+2025/08/05 21:36:412414 INFO  JSON对象构建成功，准备序列化 - main_http_modular.cc:1025
+2025/08/05 21:36:412458 INFO  JSON序列化成功，长度: 1271 - main_http_modular.cc:1027
+2025/08/05 21:36:412476 INFO  HTTP POST /api/llama/query 响应 200 (5435ms) - Middleware.cc:68
+2025/08/05 21:36:412533 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/05 21:36:892826 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:892862 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:36:232383 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:232423 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:232633 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:232663 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:232672 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:232691 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:422586 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:422623 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/05 21:36:902943 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:902988 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:36:242478 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:242517 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:242719 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:242747 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:242763 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:242814 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:432696 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:432735 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/05 21:36:913057 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:913116 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/05 21:36:252559 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:252599 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:252806 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:252836 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:252897 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:252945 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/05 21:36:442800 DEBUG timeout! - EPollPoller.cc:62
+2025/08/05 21:36:442836 INFO  fd total count:6 - EPollPoller.cc:34
