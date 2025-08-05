@@ -1,2 +1,0 @@
-/usr/bin/ar qc libdb_lib.a CMakeFiles/db_lib.dir/src/db/DBConnectionPool.cc.o CMakeFiles/db_lib.dir/src/db/DBQueryHelper.cc.o CMakeFiles/db_lib.dir/src/db/DBIndexOptimizer.cc.o CMakeFiles/db_lib.dir/src/db/DatabaseManager.cpp.o
-/usr/bin/ranlib libdb_lib.a
