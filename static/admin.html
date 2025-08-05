@@ -155,6 +155,8 @@
             transition: all 0.2s ease;
             margin: 0.25rem;
             font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
         }
         
         .admin-button.primary {
@@ -164,6 +166,7 @@
         
         .admin-button.primary:hover {
             background: var(--primary-hover);
+            transform: translateY(-1px);
         }
         
         .admin-button.warning {
@@ -173,6 +176,7 @@
         
         .admin-button.warning:hover {
             background: #d97706;
+            transform: translateY(-1px);
         }
         
         .admin-button.danger {
@@ -182,6 +186,107 @@
         
         .admin-button.danger:hover {
             background: #dc2626;
+            transform: translateY(-1px);
+        }
+        
+        /* 按钮加载状态 */
+        .admin-button.loading {
+            pointer-events: none;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .admin-button.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 按钮成功状态 */
+        .admin-button.success {
+            background: #10b981 !important;
+            color: white;
+        }
+        
+        /* 按钮错误状态 */
+        .admin-button.error {
+            background: #ef4444 !important;
+            color: white;
+        }
+        
+        /* 闪烁效果 */
+        .admin-button.flash {
+            animation: flash 0.6s ease-in-out;
+        }
+        
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* 通知系统 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            max-width: 350px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        .notification.warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .notification.info {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        
+        .notification .close-btn {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        
+        .notification .close-btn:hover {
+            opacity: 1;
         }
         
         .result-area {
@@ -231,15 +336,37 @@
             background: var(--surface-color);
             border-radius: 1rem;
             padding: 2rem;
-            min-width: 400px;
-            max-width: 90vw;
+            min-width: 500px;
+            max-width: 80vw;
+            max-height: 80vh;
+            overflow-y: auto;
             border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
         
         .modal-title {
-            margin: 0 0 1rem 0;
-            font-size: 1.25rem;
-            font-weight: 600;
+            margin: 0 0 1.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        /* 优化模态框中的内容显示 */
+        .modal .result-area {
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .modal .result-area.show {
+            display: block;
         }
         
         .modal-buttons {
@@ -311,7 +438,7 @@
                     </div>
                 </div>
                 
-                <button class="admin-button primary" onclick="refreshStatus()">🔄 刷新状态</button>
+                <button class="admin-button primary" id="refreshStatusBtn" onclick="refreshStatus()">🔄 刷新状态</button>
             </div>
 
             <!-- 缓存管理卡片 -->
@@ -391,7 +518,13 @@
             }
             
             async refreshStatus() {
+                const btn = document.getElementById('refreshStatusBtn');
+                const originalText = btn.innerHTML;
+                
                 try {
+                    // 设置按钮为加载状态
+                    this.setButtonLoading(btn, '🔄 刷新中...');
+                    
                     const response = await fetch('/api/status');
                     const data = await response.json();
                     
@@ -427,9 +560,27 @@
                         document.getElementById('uptime').textContent = uptime;
                     }
                     
+                    // 显示成功状态
+                    this.setButtonSuccess(btn, '✅ 刷新成功');
+                    this.showNotification('系统状态已更新', 'success');
+                    
+                    // 2秒后恢复按钮
+                    setTimeout(() => {
+                        this.resetButton(btn, originalText);
+                    }, 2000);
+                    
                 } catch (error) {
                     console.error('获取状态失败:', error);
                     document.getElementById('httpStatusText').textContent = '连接失败';
+                    
+                    // 显示错误状态
+                    this.setButtonError(btn, '❌ 刷新失败');
+                    this.showNotification('刷新状态失败: ' + error.message, 'error');
+                    
+                    // 2秒后恢复按钮
+                    setTimeout(() => {
+                        this.resetButton(btn, originalText);
+                    }, 2000);
                 }
             }
             
@@ -439,6 +590,63 @@
                 const hours = Math.floor(diff / 3600);
                 const minutes = Math.floor((diff % 3600) / 60);
                 return `${hours}小时 ${minutes}分钟`;
+            }
+            
+            // 按钮状态管理
+            setButtonLoading(btn, text) {
+                btn.classList.add('loading');
+                btn.innerHTML = text;
+                btn.disabled = true;
+            }
+            
+            setButtonSuccess(btn, text) {
+                btn.classList.remove('loading');
+                btn.classList.add('success', 'flash');
+                btn.innerHTML = text;
+                btn.disabled = false;
+            }
+            
+            setButtonError(btn, text) {
+                btn.classList.remove('loading');
+                btn.classList.add('error', 'flash');
+                btn.innerHTML = text;
+                btn.disabled = false;
+            }
+            
+            resetButton(btn, originalText) {
+                btn.classList.remove('loading', 'success', 'error', 'flash');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+            
+            // 通知系统
+            showNotification(message, type = 'info', duration = 3000) {
+                // 移除现有通知
+                const existingNotifications = document.querySelectorAll('.notification');
+                existingNotifications.forEach(notification => notification.remove());
+                
+                // 创建新通知
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <span>${message}</span>
+                    <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // 显示通知
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+                
+                // 自动移除通知
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }, duration);
             }
             
             async makeRequest(url, options = {}) {
@@ -455,10 +663,17 @@
                 }
             }
             
-            showResult(elementId, message, isSuccess = true) {
+            showResult(elementId, message, isSuccess = true, autoHide = true) {
                 const element = document.getElementById(elementId);
                 element.textContent = message;
                 element.className = `result-area show ${isSuccess ? 'success' : 'error'}`;
+                
+                // 自动隐藏结果区域
+                if (autoHide) {
+                    setTimeout(() => {
+                        element.classList.remove('show');
+                    }, 5000); // 5秒后自动隐藏
+                }
             }
             
             showModal(modalId) {
@@ -484,72 +699,194 @@
         }
         
         async function clearCache() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            
             try {
+                adminPanel.setButtonLoading(btn, '🔄 清理中...');
+                
                 const result = await adminPanel.makeRequest('/api/admin/clear-cache', {
                     method: 'POST'
                 });
-                adminPanel.showResult('cacheResult', 
-                    result.success ? `缓存清理成功，清理了 ${result.cleared_count || 0} 项` : '缓存清理失败',
-                    result.success
-                );
+                
+                if (result.success) {
+                    adminPanel.setButtonSuccess(btn, '✅ 清理成功');
+                    adminPanel.showNotification(`缓存清理成功，清理了 ${result.cleared_count || 0} 项`, 'success');
+                    adminPanel.showResult('cacheResult', 
+                        `缓存清理成功，清理了 ${result.cleared_count || 0} 项`, true);
+                } else {
+                    adminPanel.setButtonError(btn, '❌ 清理失败');
+                    adminPanel.showNotification('缓存清理失败', 'error');
+                    adminPanel.showResult('cacheResult', '缓存清理失败', false);
+                }
+                
+                setTimeout(() => {
+                    adminPanel.resetButton(btn, originalText);
+                }, 2000);
+                
             } catch (error) {
+                adminPanel.setButtonError(btn, '❌ 清理失败');
+                adminPanel.showNotification('缓存清理失败: ' + error.message, 'error');
                 adminPanel.showResult('cacheResult', error.message, false);
+                
+                setTimeout(() => {
+                    adminPanel.resetButton(btn, originalText);
+                }, 2000);
             }
         }
         
         async function clearDatabase() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            
             try {
+                adminPanel.setButtonLoading(btn, '🔄 清除中...');
+                
                 const result = await adminPanel.makeRequest('/api/admin/clear-database', {
                     method: 'POST'
                 });
-                adminPanel.showResult('databaseResult', 
-                    result.success ? result.message : '数据库清理失败',
-                    result.success
-                );
+                
+                if (result.success) {
+                    adminPanel.setButtonSuccess(btn, '✅ 清除成功');
+                    adminPanel.showNotification(result.message, 'success');
+                    adminPanel.showResult('databaseResult', result.message, true);
+                } else {
+                    adminPanel.setButtonError(btn, '❌ 清除失败');
+                    adminPanel.showNotification('数据库清理失败', 'error');
+                    adminPanel.showResult('databaseResult', '数据库清理失败', false);
+                }
+                
+                setTimeout(() => {
+                    adminPanel.resetButton(btn, originalText);
+                }, 2000);
+                
             } catch (error) {
+                adminPanel.setButtonError(btn, '❌ 清除失败');
+                adminPanel.showNotification('数据库清理失败: ' + error.message, 'error');
                 adminPanel.showResult('databaseResult', error.message, false);
+                
+                setTimeout(() => {
+                    adminPanel.resetButton(btn, originalText);
+                }, 2000);
             }
         }
         
         async function getDatabaseStats() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            
             try {
+                adminPanel.setButtonLoading(btn, '🔄 获取中...');
+                
                 const stats = await adminPanel.makeRequest('/api/admin/database-stats');
-                const statsText = Object.entries(stats)
-                    .map(([key, value]) => `${key}: ${value}`)
-                    .join('\\n');
-                adminPanel.showResult('databaseResult', statsText, true);
+                
+                // 格式化统计信息为易读的JSON格式
+                const formattedStats = JSON.stringify(stats, null, 2);
+                
+                adminPanel.setButtonSuccess(btn, '✅ 获取成功');
+                adminPanel.showNotification('数据库统计信息已获取', 'success');
+                adminPanel.showResult('databaseResult', formattedStats, true);
+                
+                setTimeout(() => {
+                    adminPanel.resetButton(btn, originalText);
+                }, 2000);
+                
             } catch (error) {
+                adminPanel.setButtonError(btn, '❌ 获取失败');
+                adminPanel.showNotification('获取数据库统计失败: ' + error.message, 'error');
                 adminPanel.showResult('databaseResult', error.message, false);
+                
+                setTimeout(() => {
+                    adminPanel.resetButton(btn, originalText);
+                }, 2000);
             }
         }
         
         async function viewUsers() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            
             try {
-                const result = await adminPanel.makeRequest('/api/admin/users');
-                const userInfo = `用户总数: ${result.total}\\n` + 
-                    result.users.map(user => 
-                        `用户名: ${user.username}, 邮箱: ${user.email}, 注册时间: ${user.created_at}`
-                    ).join('\\n');
+                adminPanel.setButtonLoading(btn, '🔄 加载中...');
                 
-                document.getElementById('infoTitle').textContent = '用户信息';
-                document.getElementById('infoContent').textContent = userInfo || '暂无用户数据';
+                const result = await adminPanel.makeRequest('/api/admin/users');
+                
+                // 格式化用户信息为更清晰的显示
+                let userInfo;
+                if (result.total === 0) {
+                    userInfo = '📋 暂无用户数据\n\n系统中当前没有注册用户。';
+                } else {
+                    userInfo = `📊 用户统计信息\n═══════════════════\n\n`;
+                    userInfo += `📈 用户总数: ${result.total} 人\n\n`;
+                    userInfo += `👥 用户详细信息:\n`;
+                    userInfo += `─────────────────────\n\n`;
+                    
+                    result.users.forEach((user, index) => {
+                        const createdDate = new Date(user.created_at * 1000).toLocaleString('zh-CN');
+                        const lastLoginDate = new Date(user.last_login * 1000).toLocaleString('zh-CN');
+                        
+                        userInfo += `${index + 1}. 👤 用户名: ${user.username}\n`;
+                        userInfo += `   📧 邮箱: ${user.email || '未设置'}\n`;
+                        userInfo += `   📅 注册时间: ${createdDate}\n`;
+                        userInfo += `   🔄 最后登录: ${lastLoginDate}\n\n`;
+                    });
+                }
+                
+                adminPanel.setButtonSuccess(btn, '✅ 加载成功');
+                adminPanel.showNotification(`已加载 ${result.total} 个用户信息`, 'success');
+                
+                document.getElementById('infoTitle').textContent = '👥 用户管理信息';
+                document.getElementById('infoContent').textContent = userInfo;
                 adminPanel.showModal('infoModal');
+                
+                setTimeout(() => {
+                    adminPanel.resetButton(btn, originalText);
+                }, 2000);
+                
             } catch (error) {
+                adminPanel.setButtonError(btn, '❌ 加载失败');
+                adminPanel.showNotification('获取用户信息失败: ' + error.message, 'error');
                 adminPanel.showResult('userResult', error.message, false);
+                
+                setTimeout(() => {
+                    adminPanel.resetButton(btn, originalText);
+                }, 2000);
             }
         }
         
         async function clearUsers() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            
             try {
+                adminPanel.setButtonLoading(btn, '🔄 清除中...');
+                
                 const result = await adminPanel.makeRequest('/api/admin/clear-users', {
                     method: 'POST'
                 });
-                adminPanel.showResult('userResult', 
-                    result.success ? result.message : '清除用户数据失败',
-                    result.success
-                );
+                
+                if (result.success) {
+                    adminPanel.setButtonSuccess(btn, '✅ 清除成功');
+                    adminPanel.showNotification(result.message, 'success');
+                    adminPanel.showResult('userResult', result.message, true);
+                } else {
+                    adminPanel.setButtonError(btn, '❌ 清除失败');
+                    adminPanel.showNotification('清除用户数据失败', 'error');
+                    adminPanel.showResult('userResult', '清除用户数据失败', false);
+                }
+                
+                setTimeout(() => {
+                    adminPanel.resetButton(btn, originalText);
+                }, 2000);
+                
             } catch (error) {
+                adminPanel.setButtonError(btn, '❌ 清除失败');
+                adminPanel.showNotification('清除用户数据失败: ' + error.message, 'error');
                 adminPanel.showResult('userResult', error.message, false);
+                
+                setTimeout(() => {
+                    adminPanel.resetButton(btn, originalText);
+                }, 2000);
             }
         }
         

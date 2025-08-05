@@ -440,6 +440,68 @@ std::vector<UserInfo> DatabaseManager::getAllUsers() {
     return users;
 }
 
+bool DatabaseManager::deleteUser(const std::string& username) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_) {
+        return false;
+    }
+    
+    // 首先获取用户ID，以便删除相关的会话和对话记录
+    UserInfo userInfo = getUserInfo(username);
+    if (userInfo.user_id.empty()) {
+        LOG_WARN << "用户不存在: " << username;
+        return false;
+    }
+    
+    // 删除用户的所有会话（会自动删除相关的对话记录，因为有外键约束）
+    auto sessions = getUserSessions(userInfo.user_id);
+    for (const auto& session : sessions) {
+        deleteConversationHistory(session.session_id);
+        deleteSession(session.session_id);
+    }
+    
+    // 删除用户记录
+    std::stringstream ss;
+    ss << "DELETE FROM users WHERE username = '" << escapeString(username) << "'";
+    
+    bool success = executeQuery(ss.str());
+    if (success) {
+        LOG_INFO << "用户已删除: " << username;
+    } else {
+        LOG_ERROR << "删除用户失败: " << username;
+    }
+    
+    return success;
+}
+
+bool DatabaseManager::clearAllUsers() {
+    std::lock_guard<std::mutex> lock(mutex_);
+    
+    if (!initialized_) {
+        return false;
+    }
+    
+    // 清除所有用户相关数据（先清除会话和对话记录，再清除用户）
+    if (!executeQuery("DELETE FROM conversations")) {
+        LOG_ERROR << "清除对话记录失败";
+        return false;
+    }
+    
+    if (!executeQuery("DELETE FROM sessions")) {
+        LOG_ERROR << "清除会话记录失败";
+        return false;
+    }
+    
+    if (!executeQuery("DELETE FROM users")) {
+        LOG_ERROR << "清除用户记录失败";
+        return false;
+    }
+    
+    LOG_INFO << "所有用户数据已清除";
+    return true;
+}
+
 // 会话管理实现
 std::string DatabaseManager::createSession(const std::string& userId, const std::string& sessionName) {
     std::lock_guard<std::mutex> lock(mutex_);

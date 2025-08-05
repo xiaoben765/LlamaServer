@@ -80,6 +80,8 @@ public:
     UserInfo getUserInfo(const std::string& username);
     bool updateUserLastLogin(const std::string& username);
     std::vector<UserInfo> getAllUsers();
+    bool deleteUser(const std::string& username); // 新增：删除用户
+    bool clearAllUsers(); // 新增：清除所有用户
     
     // 会话管理
     std::string createSession(const std::string& userId, const std::string& sessionName = "");

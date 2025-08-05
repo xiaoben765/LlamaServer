@@ -165,8 +165,14 @@ bool MySqlDatabaseService::clearTables(const std::vector<std::string>& tableName
             db::DatabaseManager::instance().cleanupCache(0);
             LOG_INFO << "表 " << table << " 已清空";
         } else if (table == "users") {
-            // 由于没有提供删除用户的方法，这里只记录日志
-            LOG_WARN << "无法清空用户表，需要直接访问数据库";
+            // 使用新的清除用户方法
+            bool cleared = db::DatabaseManager::instance().clearAllUsers();
+            if (cleared) {
+                LOG_INFO << "表 " << table << " 已清空";
+            } else {
+                LOG_ERROR << "清空表 " << table << " 失败";
+                success = false;
+            }
         } else {
             LOG_WARN << "未知的表名或无法清空: " << table;
             success = false;

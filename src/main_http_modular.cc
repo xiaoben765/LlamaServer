@@ -31,7 +31,8 @@ public:
     ) : 
         server_(loop, addr, "KamaHttpServer"),
         dbService_(nullptr),
-        llamaService_(nullptr)
+        llamaService_(nullptr),
+        startTime_(std::time(nullptr))  // 记录服务器启动时间
     {
         try {
             std::cout << "成员变量初始化完成" << std::endl;
@@ -452,7 +453,25 @@ private:
     void handleDatabaseStatsRequest(const HttpRequest& req, HttpResponse& resp) {
         try {
             if (dbService_ && dbService_->isInitialized()) {
-                json stats = dbService_->getSystemStats();
+                // 简化统计信息，避免复杂查询导致阻塞
+                json stats = {
+                    {"status", "connected"},
+                    {"type", dbType_},
+                    {"uptime_seconds", std::time(nullptr) - startTime_},
+                    {"server_status", "running"}
+                };
+                
+                // 只在内存数据库时添加详细统计
+                if (dbType_ == "memory") {
+                    try {
+                        // 对于内存数据库，可以安全地获取统计信息
+                        json detailedStats = dbService_->getSystemStats();
+                        stats.merge_patch(detailedStats);
+                    } catch (const std::exception& e) {
+                        LOG_WARN << "获取详细统计信息失败: " << e.what();
+                        // 忽略错误，返回基本统计信息
+                    }
+                }
                 
                 resp.setStatusCode(HttpStatusCode::OK);
                 resp.setContentType("application/json");
@@ -700,7 +719,7 @@ private:
             statusJson += ", \"db_available\": ";
             statusJson += (dbService_ && dbService_->isInitialized()) ? "true" : "false";
             statusJson += ", \"timestamp\": ";
-            statusJson += std::to_string(std::time(nullptr));
+            statusJson += std::to_string(startTime_);  // 返回服务器启动时间戳
             statusJson += ", \"db_type\": \"";
             statusJson += dbType_;
             statusJson += "\", \"cache_size\": 0";
@@ -730,6 +749,7 @@ private:
     int llamaServerPort_;
     std::string dbType_;
     bool developmentMode_;  // 开发模式标识
+    std::time_t startTime_;  // 服务器启动时间戳
     
     // 服务组件
     services::IDatabaseService* dbService_;

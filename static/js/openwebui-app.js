@@ -853,8 +853,16 @@ class KamaAI {
     
     // 设置
     openSettings() {
-        // 这里可以打开设置模态框或跳转到设置页面
-        window.open('/admin.html', '_blank');
+        // 触发管理控制台弹窗显示
+        const adminModal = document.getElementById('admin-modal');
+        if (adminModal) {
+            // 如果存在管理控制台，显示它
+            const event = new CustomEvent('show-admin-console');
+            document.dispatchEvent(event);
+        } else {
+            // 回退到原来的行为
+            window.open('/admin.html', '_blank');
+        }
     }
 }
 

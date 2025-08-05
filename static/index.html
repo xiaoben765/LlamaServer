@@ -8,6 +8,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <link rel="stylesheet" href="/css/openwebui-style.css">
+    <link rel="stylesheet" href="/css/admin-modal.css">
 </head>
 <body>
     <div class="app-container">
@@ -100,7 +101,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
                             </svg>
                         </button>
-                        <button class="navbar-action" id="settings-btn" title="设置">
+                        <button class="navbar-action" id="settings-btn" title="管理控制台">
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -158,6 +159,193 @@
     <!-- 移动端侧边栏遮罩 -->
     <div class="sidebar-overlay" id="sidebar-overlay" style="display: none;"></div>
 
+    <!-- 管理控制台弹窗 -->
+    <div class="admin-modal" id="admin-modal" style="display: none;">
+        <div class="admin-modal-overlay"></div>
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h2 class="admin-modal-title">⚙️ 管理控制台</h2>
+                <button class="admin-modal-close">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="admin-modal-body">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="status">
+                        <span class="admin-tab-icon">📊</span>
+                        系统状态
+                    </button>
+                    <button class="admin-tab" data-tab="cache">
+                        <span class="admin-tab-icon">🗄️</span>
+                        缓存管理
+                    </button>
+                    <button class="admin-tab" data-tab="database">
+                        <span class="admin-tab-icon">🗃️</span>
+                        数据库
+                    </button>
+                    <button class="admin-tab" data-tab="users">
+                        <span class="admin-tab-icon">👥</span>
+                        用户管理
+                    </button>
+                </div>
+                
+                <div class="admin-content">
+                    <!-- 系统状态标签页 -->
+                    <div class="admin-panel active" id="status-panel">
+                        <div class="admin-section">
+                            <h3 class="admin-section-title">🔍 服务状态监控</h3>
+                            <div class="status-grid">
+                                <div class="status-card">
+                                    <div class="status-card-header">
+                                        <span class="status-label">运行时间</span>
+                                        <div class="status-indicator info"></div>
+                                    </div>
+                                    <div class="status-value" id="status-uptime">--</div>
+                                </div>
+                                
+                                <div class="status-card">
+                                    <div class="status-card-header">
+                                        <span class="status-label">LLaMA服务</span>
+                                        <div class="status-indicator online"></div>
+                                    </div>
+                                    <div class="status-value" id="status-requests">--</div>
+                                </div>
+                                
+                                <div class="status-card">
+                                    <div class="status-card-header">
+                                        <span class="status-label">数据库</span>
+                                        <div class="status-indicator online"></div>
+                                    </div>
+                                    <div class="status-value" id="status-connections">--</div>
+                                </div>
+                                
+                                <div class="status-card">
+                                    <div class="status-card-header">
+                                        <span class="status-label">最后更新</span>
+                                        <div class="status-indicator info"></div>
+                                    </div>
+                                    <div class="status-value" id="status-last-update">--</div>
+                                </div>
+                            </div>
+                            
+                            <div class="admin-actions">
+                                <button class="admin-btn primary" id="refresh-status-btn">
+                                    <span class="admin-btn-icon">🔄</span>
+                                    刷新状态
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 缓存管理标签页 -->
+                    <div class="admin-panel" id="cache-panel">
+                        <div class="admin-section">
+                            <h3 class="admin-section-title">🗄️ 缓存数据管理</h3>
+                            <p class="admin-section-desc">管理系统缓存，清理临时数据以释放内存空间</p>
+                            
+                            <div class="admin-actions">
+                                <button class="admin-btn warning" id="clear-cache-btn">
+                                    <span class="admin-btn-icon">🧹</span>
+                                    清理缓存
+                                </button>
+                                <button class="admin-btn secondary" id="refresh-cache-btn">
+                                    <span class="admin-btn-icon">🔄</span>
+                                    刷新状态
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 数据库管理标签页 -->
+                    <div class="admin-panel" id="database-panel">
+                        <div class="admin-section">
+                            <h3 class="admin-section-title">🗃️ 数据库管理</h3>
+                            <p class="admin-section-desc">查看数据库统计信息和执行数据库操作</p>
+                            
+                            <div class="admin-actions">
+                                <button class="admin-btn primary" id="database-stats-btn">
+                                    <span class="admin-btn-icon">📊</span>
+                                    数据库统计
+                                </button>
+                                <button class="admin-btn secondary" id="backup-db-btn">
+                                    <span class="admin-btn-icon">�</span>
+                                    备份数据库
+                                </button>
+                                <button class="admin-btn warning" id="optimize-db-btn">
+                                    <span class="admin-btn-icon">⚡</span>
+                                    优化数据库
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 用户管理标签页 -->
+                    <div class="admin-panel" id="users-panel">
+                        <div class="admin-section">
+                            <h3 class="admin-section-title">👥 用户数据管理</h3>
+                            <p class="admin-section-desc">查看用户统计及管理用户数据</p>
+                            
+                            <div class="admin-actions">
+                                <button class="admin-btn primary" id="refresh-users-btn">
+                                    <span class="admin-btn-icon">👁️</span>
+                                    查看用户统计
+                                </button>
+                                <button class="admin-btn danger" id="clear-users-btn">
+                                    <span class="admin-btn-icon">🗑️</span>
+                                    清除用户数据
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 管理控制台确认弹窗 -->
+    <div class="admin-confirm-modal" id="admin-confirm-modal" style="display: none;">
+        <div class="admin-confirm-overlay"></div>
+        <div class="admin-confirm-content">
+            <div class="admin-confirm-header">
+                <h3 id="confirm-title">确认操作</h3>
+            </div>
+            <div class="admin-confirm-body">
+                <p id="confirm-message">您确定要执行此操作吗？</p>
+            </div>
+            <div class="admin-confirm-actions">
+                <button class="admin-btn danger" id="confirm-btn">确认</button>
+                <button class="admin-btn secondary" id="cancel-btn">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 管理控制台信息弹窗 -->
+    <div class="admin-info-modal" id="admin-info-modal" style="display: none;">
+        <div class="admin-info-overlay"></div>
+        <div class="admin-info-content">
+            <div class="admin-info-header">
+                <h3 id="info-title">信息</h3>
+                <button class="admin-modal-close" id="info-close-btn">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="admin-info-body">
+                <div id="info-text" class="admin-info-text"></div>
+            </div>
+            <div class="admin-info-actions">
+                <button class="admin-btn primary" id="info-close-btn-footer">关闭</button>
+            </div>
+        </div>
+    </div>
+
     <script src="/js/openwebui-app.js"></script>
+    <script src="/js/admin-console.js"></script>
 </body>
 </html>
