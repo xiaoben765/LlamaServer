@@ -53,51 +53,52 @@ get_dir_size() {
 
 # 函数：清理构建文件
 clean_build() {
-    echo -e "\n${BLUE}--- 清理构建文件 ---${NC}"
+    echo "--- 清理构建文件 ---"
+    local total_size=0
     
-    local build_size=$(get_dir_size "build")
-    local lib_size=$(get_dir_size "lib") 
-    local cmake_size=$(get_dir_size "CMakeFiles")
-    
-    # 删除构建目录
-    if [ -d "build" ]; then
-        echo -e "${YELLOW}正在删除构建目录 (大小: $build_size)...${NC}"
-        rm -rf build/
-        echo -e "${GREEN}✅ 已删除 build/ 目录${NC}"
-    else
-        echo -e "${CYAN}build/ 目录不存在，跳过${NC}"
-    fi
-    
-    # 删除库文件目录
-    if [ -d "lib" ]; then
-        echo -e "${YELLOW}正在删除库文件目录 (大小: $lib_size)...${NC}"
-        rm -rf lib/
-        echo -e "${GREEN}✅ 已删除 lib/ 目录${NC}"
-    else
-        echo -e "${CYAN}lib/ 目录不存在，跳过${NC}"
-    fi
-    
-    # 删除CMake缓存目录
-    if [ -d "CMakeFiles" ]; then
-        echo -e "${YELLOW}正在删除CMake缓存目录 (大小: $cmake_size)...${NC}"
-        rm -rf CMakeFiles/
-        echo -e "${GREEN}✅ 已删除 CMakeFiles/ 目录${NC}"
-    else
-        echo -e "${CYAN}CMakeFiles/ 目录不存在，跳过${NC}"
-    fi
-    
-    # 清理编译产物 (保留bin目录下的文件)
-    local found_objects=false
-    find . -name "*.o" -o -name "*.a" -o -name "*.so" 2>/dev/null | while read file; do
-        if [[ "$file" != "./bin/"* ]]; then
-            found_objects=true
-            echo -e "${YELLOW}删除编译产物: $file${NC}"
-            rm -f "$file"
+    # 计算并删除主要构建目录
+    for dir in build lib CMakeFiles bin; do
+        if [ -d "$dir" ]; then
+            local size=$(du -sk "$dir" 2>/dev/null | cut -f1 || echo "0")
+            echo "删除 $dir/ (大小: ${size}K)"
+            rm -rf "$dir"
+            total_size=$((total_size + size))
+        else
+            echo "$dir/ 目录不存在，跳过"
         fi
     done
     
-    echo -e "${GREEN}✅ 构建文件清理完成${NC}"
-    echo -e "释放空间: ${CYAN}$build_size + $lib_size + $cmake_size${NC}"
+    # 清理子目录中的CMake构建产物
+    echo "清理子目录中的CMake构建产物..."
+    local subdirs=("src" "memory" "log")
+    local subdir_size=0
+    
+    for subdir in "${subdirs[@]}"; do
+        if [ -d "$subdir" ]; then
+            # 清理CMakeFiles目录
+            if [ -d "$subdir/CMakeFiles" ]; then
+                local size=$(du -sk "$subdir/CMakeFiles" 2>/dev/null | cut -f1 || echo "0")
+                echo "删除 $subdir/CMakeFiles (大小: ${size}K)"
+                rm -rf "$subdir/CMakeFiles"
+                subdir_size=$((subdir_size + size))
+            fi
+            
+            # 清理cmake_install.cmake
+            if [ -f "$subdir/cmake_install.cmake" ]; then
+                echo "删除 $subdir/cmake_install.cmake"
+                rm -f "$subdir/cmake_install.cmake"
+            fi
+            
+            # 清理Makefile
+            if [ -f "$subdir/Makefile" ]; then
+                echo "删除 $subdir/Makefile"
+                rm -f "$subdir/Makefile"
+            fi
+        fi
+    done
+    
+    echo "✅ 构建文件清理完成"
+    echo "释放空间: $total_size + 0 + 0 + 0 + ${subdir_size}KB"
 }
 
 # 函数：清理日志文件
