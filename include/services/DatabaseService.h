@@ -7,7 +7,7 @@
 #include <mutex>
 #include <mysql/mysql.h>
 
-namespace kama {
+namespace llama {
 namespace services {
 
 // 数据库连接配置
@@ -201,4 +201,4 @@ private:
 };
 
 } // namespace services
-} // namespace kama
+} // namespace llama

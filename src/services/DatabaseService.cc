@@ -5,7 +5,7 @@
 #include <random>     // 为std::random_device和std::mt19937
 #include <sstream>    // 为std::stringstream
 
-namespace kama {
+namespace llama {
 namespace services {
 
 // 单例模式实现
@@ -27,7 +27,7 @@ bool MySqlDatabaseService::initialize() {
     DbConfig config;
     config.host = "localhost";
     config.port = 3306;
-    config.dbname = "kama";
+    config.dbname = "llama";
     config.user = "root";
     config.password = ""; // 默认空密码
     
@@ -940,4 +940,4 @@ nlohmann::json MemoryDatabaseService::getSystemStats() {
 }
 
 } // namespace services
-} // namespace kama
+} // namespace llama

@@ -9,7 +9,7 @@
 #include <random>
 #include <stdexcept>
 
-namespace kama {
+namespace llama {
 namespace services {
 
 /**
@@ -97,4 +97,4 @@ public:
 };
 
 } // namespace services
-} // namespace kama
+} // namespace llama

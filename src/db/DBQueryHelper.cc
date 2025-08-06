@@ -1,7 +1,7 @@
 #include "db/DBQueryHelper.h"
 #include <sstream>
 
-namespace kama {
+namespace llama {
 namespace db {
 
 // SqlConditionBuilder实现
@@ -337,4 +337,4 @@ bool DBTransaction::query(const std::string& sql, std::function<void(MYSQL_ROW r
 }
 
 } // namespace db
-} // namespace kama
+} // namespace llama

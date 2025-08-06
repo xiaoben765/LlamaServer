@@ -2,7 +2,7 @@
 #include <sstream>
 #include <algorithm>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 HttpParser::HttpParser()
@@ -142,4 +142,4 @@ std::pair<std::string, std::string> HttpParser::splitHeader(const std::string& h
 }
 
 } // namespace http
-} // namespace kama
+} // namespace llama

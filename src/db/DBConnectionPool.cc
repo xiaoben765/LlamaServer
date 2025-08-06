@@ -2,7 +2,7 @@
 #include <iostream>
 #include <thread>
 
-namespace kama {
+namespace llama {
 namespace db {
 
 // DBConnection实现
@@ -323,4 +323,4 @@ size_t DBConnectionPool::getTotalConnectionCount() const {
 }
 
 } // namespace db
-} // namespace kama
+} // namespace llama

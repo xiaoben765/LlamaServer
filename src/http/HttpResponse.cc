@@ -1,7 +1,7 @@
 #include "http/HttpResponse.h"
 #include <sstream>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 HttpResponse::HttpResponse(HttpVersion version)
@@ -124,4 +124,4 @@ std::string HttpResponse::getStatusString(HttpStatusCode code) const {
 }
 
 } // namespace http
-} // namespace kama
+} // namespace llama

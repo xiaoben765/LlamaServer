@@ -1,7 +1,7 @@
 #include "http/HttpRequest.h"
 #include <algorithm>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 HttpRequest::HttpRequest()
@@ -67,4 +67,4 @@ HttpVersion HttpRequest::stringToVersion(const std::string& version) {
 }
 
 } // namespace http
-} // namespace kama
+} // namespace llama

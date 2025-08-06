@@ -12,7 +12,7 @@
 #include <chrono>
 #include <thread>
 
-namespace kama {
+namespace llama {
 namespace services {
 
 /**
@@ -154,4 +154,4 @@ private:
 };
 
 } // namespace services
-} // namespace kama
+} // namespace llama

@@ -10,7 +10,7 @@
 // 解决命名空间冲突，指定使用全局的TcpConnection
 using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
 
-namespace kama {
+namespace llama {
 namespace http {
 
 // TcpConnection 上下文类型，用于关联 HttpContext 到 TcpConnection
@@ -269,4 +269,4 @@ void HttpServer::handleStaticFile(const HttpRequest& req, HttpResponse& resp) {
 }
 
 } // namespace http
-} // namespace kama
+} // namespace llama

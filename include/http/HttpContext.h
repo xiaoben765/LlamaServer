@@ -3,7 +3,7 @@
 #include "HttpParser.h"
 #include <memory>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 class HttpContext {
@@ -26,4 +26,4 @@ private:
 };
 
 } // namespace http
-} // namespace kama
+} // namespace llama

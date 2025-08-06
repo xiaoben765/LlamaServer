@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include "HttpRequest.h"
 
-namespace kama {
+namespace llama {
 namespace http {
 
 enum class HttpStatusCode {
@@ -76,4 +76,4 @@ private:
 };
 
 } // namespace http
-} // namespace kama
+} // namespace llama

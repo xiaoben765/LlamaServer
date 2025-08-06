@@ -9,7 +9,7 @@
 
 using json = nlohmann::json;
 
-namespace kama {
+namespace llama {
 namespace db {
 
 // 数据库连接配置
@@ -155,4 +155,4 @@ private:
 };
 
 } // namespace db
-} // namespace kama
+} // namespace llama

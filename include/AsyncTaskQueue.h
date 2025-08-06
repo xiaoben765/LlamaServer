@@ -11,7 +11,7 @@
 #include <memory>
 #include "noncopyable.h"
 
-namespace kama {
+namespace llama {
 
 /**
  * @brief 异步任务队列
@@ -124,4 +124,4 @@ auto AsyncTaskQueue::submit(F&& f, Args&&... args)
     return result;
 }
 
-} // namespace kama
+} // namespace llama

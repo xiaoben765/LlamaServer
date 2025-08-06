@@ -5,7 +5,7 @@
 #include <memory>
 #include "nlohmann/json.hpp"
 
-namespace kama {
+namespace llama {
 namespace services {
 
 // 以下结构体定义与DatabaseManager中相同，为了接口独立性复制到这里
@@ -114,4 +114,4 @@ public:
 };
 
 } // namespace services
-} // namespace kama
+} // namespace llama

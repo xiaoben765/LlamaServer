@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 HighConcurrentHttpServer::HighConcurrentHttpServer(
@@ -123,7 +123,7 @@ void HighConcurrentHttpServer::onRequest(const HttpRequest& req, const TcpConnec
     // 设置默认响应头
     response.setStatusCode(HttpStatusCode::OK);
     response.setStatusMessage("OK");
-    response.addHeader("Server", "KamaWebServer");
+    response.addHeader("Server", "LlamaWebServer");
     
     // 寻找处理器
     HttpCallback handler;
@@ -171,4 +171,4 @@ void HighConcurrentHttpServer::handleAsyncResponse(const TcpConnectionPtr& conn,
 }
 
 } // namespace http
-} // namespace kama
+} // namespace llama

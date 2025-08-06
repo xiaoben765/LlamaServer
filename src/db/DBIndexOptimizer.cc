@@ -4,7 +4,7 @@
 #include <regex>
 #include <set>
 
-namespace kama {
+namespace llama {
 namespace db {
 
 DBIndexOptimizer::DBIndexOptimizer() {
@@ -342,4 +342,4 @@ std::string DBIndexOptimizer::getLastError() const {
 }
 
 } // namespace db
-} // namespace kama
+} // namespace llama

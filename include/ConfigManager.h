@@ -5,7 +5,7 @@
 #include <mutex>
 #include "nlohmann/json.hpp"
 
-namespace kama {
+namespace llama {
 
 class ConfigManager {
 public:
@@ -59,4 +59,4 @@ T ConfigManager::get(const std::string& path, const T& defaultValue) const {
     }
 }
 
-} // namespace kama
+} // namespace llama

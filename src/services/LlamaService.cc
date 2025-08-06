@@ -9,7 +9,7 @@
 #include <ctime>
 #include <errno.h>
 
-namespace kama {
+namespace llama {
 namespace services {
 
 // LlamaTcpService实现
@@ -116,8 +116,8 @@ std::string LlamaTcpService::query(const std::string& message) {
             LOG_INFO << "响应最后100字符: " << (response.length() > 100 ? 
                         response.substr(response.length() - 100) : response);
             // 检查JSON格式
-            LOG_INFO << "检查JSON开始字符: " << (response[0] == '{' ? "正确" : "错误");
-            LOG_INFO << "检查JSON结束字符: " << (response[response.length()-1] == '}' ? "正确" : "错误");
+            LOG_INFO << "检查JSON开始字符: " << (!response.empty() && response[0] == '{' ? "正确" : "错误");
+            LOG_INFO << "检查JSON结束字符: " << (!response.empty() && response[response.length()-1] == '}' ? "正确" : "错误");
         }
         
         // 尝试解析JSON
@@ -135,10 +135,10 @@ std::string LlamaTcpService::query(const std::string& message) {
             }
             
             // 确保JSON格式正确
-            if (response[0] != '{' || response[response.length()-1] != '}') {
+            if (!response.empty() && (response[0] != '{' || response[response.length()-1] != '}')) {
                 LOG_WARN << "JSON格式不正确，尝试修复";
                 // 确保以{开始，以}结束
-                if (response[0] != '{') {
+                if (!response.empty() && response[0] != '{') {
                     size_t pos = response.find('{');
                     if (pos != std::string::npos) {
                         response = response.substr(pos);
@@ -147,7 +147,7 @@ std::string LlamaTcpService::query(const std::string& message) {
                     }
                 }
                 
-                if (response[response.length()-1] != '}') {
+                if (!response.empty() && response[response.length()-1] != '}') {
                     size_t pos = response.rfind('}');
                     if (pos != std::string::npos) {
                         response = response.substr(0, pos+1);
@@ -515,4 +515,4 @@ void LlamaTcpService::replaceAll(std::string& str, const std::string& from, cons
 
 
 } // namespace services
-} // namespace kama
+} // namespace llama

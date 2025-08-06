@@ -4,7 +4,7 @@
 #include <regex>
 #include <cctype>
 
-namespace kama {
+namespace llama {
 namespace db {
 
 DBQueryOptimizer& DBQueryOptimizer::getInstance() {
@@ -268,4 +268,4 @@ std::string DBQueryOptimizer::buildCountQuery(const std::string& baseQuery) {
 }
 
 } // namespace db
-} // namespace kama
+} // namespace llama

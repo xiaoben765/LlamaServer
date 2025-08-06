@@ -7,7 +7,7 @@
 #include <mutex>
 #include <algorithm>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 // MiddlewareChain实现
@@ -90,7 +90,7 @@ void AuthMiddleware::process(const HttpRequest& request, HttpResponse& response,
             LOG_WARN << "访问需要认证的路径但未提供凭据: " << request.path();
             response.setStatusCode(HttpStatusCode::UNAUTHORIZED);
             response.setStatusMessage("Unauthorized");
-            response.addHeader("WWW-Authenticate", "Basic realm=\"Kama WebServer\"");
+            response.addHeader("WWW-Authenticate", "Basic realm=\"Llama WebServer\"");
             response.setBody("认证失败：需要提供有效的认证信息");
             return; // 不继续执行中间件链
         }
@@ -276,4 +276,4 @@ std::string CompressionMiddleware::compress(const std::string& data) {
 }
 
 } // namespace http
-} // namespace kama
+} // namespace llama

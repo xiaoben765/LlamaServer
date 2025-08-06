@@ -3,7 +3,7 @@
 #include "HttpRequest.h"
 #include <memory>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 enum class HttpParseState {
@@ -48,4 +48,4 @@ private:
 };
 
 } // namespace http
-} // namespace kama
+} // namespace llama

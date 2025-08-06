@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <mutex>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 class HttpConnection;
@@ -93,4 +93,4 @@ private:
 };
 
 } // namespace http
-} // namespace kama
+} // namespace llama

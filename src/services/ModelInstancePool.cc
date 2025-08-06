@@ -7,7 +7,7 @@
 #include <thread>
 #include <iostream>
 
-namespace kama {
+namespace llama {
 namespace services {
 
 using json = nlohmann::json;
@@ -439,4 +439,4 @@ void ModelInstancePool::shutdown() {
 }
 
 } // namespace services
-} // namespace kama
+} // namespace llama

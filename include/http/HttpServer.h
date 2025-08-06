@@ -9,7 +9,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 class HttpServer {
@@ -91,4 +91,4 @@ private:
 };
 
 } // namespace http
-} // namespace kama
+} // namespace llama

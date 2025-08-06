@@ -1,5 +1,5 @@
-#ifndef KAMA_DB_QUERY_HELPER_H
-#define KAMA_DB_QUERY_HELPER_H
+#ifndef LLAMA_DB_QUERY_HELPER_H
+#define LLAMA_DB_QUERY_HELPER_H
 
 #include "db/DBConnectionPool.h"
 #include <string>
@@ -7,7 +7,7 @@
 #include <map>
 #include <memory>
 
-namespace kama {
+namespace llama {
 namespace db {
 
 // 前向声明
@@ -191,6 +191,6 @@ bool DBQueryHelper::queryPage(const std::string& tableName, const SqlConditionBu
 }
 
 } // namespace db
-} // namespace kama
+} // namespace llama
 
-#endif // KAMA_DB_QUERY_HELPER_H
+#endif // LLAMA_DB_QUERY_HELPER_H

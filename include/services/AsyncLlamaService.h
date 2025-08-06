@@ -7,7 +7,7 @@
 #include <future>
 #include <functional>
 
-namespace kama {
+namespace llama {
 namespace services {
 
 /**
@@ -72,4 +72,4 @@ private:
 };
 
 } // namespace services
-} // namespace kama
+} // namespace llama

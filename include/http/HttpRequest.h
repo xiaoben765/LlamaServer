@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <memory>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 enum class HttpMethod {
@@ -72,4 +72,4 @@ private:
 };
 
 } // namespace http
-} // namespace kama
+} // namespace llama

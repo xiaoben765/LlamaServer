@@ -1,0 +1,216 @@
+2025/08/06 10:10:370336 DEBUG EventLoop createdtruein thread757121 - EventLoop.cc:53
+2025/08/06 10:10:370382 INFO  func =>fd4events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:370710 INFO  成功加载配置文件: config/config.json - ConfigManager.cc:28
+2025/08/06 10:10:371134 INFO  配置加载完成: 开发模式=true - LlamaHttpApplication.cc:104
+2025/08/06 10:10:371145 INFO  添加中间件: LoggingMiddleware - Middleware.cc:17
+2025/08/06 10:10:371150 INFO  添加中间件: CorsMiddleware - Middleware.cc:17
+2025/08/06 10:10:372519 INFO  尝试连接MySQL - Host: 127.0.0.1, Port: 3306, DB: kama_llm, User: root - DatabaseManager.cpp:86
+2025/08/06 10:10:434468 INFO  MySQL连接成功: 127.0.0.1:3306/kama_llm - DatabaseManager.cpp:120
+2025/08/06 10:10:439551 INFO  数据库表初始化完成 - DatabaseManager.cpp:230
+2025/08/06 10:10:439559 INFO  MySQL数据库初始化成功 - DatabaseManager.cpp:52
+2025/08/06 10:10:439563 INFO  数据库服务初始化成功: 127.0.0.1:3306/kama_llm - DatabaseService.cc:58
+2025/08/06 10:10:439687 INFO  LLaMA 服务连接成功：127.0.0.1:8899 - LlamaService.cc:29
+2025/08/06 10:10:439709 INFO  Added route: GET /basic - HttpServer.cc:60
+2025/08/06 10:10:439714 INFO  Added route: GET /api/models - HttpServer.cc:60
+2025/08/06 10:10:439719 INFO  Added route: POST /api/llama/query - HttpServer.cc:60
+2025/08/06 10:10:439723 INFO  Added route: GET /api/status - HttpServer.cc:60
+2025/08/06 10:10:439727 INFO  Added route: POST /api/admin/clear-cache - HttpServer.cc:60
+2025/08/06 10:10:439732 INFO  Added route: GET /api/admin/cache-content - HttpServer.cc:60
+2025/08/06 10:10:439736 INFO  Added route: POST /api/admin/clear-database - HttpServer.cc:60
+2025/08/06 10:10:439740 INFO  Added route: GET /api/admin/database-stats - HttpServer.cc:60
+2025/08/06 10:10:439744 INFO  Added route: GET /api/admin/users - HttpServer.cc:60
+2025/08/06 10:10:439748 INFO  Added route: POST /api/admin/clear-users - HttpServer.cc:60
+2025/08/06 10:10:439752 INFO  Added route: POST /api/admin/delete-user - HttpServer.cc:60
+2025/08/06 10:10:439756 INFO  Added route: POST /api/auth/register - HttpServer.cc:60
+2025/08/06 10:10:439760 INFO  Added route: POST /api/auth/login - HttpServer.cc:60
+2025/08/06 10:10:439765 INFO  Added route: POST /api/auth/logout - HttpServer.cc:60
+2025/08/06 10:10:439769 INFO  Added route: GET /api/conversations - HttpServer.cc:60
+2025/08/06 10:10:439781 INFO  启动Llama HTTP服务器, 端口: 8080 - LlamaHttpApplication.cc:58
+2025/08/06 10:10:439785 INFO  HTTP Server [LlamaHttpServer] started on 0.0.0.0:8081 - HttpServer.cc:41
+2025/08/06 10:10:439906 DEBUG EventLoop createdtruein thread757124 - EventLoop.cc:53
+2025/08/06 10:10:439922 INFO  func =>fd9events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:439944 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/06 10:10:439947 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:440073 DEBUG EventLoop createdtruein thread757125 - EventLoop.cc:53
+2025/08/06 10:10:440089 INFO  func =>fd11events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:440106 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/06 10:10:440110 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:440232 DEBUG EventLoop createdtruein thread757126 - EventLoop.cc:53
+2025/08/06 10:10:440249 INFO  func =>fd13events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:440266 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/06 10:10:440269 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:440368 DEBUG EventLoop createdtruein thread757127 - EventLoop.cc:53
+2025/08/06 10:10:440384 INFO  func =>fd15events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:440402 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/06 10:10:440405 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:440432 INFO  func =>fd6events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:440529 INFO  EventLoop start looping - EventLoop.cc:82
+2025/08/06 10:10:440536 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:440902 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:440928 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:440953 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/08/06 10:10:440960 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#1]from %s127.0.0.1:43824 - TcpServer.cc:96
+2025/08/06 10:10:440974 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#1]at fd=16 - TcpConnection.cc:52
+2025/08/06 10:10:441004 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:441016 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:441037 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:441049 INFO  func =>fd16events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:441072 INFO  New HTTP connection from: 127.0.0.1:43824 - HttpServer.cc:70
+2025/08/06 10:10:441079 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:441083 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:441086 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:441118 INFO  TcpConnection::handleClose fd=16state=2 - TcpConnection.cc:258
+2025/08/06 10:10:441121 INFO  func =>fd16events=0index=1 - EPollPoller.cc:91
+2025/08/06 10:10:441127 INFO  HTTP connection closed: 127.0.0.1:43824 - HttpServer.cc:75
+2025/08/06 10:10:441146 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:441153 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:441157 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:441162 INFO  TcpServer::removeConnectionInLoop [LlamaHttpServer] - connection %sLlamaHttpServer-0.0.0.0:8081#1 - TcpServer.cc:143
+2025/08/06 10:10:441174 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:441180 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:441184 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:441189 INFO  removeChannel fd=16 - EPollPoller.cc:132
+2025/08/06 10:10:441193 INFO  TcpConnection::dtor[LlamaHttpServer-0.0.0.0:8081#1]at fd=16state=0 - TcpConnection.cc:58
+2025/08/06 10:10:441237 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:450059 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:10:450121 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:450140 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:10:450173 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:450354 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:10:450403 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:451230 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:10:451269 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:10:451301 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:451278 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:342724 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:342747 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:342771 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/08/06 10:10:342778 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#2]from %s127.0.0.1:43826 - TcpServer.cc:96
+2025/08/06 10:10:342793 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#2]at fd=16 - TcpConnection.cc:52
+2025/08/06 10:10:342826 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:342856 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:342876 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:342888 INFO  func =>fd16events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:342905 INFO  New HTTP connection from: 127.0.0.1:43826 - HttpServer.cc:70
+2025/08/06 10:10:342913 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:349279 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:349288 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:349300 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/08/06 10:10:349305 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#3]from %s127.0.0.1:43828 - TcpServer.cc:96
+2025/08/06 10:10:349315 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#3]at fd=17 - TcpConnection.cc:52
+2025/08/06 10:10:349353 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:349373 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:349384 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:349392 INFO  func =>fd17events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:349405 INFO  New HTTP connection from: 127.0.0.1:43828 - HttpServer.cc:70
+2025/08/06 10:10:349411 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/06 10:10:349415 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:349418 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:349494 INFO  HTTP GET / 从  - Middleware.cc:57
+2025/08/06 10:10:351467 INFO  HTTP GET / 响应 200 (1ms) - Middleware.cc:68
+2025/08/06 10:10:351528 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/06 10:10:387516 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:387530 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:387585 INFO  HTTP GET /css/openwebui-style.css 从  - Middleware.cc:57
+2025/08/06 10:10:389018 INFO  HTTP GET /css/openwebui-style.css 响应 200 (1ms) - Middleware.cc:68
+2025/08/06 10:10:389064 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/06 10:10:389070 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:389073 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:389105 INFO  HTTP GET /css/admin-modal.css 从  - Middleware.cc:57
+2025/08/06 10:10:390625 INFO  HTTP GET /css/admin-modal.css 响应 200 (1ms) - Middleware.cc:68
+2025/08/06 10:10:390667 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/06 10:10:400514 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:400526 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:400569 INFO  HTTP GET /js/openwebui-app.js 从  - Middleware.cc:57
+2025/08/06 10:10:402786 INFO  HTTP GET /js/openwebui-app.js 响应 200 (2ms) - Middleware.cc:68
+2025/08/06 10:10:402836 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/06 10:10:407529 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:407534 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:407566 INFO  HTTP GET /js/admin-console.js 从  - Middleware.cc:57
+2025/08/06 10:10:409489 INFO  HTTP GET /js/admin-console.js 响应 200 (1ms) - Middleware.cc:68
+2025/08/06 10:10:409528 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/06 10:10:414721 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:414733 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:414786 INFO  HTTP GET /js/auth-manager.js 从  - Middleware.cc:57
+2025/08/06 10:10:416109 INFO  HTTP GET /js/auth-manager.js 响应 200 (1ms) - Middleware.cc:68
+2025/08/06 10:10:416150 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/06 10:10:463640 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:463663 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:463755 INFO  HTTP GET /api/models 从  - Middleware.cc:57
+2025/08/06 10:10:463848 INFO  HTTP GET /api/models 响应 200 (0ms) - Middleware.cc:68
+2025/08/06 10:10:463942 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/06 10:10:466281 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:466299 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:466383 INFO  HTTP GET /api/status 从  - Middleware.cc:57
+2025/08/06 10:10:466577 INFO  HTTP GET /api/status 响应 200 (0ms) - Middleware.cc:68
+2025/08/06 10:10:466667 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/06 10:10:475110 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:475123 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:475207 INFO  HTTP GET /favicon.ico 从  - Middleware.cc:57
+2025/08/06 10:10:475367 INFO  HTTP GET /favicon.ico 响应 404 (0ms) - Middleware.cc:68
+2025/08/06 10:10:475454 INFO  fd total count:3 - EPollPoller.cc:34
+2025/08/06 10:10:580760 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:580775 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:580794 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/08/06 10:10:580799 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#4]from %s127.0.0.1:43830 - TcpServer.cc:96
+2025/08/06 10:10:580812 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#4]at fd=18 - TcpConnection.cc:52
+2025/08/06 10:10:580838 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:580851 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:580864 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:580874 INFO  func =>fd18events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:580888 INFO  New HTTP connection from: 127.0.0.1:43830 - HttpServer.cc:70
+2025/08/06 10:10:580895 INFO  fd total count:4 - EPollPoller.cc:34
+2025/08/06 10:10:720383 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:720396 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:720413 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/08/06 10:10:720418 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#5]from %s127.0.0.1:43832 - TcpServer.cc:96
+2025/08/06 10:10:720434 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#5]at fd=19 - TcpConnection.cc:52
+2025/08/06 10:10:720459 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:720472 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:720484 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:720493 INFO  func =>fd19events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:720507 INFO  New HTTP connection from: 127.0.0.1:43832 - HttpServer.cc:70
+2025/08/06 10:10:720514 INFO  fd total count:5 - EPollPoller.cc:34
+2025/08/06 10:10:725828 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:725836 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:725849 INFO  使用一致性哈希选择线程，索引=3 - EventLoopThreadPool.cc:114
+2025/08/06 10:10:725853 INFO  TcpServer::newConnection [LlamaHttpServer]- new connection [LlamaHttpServer-0.0.0.0:8081#6]from %s127.0.0.1:43834 - TcpServer.cc:96
+2025/08/06 10:10:725863 INFO  TcpConnection::ctor:[LlamaHttpServer-0.0.0.0:8081#6]at fd=20 - TcpConnection.cc:52
+2025/08/06 10:10:725882 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:10:725893 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:725898 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:725903 INFO  func =>fd20events=3index=-1 - EPollPoller.cc:91
+2025/08/06 10:10:725911 INFO  New HTTP connection from: 127.0.0.1:43834 - HttpServer.cc:70
+2025/08/06 10:10:725917 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/06 10:10:460175 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:10:460204 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:460205 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:10:460228 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:460496 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:10:460543 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:10:544869 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:544888 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:544956 INFO  HTTP GET /api/status 从  - Middleware.cc:57
+2025/08/06 10:10:545039 INFO  HTTP GET /api/status 响应 200 (0ms) - Middleware.cc:68
+2025/08/06 10:10:545091 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/06 10:10:550091 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:10:550095 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:10:550130 INFO  HTTP GET /api/status 从  - Middleware.cc:57
+2025/08/06 10:10:550181 INFO  HTTP GET /api/status 响应 200 (0ms) - Middleware.cc:68
+2025/08/06 10:10:550216 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/06 10:11:379378 INFO  events happend1 - EPollPoller.cc:51
+2025/08/06 10:11:379409 INFO  channel handleEvent revents:1 - Channel.cc:96
+2025/08/06 10:11:379478 INFO  HTTP GET /api/admin/users 从  - Middleware.cc:57
+2025/08/06 10:11:380040 INFO  返回用户信息，共 1 个用户 - LlamaHttpApplication.cc:630
+2025/08/06 10:11:380053 INFO  HTTP GET /api/admin/users 响应 200 (0ms) - Middleware.cc:68
+2025/08/06 10:11:380098 INFO  fd total count:6 - EPollPoller.cc:34
+2025/08/06 10:11:734291 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:11:734318 INFO  fd total count:2 - EPollPoller.cc:34
+2025/08/06 10:11:470285 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:11:470286 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:11:470366 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:11:470437 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:11:470583 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:11:470601 INFO  fd total count:1 - EPollPoller.cc:34
+2025/08/06 10:11:390161 DEBUG timeout! - EPollPoller.cc:62
+2025/08/06 10:11:390221 INFO  fd total count:6 - EPollPoller.cc:34

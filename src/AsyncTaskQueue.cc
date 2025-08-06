@@ -1,6 +1,6 @@
 #include "AsyncTaskQueue.h"
 
-namespace kama {
+namespace llama {
 
 // 单例模式实现
 AsyncTaskQueue& AsyncTaskQueue::getInstance() {
@@ -113,4 +113,4 @@ AsyncTaskQueue::~AsyncTaskQueue() {
     shutdown();
 }
 
-} // namespace kama
+} // namespace llama

@@ -10,7 +10,7 @@
 #include <string>
 #include <mutex>
 
-namespace kama {
+namespace llama {
 namespace http {
 
 // 前向声明
@@ -150,4 +150,4 @@ private:
 };
 
 } // namespace http
-} // namespace kama
+} // namespace llama

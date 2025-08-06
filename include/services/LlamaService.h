@@ -10,7 +10,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-namespace kama {
+namespace llama {
 namespace services {
 
 /**
@@ -53,4 +53,4 @@ private:
 };
 
 } // namespace services
-} // namespace kama
+} // namespace llama

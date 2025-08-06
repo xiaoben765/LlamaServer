@@ -1,6 +1,6 @@
 #include "http/HttpContext.h"
 
-namespace kama {
+namespace llama {
 namespace http {
 
 HttpContext::HttpContext()
@@ -16,4 +16,4 @@ void HttpContext::reset() {
 }
 
 } // namespace http
-} // namespace kama
+} // namespace llama

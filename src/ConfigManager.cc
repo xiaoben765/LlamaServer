@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-namespace kama {
+namespace llama {
 
 ConfigManager& ConfigManager::instance() {
     static ConfigManager instance;
@@ -65,4 +65,4 @@ nlohmann::json ConfigManager::getValueFromPath(const std::string& path) const {
     return current[key];
 }
 
-} // namespace kama
+} // namespace llama

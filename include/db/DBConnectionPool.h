@@ -1,5 +1,5 @@
-#ifndef KAMA_DB_CONNECTION_POOL_H
-#define KAMA_DB_CONNECTION_POOL_H
+#ifndef LLAMA_DB_CONNECTION_POOL_H
+#define LLAMA_DB_CONNECTION_POOL_H
 
 #include <mysql/mysql.h>
 #include <string>
@@ -13,7 +13,7 @@
 #include <functional>
 #include <thread>
 
-namespace kama {
+namespace llama {
 namespace db {
 
 /**
@@ -107,6 +107,6 @@ private:
 };
 
 } // namespace db
-} // namespace kama
+} // namespace llama
 
-#endif // KAMA_DB_CONNECTION_POOL_H
+#endif // LLAMA_DB_CONNECTION_POOL_H

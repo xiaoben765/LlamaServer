@@ -3,7 +3,7 @@
 #include <chrono>
 #include <future>
 
-namespace kama {
+namespace llama {
 namespace services {
 
 AsyncLlamaService::AsyncLlamaService(unsigned int timeout)
@@ -141,4 +141,4 @@ bool AsyncLlamaService::resetConnection() {
 }
 
 } // namespace services
-} // namespace kama
+} // namespace llama

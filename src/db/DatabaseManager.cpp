@@ -9,7 +9,7 @@
 #include <openssl/md5.h>
 #include <openssl/evp.h>
 
-namespace kama {
+namespace llama {
 namespace db {
 
 DatabaseManager::DatabaseManager() 
@@ -1308,4 +1308,4 @@ json DatabaseManager::getSystemStats() {
 }
 
 } // namespace db
-} // namespace kama
+} // namespace llama

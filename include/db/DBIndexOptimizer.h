@@ -1,12 +1,12 @@
-#ifndef KAMA_DB_INDEX_OPTIMIZER_H
-#define KAMA_DB_INDEX_OPTIMIZER_H
+#ifndef LLAMA_DB_INDEX_OPTIMIZER_H
+#define LLAMA_DB_INDEX_OPTIMIZER_H
 
 #include "db/DBQueryHelper.h"
 #include <string>
 #include <vector>
 #include <map>
 
-namespace kama {
+namespace llama {
 namespace db {
 
 /**
@@ -69,6 +69,6 @@ private:
 };
 
 } // namespace db
-} // namespace kama
+} // namespace llama
 
-#endif // KAMA_DB_INDEX_OPTIMIZER_H
+#endif // LLAMA_DB_INDEX_OPTIMIZER_H
