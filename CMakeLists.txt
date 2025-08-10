@@ -53,23 +53,6 @@ add_library(current_thread STATIC src/CurrentThread.cc)
 target_include_directories(current_thread PRIVATE ${CMAKE_SOURCE_DIR}/include)
 message(STATUS "✅ Compiling CurrentThread as a static library.")
 
-# ==================== 构建 LLaMA TCP 服务可执行文件 (已被模块化版本替代) ====================
-# 原始版本已移动到 backup_original_files/ 目录
-# file(GLOB LlamaServiceTCP_SRC src/llama_service_tcp.cc memory/*.cc log/*.cc src/Thread.cc)
-# list(FILTER LlamaServiceTCP_SRC EXCLUDE REGEX ".*main\\.cc$")
-# add_executable(llama_service_tcp ${LlamaServiceTCP_SRC})
-# target_link_libraries(llama_service_tcp ${LIBS} current_thread)
-# target_include_directories(llama_service_tcp PRIVATE 
-#     ${CMAKE_SOURCE_DIR}/include 
-#     ${CMAKE_SOURCE_DIR}/memory 
-#     ${CMAKE_SOURCE_DIR}/log
-# )
-# if (USE_CUDA)
-#     target_compile_definitions(llama_service_tcp PRIVATE USE_CUDA)
-#     target_link_libraries(llama_service_tcp ${CUDA_LIBRARIES})
-#     message(STATUS "✅ Compiling LLaMA TCP Service with CUDA support.")
-# endif()
-
 # ==================== 共享库文件和设置 ====================
 # 准备共享文件和设置
 file(GLOB MEMORY_SRC memory/*.cc)
@@ -181,25 +164,6 @@ set(HTTP_SOURCES
 
 message(STATUS "HTTP源文件 (显式列出): ${HTTP_SOURCES}")
 
-# 构建HTTP服务器 (原始版本已被模块化版本替代)
-# 原始版本已移动到 backup_original_files/ 目录
-# add_executable(llama_http_server 
-#     src/main_http_modular.cc 
-#     src/db/DatabaseManager.cpp  # 确保这行存在
-#     src/ConfigManager.cc       # 添加配置管理器
-#     src/http/HttpServer.cc
-#     src/http/HttpContext.cc
-#     src/http/HttpParser.cc
-#     src/http/HttpRequest.cc
-#     src/http/HttpResponse.cc    # 显式包含，修复链接错误
-#     src/http/Middleware.cc      # 显式包含，修复链接错误
-#     src/services/DatabaseService.cc
-#     src/services/LlamaService.cc
-#     ${HTTP_MEMORY_SRC}
-#     ${HTTP_LOG_SRC}
-#     ${NETWORK_SRC}            # 网络库源文件
-# )
-
 # 构建HTTP服务器
 add_executable(llama_http_server
     src/main_http_modular.cc
@@ -228,17 +192,6 @@ add_executable(llama_service_tcp
     src/services/LlamaTcpServerUtils.cc
 )
 
-# target_link_libraries(llama_http_server 
-#     ${LIBS} 
-#     current_thread  # 直接链接已经构建的CurrentThread库
-#     db_lib         # 数据库库
-#     concurrency_lib # 高并发处理库
-#     ${MYSQL_LIBRARY}
-#     ssl
-#     crypto
-#     z              # 添加zlib库用于压缩中间件
-# )
-
 target_link_libraries(llama_http_server
     ${LIBS} 
     current_thread
@@ -254,12 +207,6 @@ target_link_libraries(llama_service_tcp
     ${LIBS}
 )
 
-# target_include_directories(llama_http_server PRIVATE 
-#     ${CMAKE_SOURCE_DIR}/include
-#     ${CMAKE_SOURCE_DIR}/include/http
-#     ${CMAKE_SOURCE_DIR}/memory
-#     ${CMAKE_SOURCE_DIR}/log
-# )
 
 target_include_directories(llama_http_server PRIVATE 
     ${CMAKE_SOURCE_DIR}/include
@@ -277,11 +224,6 @@ target_include_directories(llama_service_tcp PRIVATE
     ${CMAKE_SOURCE_DIR}/memory
     ${CMAKE_SOURCE_DIR}/log
 )
-
-# if (USE_CUDA)
-#     target_compile_definitions(llama_http_server PRIVATE USE_CUDA)
-#     target_link_libraries(llama_http_server ${CUDA_LIBRARIES})
-# endif()
 
 # 修改 MySQL 查找部分
 
@@ -305,18 +247,6 @@ include_directories(
     ${MYSQL_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/include
 )
-
-# 链接MySQL库以及其他需要的库
-# target_link_libraries(llama_http_server
-#     ${LIBS} 
-#     current_thread
-#     ${MYSQL_LIBRARY}
-#     ssl
-#     crypto
-# )
-
-# ==================== 构建模块化HTTP服务器 (已合并到 llama_http_server) ====================
-# 已合并到 llama_http_server，不再单独构建
 
 message(STATUS "✅ Configuring HTTP Server build with MySQL support.")
 
